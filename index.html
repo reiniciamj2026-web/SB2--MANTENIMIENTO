@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sierra Ballena 2 Mantenimiento · ReinicIA</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+:root {
+  --azul-oscuro: #0d1b4b;
+  --azul-medio: #1a2f5e;
+  --azul: #0099cc;
+  --amarillo: #f5c400;
+  --amarillo-dark: #c49a00;
+  --blanco: #ffffff;
+  --bg: #f0f3f8;
+  --bg-card: #ffffff;
+  --border: #dde2ea;
+  --text: #0d1b4b;
+  --text-2: #374060;
+  --text-3: #6b7a9a;
+  --shadow: 0 1px 3px rgba(13,27,75,0.10), 0 1px 2px rgba(13,27,75,0.06);
+  --shadow-md: 0 4px 12px rgba(13,27,75,0.12);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+/* HEADER */
+.header {
+  background: var(--azul-oscuro);
+  padding: 0 20px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  border-bottom: 2px solid var(--amarillo);
+}
+.header-left { display: flex; flex-direction: column; justify-content: center; }
+.header-edificio {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+.header-edificio em { color: var(--amarillo); font-style: normal; }
+.header-ubicacion { font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; margin-top: 1px; }
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.header-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+}
+.brand-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.brand-logo span { color: var(--azul); }
+.brand-cel {
+  font-size: 10px;
+  color: var(--amarillo);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.header-notif { color: rgba(255,255,255,0.65); font-size: 20px; cursor: pointer; position: relative; }
+.notif-dot { position: absolute; top: 0; right: 0; width: 8px; height: 8px; background: var(--amarillo); border-radius: 50%; border: 2px solid var(--azul-oscuro); }
+.header-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--azul); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: white; letter-spacing: 0.5px; border: 2px solid var(--amarillo); cursor: pointer; }
+
+/* NAV */
+.nav-bar {
+  background: #e8ecf4;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 2px;
+  overflow-x: auto;
+  flex-shrink: 0;
+  border-bottom: 2px solid #c8d0e0;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.nav-bar::-webkit-scrollbar { display: none; }
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 14px;
+  border: none;
+  background: transparent;
+  color: #3a4870;
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.15s;
+  letter-spacing: 0.2px;
+}
+.nav-btn i { font-size: 15px; }
+.nav-btn:hover { color: var(--azul-oscuro); background: #d8dff0; border-radius: 6px 6px 0 0; }
+.nav-btn.active { color: var(--azul-oscuro); border-bottom-color: var(--amarillo); background: white; font-weight: 700; border-radius: 6px 6px 0 0; }
+
+@media (max-width: 700px) {
+  .nav-bar { display: grid; grid-template-columns: repeat(3, 1fr); overflow-x: visible; padding: 0 6px; gap: 0; }
+  .nav-btn { justify-content: center; padding: 10px 4px; font-size: 11px; gap: 4px; white-space: normal; text-align: center; }
+  .nav-btn i { font-size: 14px; }
+}
+
+/* MAIN */
+.main-content { flex: 1; padding: 18px 20px; overflow-y: auto; }
+.panel { display: none; } .panel.active { display: block; }
+
+/* STATS */
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+@media (max-width: 700px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+}
+.stat-card { background: var(--bg-card); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); border: 1px solid var(--border); display: flex; align-items: center; gap: 12px; border-left: 3px solid transparent; }
+.stat-card.blue { border-left-color: var(--azul); }
+.stat-card.green { border-left-color: #2d9c2d; }
+.stat-card.amber { border-left-color: #c47f10; }
+.stat-card.red { border-left-color: #c03030; }
+.stat-icon { width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.stat-icon.blue { background: #e8f4fb; color: var(--azul); }
+.stat-icon.green { background: #eaf6e8; color: #2d9c2d; }
+.stat-icon.amber { background: #fef4e4; color: #c47f10; }
+.stat-icon.red { background: #fde8e8; color: #c03030; }
+.stat-label { font-size: 10px; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 2px; font-weight: 600; }
+.stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 800; line-height: 1; }
+.stat-num.blue { color: var(--azul); } .stat-num.green { color: #2d9c2d; } .stat-num.amber { color: #c47f10; } .stat-num.red { color: #c03030; }
+
+.section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; color: var(--azul-oscuro); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; padding-left: 8px; border-left: 3px solid var(--amarillo); }
+.card { background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 14px; }
+
+/* BLOCKS */
+.blocks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; }
+.block-card { background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
+.block-header { background: var(--azul-oscuro); color: white; padding: 9px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--amarillo); }
+.block-name { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+.pool-badge { background: var(--azul); font-size: 9px; font-weight: 700; padding: 3px 7px; border-radius: 20px; letter-spacing: 0.3px; }
+.floor-label { font-size: 10px; font-weight: 800; color: #4a5680; padding: 7px 10px 3px; text-transform: uppercase; letter-spacing: 0.6px; }
+.apt-row { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 0 8px 7px; }
+.apt-cell { border-radius: var(--radius-sm); padding: 5px 8px; font-size: 11px; border: 2px solid; cursor: pointer; transition: transform 0.1s; font-weight: 600; }
+.apt-cell:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.apt-cell.ocupado { background: #cfe8fb; border-color: #3d9bdb; color: #0a3d63; }
+.apt-cell.libre { background: #cdf0c6; border-color: #34a834; color: #175417; }
+.apt-cell.mantenimiento { background: #fce0a8; border-color: #e2960a; color: #6b3d00; }
+.apt-cell.vacio { background: #dfe2e8; border-color: #8992a3; color: #333a49; }
+.apt-cell { cursor: pointer; }
+.apt-num-lbl { font-weight: 700; font-size: 12px; }
+.apt-tipo-lbl { font-size: 10px; color: #374060; font-weight: 500; margin-top: 1px; }
+.apt-pool-lbl { font-size: 9px; color: var(--azul); margin-top: 1px; }
+hr.floor-div { border: none; border-top: 1px dashed var(--border); margin: 2px 8px 4px; }
+
+/* TICKETS */
+.ticket-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); gap: 8px; }
+.ticket-item:last-child { border-bottom: none; }
+.ticket-apt { font-size: 13px; font-weight: 700; color: var(--azul-oscuro); }
+.ticket-note { font-size: 12px; color: #374060; margin-top: 2px; font-weight: 500; }
+.ticket-dates { font-size: 11px; color: var(--azul); margin-top: 3px; font-weight: 600; }
+.badge { font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px; white-space: nowrap; letter-spacing: 0.3px; text-transform: uppercase; cursor: pointer; }
+.badge.pendiente { background: #fef4e4; color: #c47f10; }
+.badge.en-curso { background: #e8f4fb; color: #0c447c; }
+.badge.listo { background: #eaf6e8; color: #1a5c1a; }
+
+/* SERVICIOS */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.serv-card { background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 14px; }
+.serv-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 2px solid var(--bg); }
+.s-icon { width: 34px; height: 34px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 17px; }
+.s-icon.blue { background: #e8f4fb; color: var(--azul); }
+.s-icon.amber { background: #fef4e4; color: #c47f10; }
+.s-icon.green { background: #eaf6e8; color: #2d9c2d; }
+.s-icon.purple { background: #f0ebff; color: #6030c0; }
+.s-name { font-weight: 700; font-size: 13px; color: var(--azul-oscuro); }
+.s-sub { font-size: 11px; color: #374060; font-weight: 500; }
+.add-t-btn { margin-left: auto; background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 9px; font-size: 11px; cursor: pointer; color: var(--text-2); font-family: 'Barlow', sans-serif; font-weight: 500; transition: all 0.15s; white-space: nowrap; }
+.add-t-btn:hover { background: var(--azul-oscuro); color: white; border-color: var(--azul-oscuro); }
+
+/* MUCAMAS POR BLOCK */
+.mucamas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.mucamas-block { background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
+.mucamas-block-header { background: var(--azul-oscuro); color: white; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--amarillo); }
+.mucamas-block-name { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+.mucamas-body { padding: 10px 12px; }
+
+/* STOCK */
+.stock-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.stock-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); gap: 8px; }
+.stock-row:last-child { border-bottom: none; }
+.stock-name { font-size: 12px; font-weight: 700; color: var(--azul-oscuro); }
+.stock-qty { font-size: 11px; color: #374060; font-weight: 600; margin-top: 1px; }
+.stock-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.stock-btn { width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; font-size: 13px; color: var(--text-2); display: flex; align-items: center; justify-content: center; font-family: 'Barlow', sans-serif; font-weight: 700; transition: all 0.15s; }
+.stock-btn:hover { background: var(--azul-oscuro); color: white; border-color: var(--azul-oscuro); }
+.stock-del { width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--border); background: transparent; cursor: pointer; font-size: 11px; color: var(--text-3); display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.stock-del:hover { background: #fde8e8; border-color: #f09090; color: #c03030; }
+
+/* RESERVAS */
+.res-layout { display: grid; grid-template-columns: 190px 1fr; gap: 0; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; min-height: 480px; }
+.res-sidebar { border-right: 1px solid var(--border); overflow-y: auto; max-height: 540px; }
+.res-sidebar-hdr { padding: 10px 12px; background: var(--azul-oscuro); font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.6px; position: sticky; top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.apt-group-lbl { font-size: 10px; font-weight: 700; color: var(--text-3); padding: 7px 12px 3px; text-transform: uppercase; letter-spacing: 0.6px; background: var(--bg); border-bottom: 1px solid var(--border); }
+.apt-list-item { padding: 7px 12px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: background 0.1s; }
+.apt-list-item:hover { background: var(--bg); }
+.apt-list-item.selected { background: #e8f4fb; border-left: 3px solid var(--azul); }
+.apt-list-num { font-size: 12px; font-weight: 700; color: var(--azul-oscuro); }
+.apt-list-tipo { font-size: 11px; color: #374060; font-weight: 500; }
+.occ-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.occ-dot.ocupado { background: #c03030; } .occ-dot.libre { background: #2d9c2d; } .occ-dot.parcial { background: #c47f10; }
+.res-main-panel { padding: 14px; }
+.res-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.res-cal-title { font-size: 12px; font-weight: 700; color: var(--azul-oscuro); }
+.cal-nav-btns { display: flex; gap: 5px; }
+.cal-nav-btns button { width: 26px; height: 26px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg); cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; color: var(--text-2); transition: all 0.15s; }
+.cal-nav-btns button:hover { background: var(--azul-oscuro); color: white; border-color: var(--azul-oscuro); }
+.legend-strip { display: flex; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+.leg-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--text-2); font-weight: 500; }
+.leg-sq { width: 11px; height: 11px; border-radius: 3px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-day-name { text-align: center; font-size: 9px; font-weight: 700; color: var(--text-3); padding: 3px 0; text-transform: uppercase; letter-spacing: 0.4px; }
+.cal-day { min-height: 48px; border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 3px; background: white; cursor: pointer; transition: border-color 0.1s; }
+.cal-day:hover { border-color: var(--azul); }
+.cal-day.empty { background: transparent; border-color: transparent; cursor: default; }
+.cal-day.today { border-color: var(--amarillo); }
+.cal-day-num { font-size: 10px; color: var(--text-2); margin-bottom: 1px; font-weight: 600; }
+.cal-day.today .cal-day-num { color: var(--amarillo-dark); font-weight: 800; }
+.res-block { font-size: 9px; border-radius: 3px; padding: 1px 3px; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 700; }
+.res-block.finde { background: #b5d4f4; color: #042c53; }
+.res-block.mensual { background: #c0dd97; color: #173404; }
+.res-block.anual { background: #fac775; color: #412402; }
+.res-detail-box { margin-top: 12px; background: var(--bg); border-radius: var(--radius); padding: 10px; border: 1px solid var(--border); }
+.res-detail-title { font-size: 11px; font-weight: 700; color: var(--text-2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.res-row { background: white; border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 8px 10px; display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.res-tipo-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.3px; }
+.res-tipo-badge.finde { background: #b5d4f4; color: #042c53; }
+.res-tipo-badge.mensual { background: #c0dd97; color: #173404; }
+.res-tipo-badge.anual { background: #fac775; color: #412402; }
+.res-huesped { font-size: 13px; font-weight: 800; color: var(--azul-oscuro); }
+.res-fechas { font-size: 12px; color: #374060; font-weight: 600; }
+.res-agente { font-size: 11px; color: #6b7a9a; margin-top: 1px; font-weight: 500; }
+.btn-quitar { font-size: 11px; padding: 3px 8px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: transparent; color: var(--text-2); cursor: pointer; font-family: 'Barlow', sans-serif; transition: all 0.15s; }
+.btn-quitar:hover { background: #fde8e8; border-color: #f09090; color: #c03030; }
+
+/* ESPACIOS */
+.espacio-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px; margin-bottom: 12px; }
+.espacio-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.espacio-icon { width: 38px; height: 38px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.espacio-title { font-size: 13px; font-weight: 700; color: var(--azul-oscuro); }
+.espacio-sub { font-size: 11px; color: var(--text-2); }
+.slots { display: flex; gap: 6px; flex-wrap: wrap; }
+.slot { font-size: 11px; font-weight: 600; padding: 5px 11px; border-radius: 20px; border: 1px solid; cursor: pointer; transition: all 0.15s; }
+.slot.ocupado { background: #fde8e8; border-color: #f09090; color: #c03030; }
+.slot.libre { background: #eaf6e8; border-color: #a0d4a0; color: #1a5c1a; }
+.slot.libre:hover { background: #c8f0c8; }
+
+/* HISTORIAL */
+.hist-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+.hist-item:last-child { border-bottom: none; }
+.hist-icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+.hist-title { font-size: 13px; font-weight: 700; color: var(--azul-oscuro); }
+.hist-sub { font-size: 12px; color: #374060; margin-top: 2px; font-weight: 500; }
+.hist-date { font-size: 11px; color: #6b7a9a; margin-left: auto; white-space: nowrap; padding-top: 2px; font-weight: 600; }
+
+/* BUTTONS */
+.btn-primary { background: var(--azul-oscuro); color: white; border: none; border-radius: var(--radius-sm); padding: 8px 16px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.15s; border: 1px solid transparent; }
+.btn-primary:hover { background: var(--azul); }
+.btn-secondary { background: transparent; color: var(--text-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 16px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+.btn-secondary:hover { background: var(--bg); }
+.btn-amarillo { background: var(--amarillo); color: var(--azul-oscuro); border: none; border-radius: var(--radius-sm); padding: 8px 16px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.15s; }
+.btn-amarillo:hover { background: var(--amarillo-dark); }
+
+/* TOOLBAR */
+.toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 10px; flex-wrap: wrap; }
+.toolbar-left { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.filter-select { font-family: 'Barlow', sans-serif; font-size: 12px; font-weight: 500; padding: 7px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-card); color: var(--text); cursor: pointer; }
+
+/* MODAL */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(13,27,75,0.55); z-index: 200; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+.modal-overlay.open { display: flex; }
+.modal { background: white; border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(13,27,75,0.25); padding: 22px; width: 380px; max-width: 96vw; max-height: 90vh; overflow-y: auto; }
+.modal-title { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 800; color: var(--azul-oscuro); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 3px solid var(--amarillo); }
+.form-group { margin-bottom: 11px; }
+.form-label { font-size: 11px; font-weight: 700; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; display: block; }
+.form-control { width: 100%; font-family: 'Barlow', sans-serif; font-size: 13px; padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg); color: var(--text); transition: border-color 0.15s; }
+.form-control:focus { outline: none; border-color: var(--azul); background: white; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+
+/* ACTIVITY */
+.activity-item { display: flex; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.activity-item:last-child { border-bottom: none; }
+.act-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.act-text { flex: 1; font-size: 13px; color: #0d1b4b; }
+.act-text strong { font-weight: 800; color: #0d1b4b; }
+.act-text span { color: #374060; font-weight: 500; }
+.act-time { font-size: 11px; color: #6b7a9a; white-space: nowrap; font-weight: 600; }
+
+.empty-state { text-align: center; padding: 24px; color: var(--text-3); font-size: 12px; }
+.empty-state i { font-size: 28px; margin-bottom: 7px; display: block; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="header-edificio">Sierra <em>Ballena</em> 2 · Mantenimiento</div>
+    <div class="header-ubicacion">Punta Ballena · Maldonado · Uruguay</div>
+  </div>
+  <div class="header-right">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="header-notif"><i class="ti ti-bell"></i><div class="notif-dot"></div></div>
+      <div class="header-avatar">ADM</div>
+    </div>
+    <div style="width:1px;height:36px;background:rgba(255,255,255,0.15);"></div>
+    <div class="header-brand">
+      <div class="brand-logo">Reinic<span>IA</span></div>
+      <div class="brand-cel">📱 092 161 241</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-bar">
+  <button class="nav-btn active" onclick="showPanel('resumen',this)"><i class="ti ti-layout-dashboard"></i>Resumen</button>
+  <button class="nav-btn" onclick="showPanel('apartamentos',this)"><i class="ti ti-building"></i>Apartamentos</button>
+  <button class="nav-btn" onclick="showPanel('reservas',this)"><i class="ti ti-calendar"></i>Reservas</button>
+  <button class="nav-btn" onclick="showPanel('espacios',this)"><i class="ti ti-pool"></i>Espacios</button>
+  <button class="nav-btn" onclick="showPanel('servicios',this)"><i class="ti ti-tools"></i>Servicios</button>
+  <button class="nav-btn" onclick="showPanel('historial',this)"><i class="ti ti-history"></i>Historial</button>
+</div>
+
+<div class="main-content">
+
+<!-- RESUMEN -->
+<div id="panel-resumen" class="panel active">
+  <div class="stats-row">
+    <div class="stat-card blue"><div class="stat-icon blue"><i class="ti ti-building"></i></div><div><div class="stat-label">Apartamentos</div><div class="stat-num blue">36</div></div></div>
+    <div class="stat-card green"><div class="stat-icon green"><i class="ti ti-home-check"></i></div><div><div class="stat-label">Ocupados hoy</div><div class="stat-num green" id="stat-ocupados">—</div></div></div>
+    <div class="stat-card amber"><div class="stat-icon amber"><i class="ti ti-tools"></i></div><div><div class="stat-label">Mantenimiento</div><div class="stat-num amber">4</div></div></div>
+    <div class="stat-card red"><div class="stat-icon red"><i class="ti ti-alert-circle"></i></div><div><div class="stat-label">Tickets abiertos</div><div class="stat-num red" id="stat-tickets">—</div></div></div>
+  </div>
+  <div class="blocks-grid">
+    <div class="block-card">
+      <div class="block-header"><span class="block-name">Block 1</span><span style="font-size:11px;opacity:.6;">14 apts</span></div>
+      <div style="padding:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-2);margin-bottom:6px;"><span>Ocupados: 11</span><span>Libres: 3</span></div>
+        <div style="background:#e8edf2;border-radius:4px;height:7px;overflow:hidden;"><div style="background:var(--azul);height:100%;width:78%;border-radius:4px;"></div></div>
+        <div style="margin-top:7px;font-size:11px;color:var(--text-3);">Mono: 6 · 2D: 4 · 3D: 2 · 4D: 2</div>
+      </div>
+    </div>
+    <div class="block-card">
+      <div class="block-header"><span class="block-name">Block 2</span><span class="pool-badge">2 piscinas priv.</span></div>
+      <div style="padding:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-2);margin-bottom:6px;"><span>Ocupados: 10</span><span>Mant: 2 · Libre: 2</span></div>
+        <div style="background:#e8edf2;border-radius:4px;height:7px;overflow:hidden;"><div style="background:var(--azul);height:100%;width:71%;border-radius:4px;"></div></div>
+        <div style="margin-top:7px;font-size:11px;color:var(--text-3);">Mono: 6 · 2D: 4 · 3D: 2 · 4D: 2</div>
+      </div>
+    </div>
+    <div class="block-card">
+      <div class="block-header"><span class="block-name">Block 3</span><span class="pool-badge">2 piscinas priv.</span></div>
+      <div style="padding:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-2);margin-bottom:6px;"><span>Ocupados: 9</span><span>Mant: 2 · Libre: 3</span></div>
+        <div style="background:#e8edf2;border-radius:4px;height:7px;overflow:hidden;"><div style="background:var(--azul);height:100%;width:64%;border-radius:4px;"></div></div>
+        <div style="margin-top:7px;font-size:11px;color:var(--text-3);">Mono: 6 · 2D: 4 · 3D: 2 · 4D: 2</div>
+      </div>
+    </div>
+  </div>
+  <div class="section-title" style="display:flex;align-items:center;justify-content:space-between;">
+    <span>Actividad reciente</span>
+    <button class="stock-del" style="width:auto;padding:4px 10px;border-radius:6px;font-size:11px;" onclick="borrarHistorial()" title="Borrar todo el historial de actividad">Borrar actividad</button>
+  </div>
+  <div class="card"><div id="actividad-reciente-list"></div></div>
+</div>
+
+<!-- APARTAMENTOS -->
+<div id="panel-apartamentos" class="panel">
+  <div class="toolbar">
+    <div style="display:flex;gap:12px;font-size:12px;color:var(--text-2);align-items:center;flex-wrap:wrap;">
+      <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:#cfe8fb;border:2px solid #3d9bdb;display:inline-block;"></span>Ocupado</span>
+      <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:#cdf0c6;border:2px solid #34a834;display:inline-block;"></span>Libre</span>
+      <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:#dfe2e8;border:2px solid #8992a3;display:inline-block;"></span>Vacío</span>
+      <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:#fce0a8;border:2px solid #e2960a;display:inline-block;"></span>Mantenimiento</span>
+      <span style="font-size:11px;color:var(--text-3);margin-left:auto;"><i class="ti ti-hand-click" style="vertical-align:-2px;margin-right:3px;"></i>Tocá un apartamento para cambiar su estado</span>
+    </div>
+  </div>
+  <div class="blocks-grid" id="apt-blocks-render"></div>
+</div>
+
+<!-- RESERVAS -->
+<div id="panel-reservas" class="panel">
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <select class="filter-select" id="r-block-filter" onchange="renderResSidebar()">
+        <option value="all">Todos los blocks</option>
+        <option value="1">Block 1</option>
+        <option value="2">Block 2</option>
+        <option value="3">Block 3</option>
+      </select>
+    </div>
+    <button class="btn-amarillo" onclick="openModal('reserva')"><i class="ti ti-plus"></i>Nueva reserva</button>
+  </div>
+  <div class="res-layout">
+    <div class="res-sidebar">
+      <div class="res-sidebar-hdr">Apartamentos</div>
+      <div id="res-sidebar-list"></div>
+    </div>
+    <div class="res-main-panel">
+      <div class="res-cal-header">
+        <div class="res-cal-title" id="res-cal-title">Seleccioná un apartamento</div>
+        <div class="cal-nav-btns">
+          <button onclick="changeMonth(-1)">&#8592;</button>
+          <button onclick="changeMonth(1)">&#8594;</button>
+        </div>
+      </div>
+      <div class="legend-strip">
+        <div class="leg-item"><div class="leg-sq" style="background:#b5d4f4;"></div>Fin de semana</div>
+        <div class="leg-item"><div class="leg-sq" style="background:#c0dd97;"></div>Mensual</div>
+        <div class="leg-item"><div class="leg-sq" style="background:#fac775;"></div>Anual</div>
+      </div>
+      <div class="cal-grid" id="res-cal-grid"></div>
+      <div class="res-detail-box" id="res-detail-box" style="display:none;">
+        <div class="res-detail-title">Reservas registradas</div>
+        <div id="res-detail-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ESPACIOS -->
+<div id="panel-espacios" class="panel">
+  <div class="section-title">Espacios comunes</div>
+  <div class="espacio-card">
+    <div class="espacio-header">
+      <div class="espacio-icon" style="background:#e8f4fb;color:var(--azul);"><i class="ti ti-pool"></i></div>
+      <div><div class="espacio-title">Piscina Grande · Uso Común (3 Blocks)</div><div class="espacio-sub">Franjas de 2 horas · Reserva por apartamento</div></div>
+    </div>
+    <div class="slots">
+      <div class="slot ocupado">8:00–10:00 · Apt 115</div>
+      <div class="slot libre" onclick="toggleSlot(this,'10:00–12:00')">10:00–12:00 · Libre</div>
+      <div class="slot ocupado">12:00–14:00 · Apt 231</div>
+      <div class="slot libre" onclick="toggleSlot(this,'14:00–16:00')">14:00–16:00 · Libre</div>
+      <div class="slot ocupado">16:00–18:00 · Apt 332</div>
+      <div class="slot libre" onclick="toggleSlot(this,'18:00–20:00')">18:00–20:00 · Libre</div>
+    </div>
+  </div>
+  <div class="espacio-card">
+    <div class="espacio-header">
+      <div class="espacio-icon" style="background:#fef4e4;color:#c47f10;"><i class="ti ti-flame"></i></div>
+      <div><div class="espacio-title">Parrillero Doble · Solo temporada de verano</div><div class="espacio-sub">Reservas por pedido · Esta semana</div></div>
+    </div>
+    <div class="slots">
+      <div class="slot ocupado">Sáb · Parrillero A · Apt 213</div>
+      <div class="slot libre" onclick="toggleSlot(this,'Sáb · Parrillero B')">Sáb · Parrillero B · Libre</div>
+      <div class="slot libre" onclick="toggleSlot(this,'Dom · Parrillero A')">Dom · Parrillero A · Libre</div>
+      <div class="slot libre" onclick="toggleSlot(this,'Dom · Parrillero B')">Dom · Parrillero B · Libre</div>
+    </div>
+  </div>
+  <div class="espacio-card">
+    <div class="espacio-header">
+      <div class="espacio-icon" style="background:#e8f4fb;color:var(--azul);"><i class="ti ti-pool"></i></div>
+      <div><div class="espacio-title">Piscinas Privadas · Block 2 y Block 3</div><div class="espacio-sub">Exclusivo apts 213, 214 (B2) y 313, 314 (B3)</div></div>
+    </div>
+    <div class="slots">
+      <div class="slot ocupado">B2 · Apt 213 · En uso</div>
+      <div class="slot libre">B2 · Apt 214 · En mantenimiento</div>
+      <div class="slot ocupado">B3 · Apt 313 · En uso</div>
+      <div class="slot libre">B3 · Apt 314 · En mantenimiento</div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<div id="panel-servicios" class="panel">
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <select class="filter-select" id="s-estado-filter" onchange="renderTickets()">
+        <option value="all">Todos los estados</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="en-curso">En curso</option>
+        <option value="listo">Listo</option>
+      </select>
+    </div>
+    <button class="btn-amarillo" onclick="openModal('ticket')"><i class="ti ti-plus"></i>Nuevo ticket</button>
+  </div>
+
+  <!-- TAREAS DE MANTENIMIENTO: TRABAJOS INTERNOS -->
+  <div class="section-title" style="margin-bottom:10px;">Tareas de Mantenimiento · Trabajos Internos</div>
+  <div class="card" id="tareas-internas-card" style="margin-bottom:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+      <div style="font-size:11px;color:var(--text-2);">Trabajos generales del edificio (no vinculados a un apartamento): bombas, ascensores, portones, generador, áreas comunes, etc.</div>
+      <button class="add-t-btn" onclick="openModal('tareaInterna')" style="flex-shrink:0;">+ Nueva tarea</button>
+    </div>
+    <div id="tareas-internas-list"></div>
+  </div>
+
+  <!-- STOCK DE MATERIALES -->
+  <div class="section-title" style="margin-bottom:10px;">Stock de Materiales</div>
+  <div class="stock-grid" id="stock-grid" style="margin-bottom:16px;"></div>
+
+  <!-- STOCK DE MATERIALES -->
+  <div class="section-title" style="margin-bottom:10px;">Stock de Materiales</div>
+  <div class="stock-grid" id="stock-grid" style="margin-bottom:16px;"></div>
+
+  <!-- TICKETS POR APARTAMENTO -->
+  <div class="section-title" style="margin-bottom:10px;">Mantenimiento por Apartamento</div>
+  <div class="serv-card">
+    <div class="serv-card-header">
+      <div class="s-icon amber"><i class="ti ti-tool"></i></div>
+      <div><div class="s-name">Mantenimiento</div><div class="s-sub">Trabajos y controles por apartamento</div></div>
+      <button class="add-t-btn" onclick="openModal('ticket','Mantenimiento')">+ Ticket</button>
+    </div>
+    <div id="tickets-Mantenimiento"></div>
+  </div>
+</div>
+
+<!-- HISTORIAL -->
+<div id="panel-historial" class="panel">
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <select class="filter-select" id="h-apt-filter" onchange="renderHistorial()">
+        <option value="all">Todos los apartamentos</option>
+      </select>
+      <select class="filter-select" id="h-tipo-filter" onchange="renderHistorial()">
+        <option value="all">Todo tipo</option>
+        <option value="reserva">Reservas</option>
+        <option value="servicio">Servicios</option>
+        <option value="nota">Notas</option>
+      </select>
+    </div>
+    <button class="btn-amarillo" style="background:#c03030;color:white;" onclick="borrarHistorial()"><i class="ti ti-trash"></i>Borrar historial</button>
+  </div>
+  <div class="card"><div id="hist-list"></div></div>
+</div>
+
+</div><!-- /main-content -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">Nueva reserva</div>
+    <div id="modal-body"></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn-amarillo" onclick="saveModal()"><i class="ti ti-check"></i>Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCne21WCsmkKYfNavkhgtL9tyZxxf5jA5Q",
+    authDomain: "sb2-mantenimiento.firebaseapp.com",
+    projectId: "sb2-mantenimiento",
+    storageBucket: "sb2-mantenimiento.firebasestorage.app",
+    messagingSenderId: "886116736588",
+    appId: "1:886116736588:web:16a0a475b799fa5724dee9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const dataRef = doc(db, 'sb2', 'data');
+  let aplicandoRemoto = false; // evita reenviar a Firestore lo que acabamos de recibir de Firestore
+
+  // Guarda TODO el estado actual (tickets, tareas internas, stock, apartamentos, reservas, historial) en Firestore
+  window.guardarEnFirestore = async function () {
+    if (aplicandoRemoto) return;
+    try {
+      await setDoc(dataRef, {
+        tickets: window.tickets,
+        tareasInternas: window.tareasInternas,
+        stock: window.stock,
+        aptEstadoManual: window.aptEstadoManual,
+        reservas: window.reservas,
+        historial: window.historial,
+        APTS: window.APTS,
+        actualizado: new Date().toISOString()
+      });
+    } catch (e) {
+      console.error('Error guardando en Firestore:', e);
+    }
+  };
+
+  // Escucha cambios en tiempo real (propios o de otro dispositivo) y actualiza la pantalla
+  onSnapshot(dataRef, (snap) => {
+    if (!snap.exists()) {
+      // Primera vez: no hay nada en Firestore todavía, subimos los datos de ejemplo actuales
+      window.guardarEnFirestore();
+      return;
+    }
+    const d = snap.data();
+    aplicandoRemoto = true;
+    if (d.tickets) { window.tickets.length = 0; window.tickets.push(...d.tickets); }
+    if (d.tareasInternas) { window.tareasInternas.length = 0; window.tareasInternas.push(...d.tareasInternas); }
+    if (d.stock) { Object.keys(window.stock).forEach(k => delete window.stock[k]); Object.assign(window.stock, d.stock); }
+    if (d.aptEstadoManual) { Object.keys(window.aptEstadoManual).forEach(k => delete window.aptEstadoManual[k]); Object.assign(window.aptEstadoManual, d.aptEstadoManual); }
+    if (d.reservas) { window.reservas.length = 0; window.reservas.push(...d.reservas); }
+    if (d.historial) { window.historial.length = 0; window.historial.push(...d.historial); }
+    if (d.APTS) { window.APTS.length = 0; window.APTS.push(...d.APTS); }
+    if (typeof renderTickets === 'function') renderTickets();
+    if (typeof renderTareasInternas === 'function') renderTareasInternas();
+    if (typeof renderStock === 'function') renderStock();
+    if (typeof renderAptBlocks === 'function') renderAptBlocks();
+    if (typeof renderResSidebar === 'function') renderResSidebar();
+    if (typeof renderCalendar === 'function') renderCalendar();
+    if (typeof renderHistorial === 'function') renderHistorial();
+    if (typeof renderActividadReciente === 'function') renderActividadReciente();
+    if (typeof updateStats === 'function') updateStats();
+    aplicandoRemoto = false;
+  }, (err) => console.error('Error escuchando Firestore:', err));
+</script>
+<script>
+// ===================== DATA =====================
+var APTS = [
+  {num:'111',block:1,tipo:'Monoambiente',pool:false},{num:'112',block:1,tipo:'Monoambiente',pool:false},
+  {num:'113',block:1,tipo:'Monoambiente',pool:false},{num:'114',block:1,tipo:'Monoambiente',pool:false},
+  {num:'115',block:1,tipo:'3 Dormitorios',pool:false},{num:'116',block:1,tipo:'3 Dormitorios',pool:false},
+  {num:'121',block:1,tipo:'Monoambiente',pool:false},{num:'122',block:1,tipo:'Monoambiente',pool:false},
+  {num:'123',block:1,tipo:'2 Dormitorios',pool:false},{num:'124',block:1,tipo:'2 Dormitorios',pool:false},
+  {num:'131',block:1,tipo:'Monoambiente',pool:false},{num:'132',block:1,tipo:'Monoambiente',pool:false},
+  {num:'133',block:1,tipo:'2 Dormitorios',pool:false},{num:'134',block:1,tipo:'2 Dormitorios',pool:false},
+  {num:'211',block:2,tipo:'Monoambiente',pool:false},{num:'212',block:2,tipo:'Monoambiente',pool:false},
+  {num:'213',block:2,tipo:'3 Dormitorios',pool:true},{num:'214',block:2,tipo:'3 Dormitorios',pool:true},
+  {num:'221',block:2,tipo:'Monoambiente',pool:false},{num:'222',block:2,tipo:'Monoambiente',pool:false},
+  {num:'223',block:2,tipo:'2 Dormitorios',pool:false},{num:'224',block:2,tipo:'2 Dormitorios',pool:false},
+  {num:'231',block:2,tipo:'Monoambiente',pool:false},{num:'232',block:2,tipo:'Monoambiente',pool:false},
+  {num:'233',block:2,tipo:'2 Dormitorios',pool:false},{num:'234',block:2,tipo:'2 Dormitorios',pool:false},
+  {num:'311',block:3,tipo:'Monoambiente',pool:false},{num:'312',block:3,tipo:'Monoambiente',pool:false},
+  {num:'313',block:3,tipo:'3 Dormitorios',pool:true},{num:'314',block:3,tipo:'3 Dormitorios',pool:true},
+  {num:'321',block:3,tipo:'Monoambiente',pool:false},{num:'322',block:3,tipo:'Monoambiente',pool:false},
+  {num:'323',block:3,tipo:'2 Dormitorios',pool:false},{num:'324',block:3,tipo:'2 Dormitorios',pool:false},
+  {num:'331',block:3,tipo:'Monoambiente',pool:false},{num:'332',block:3,tipo:'Monoambiente',pool:false},
+  {num:'333',block:3,tipo:'2 Dormitorios',pool:false},{num:'334',block:3,tipo:'2 Dormitorios',pool:false},
+];
+const MANT_APTS = ['133','214','314','223'];
+
+var reservas = [
+  {apt:'115',huesped:'Familia Rodríguez',desde:'2026-05-01',hasta:'2026-05-31',periodo:'mensual',agente:'Inmobiliaria'},
+  {apt:'213',huesped:'Carlos Méndez',desde:'2026-05-10',hasta:'2026-05-11',periodo:'finde',agente:'Propietario'},
+  {apt:'313',huesped:'Empresa XSA',desde:'2026-01-01',hasta:'2026-12-31',periodo:'anual',agente:'Inmobiliaria'},
+  {apt:'123',huesped:'Laura Pérez',desde:'2026-05-17',hasta:'2026-05-18',periodo:'finde',agente:'Propietario'},
+  {apt:'232',huesped:'Martín Suárez',desde:'2026-05-15',hasta:'2026-05-31',periodo:'mensual',agente:'Inmobiliaria'},
+  {apt:'334',huesped:'Roberto Vila',desde:'2026-04-01',hasta:'2026-06-30',periodo:'mensual',agente:'Inmobiliaria'},
+];
+
+var tickets = [
+  {apt:'133',servicio:'Mantenimiento',tarea:'Filtración en techo',estado:'en-curso',responsable:'Jorge Rodríguez',fecha:'2026-05-06',ingreso:'2026-05-06',egreso:''},
+  {apt:'223',servicio:'Mantenimiento',tarea:'Grifo baño principal',estado:'pendiente',responsable:'Jorge Rodríguez',fecha:'2026-05-07',ingreso:'2026-05-07',egreso:''},
+  {apt:'313',servicio:'Mantenimiento',tarea:'Ventana dormitorio',estado:'pendiente',responsable:'Jorge Rodríguez',fecha:'2026-05-07',ingreso:'2026-05-07',egreso:''},
+];
+
+var historial = [
+  {apt:'115',tipo:'reserva',desc:'Reserva mensual mayo — Familia Rodríguez',fecha:'2026-05-01',agente:'Inmobiliaria'},
+  {apt:'133',tipo:'servicio',desc:'Mantenimiento — Filtración en techo',fecha:'2026-05-06',agente:'Jorge Rodríguez'},
+  {apt:'213',tipo:'reserva',desc:'Reserva fin de semana — Carlos Méndez',fecha:'2026-05-03',agente:'Propietario'},
+  {apt:'323',tipo:'servicio',desc:'Mucamas — Cambio de ropa completado',fecha:'2026-05-06',agente:'Laura González'},
+  {apt:'313',tipo:'reserva',desc:'Reserva anual — Empresa XSA',fecha:'2026-01-01',agente:'Inmobiliaria'},
+  {apt:'114',tipo:'servicio',desc:'Vidriero — Ventanal fisura reportada',fecha:'2026-05-05',agente:'Ana Vidal'},
+  {apt:'334',tipo:'nota',desc:'Propietario solicita pintura antes de junio',fecha:'2026-04-28',agente:'Administración'},
+];
+
+var tareasInternas = [
+  {zona:'Bomba de agua', tarea:'Revisión mensual de presión', estado:'pendiente', responsable:'Jorge Rodríguez', fecha:'2026-05-08'},
+  {zona:'Electricidad', tarea:'Revisión tablero general', estado:'en-curso', responsable:'Jorge Rodríguez', fecha:'2026-05-05'},
+  {zona:'Generador', tarea:'Prueba de encendido y nivel de combustible', estado:'listo', responsable:'Jorge Rodríguez', fecha:'2026-05-02'},
+];
+
+var stock = {
+  'Electricidad': [
+    {nombre:'Cable 2x1.5mm', cantidad:40, unidad:'m'},
+    {nombre:'Lámparas LED', cantidad:15, unidad:'un'},
+    {nombre:'Llaves térmicas', cantidad:6, unidad:'un'},
+  ],
+  'Sanitaria': [
+    {nombre:'Caños PVC 1/2"', cantidad:10, unidad:'un'},
+    {nombre:'Juntas de goma', cantidad:25, unidad:'un'},
+  ],
+  'Pintura': [
+    {nombre:'Látex blanco', cantidad:8, unidad:'L'},
+    {nombre:'Rodillos', cantidad:5, unidad:'un'},
+  ],
+  'Herramientas': [
+    {nombre:'Taladro', cantidad:2, unidad:'un'},
+    {nombre:'Escalera', cantidad:1, unidad:'un'},
+  ],
+};
+
+let selectedApt = '111';
+let curYear = 2026, curMonth = 4;
+let modalType = 'reserva';
+let presetServicio = '';
+let editIndex = null;
+
+const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const DAYS_SHORT = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+
+var aptEstadoManual = {};
+
+// Guarda el estado actual en Firestore (si ya está conectado)
+function syncDB() {
+  if (typeof window.guardarEnFirestore === 'function') window.guardarEnFirestore();
+}
+let currentAptNum = null;
+
+function getAptState(num) {
+  if (aptEstadoManual[num]) return aptEstadoManual[num];
+  if (MANT_APTS.includes(num)) return 'mantenimiento';
+  const today = new Date();
+  const active = reservas.find(r => r.apt === num && new Date(r.desde) <= today && new Date(r.hasta) >= today);
+  return active ? 'ocupado' : 'libre';
+}
+
+// NAV
+function showPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'resumen') renderActividadReciente();
+  if (id === 'apartamentos') renderAptBlocks();
+  if (id === 'reservas') { renderResSidebar(); renderCalendar(); renderResDetail(); }
+  if (id === 'servicios') { renderTickets(); renderTareasInternas(); renderStock(); }
+  if (id === 'historial') renderHistorial();
+}
+
+function updateStats() {
+  const ocupados = APTS.filter(a => getAptState(a.num) === 'ocupado').length;
+  document.getElementById('stat-ocupados').textContent = ocupados;
+  const abiertos = tickets.filter(t => t.estado !== 'listo').length;
+  document.getElementById('stat-tickets').textContent = abiertos;
+}
+
+// APARTAMENTOS
+function renderAptBlocks() {
+  const grid = document.getElementById('apt-blocks-render');
+  grid.innerHTML = '';
+  [1,2,3].forEach(b => {
+    const card = document.createElement('div'); card.className = 'block-card';
+    const apts = APTS.filter(a => a.block === b);
+    const hasPool = b > 1;
+    card.innerHTML = `<div class="block-header"><span class="block-name">Block ${b}</span>${hasPool ? '<span class="pool-badge">2 piscinas priv.</span>' : ''}</div>`;
+    const floors = {};
+    apts.forEach(a => { const f = a.num.substring(0,2); if (!floors[f]) floors[f] = []; floors[f].push(a); });
+    const floorKeys = Object.keys(floors).sort((x,y) => parseInt(y) - parseInt(x));
+    floorKeys.forEach((fk, fi) => {
+      if (fi > 0) { const hr = document.createElement('hr'); hr.className = 'floor-div'; card.appendChild(hr); }
+      const lbl = document.createElement('div'); lbl.className = 'floor-label'; lbl.textContent = 'Piso ' + fk; card.appendChild(lbl);
+      const row = document.createElement('div'); row.className = 'apt-row';
+      floors[fk].forEach(a => {
+        const st = getAptState(a.num);
+        const cell = document.createElement('div'); cell.className = 'apt-cell ' + st;
+        cell.innerHTML = `<div class="apt-num-lbl">${a.num}</div><div class="apt-tipo-lbl">${a.tipo}</div>${a.pool ? '<div class="apt-pool-lbl">🏊 Piscina priv.</div>' : ''}`;
+        cell.onclick = () => abrirEstadoApt(a.num);
+        row.appendChild(cell);
+      });
+      card.appendChild(row);
+    });
+    grid.appendChild(card);
+  });
+}
+
+function abrirEstadoApt(num) {
+  currentAptNum = num;
+  openModal('aptEstado');
+}
+
+// RESERVAS
+function renderResSidebar() {
+  const blockF = document.getElementById('r-block-filter').value;
+  const list = document.getElementById('res-sidebar-list'); list.innerHTML = '';
+  let lastBlock = null;
+  APTS.forEach(a => {
+    if (blockF !== 'all' && a.block !== parseInt(blockF)) return;
+    if (lastBlock !== a.block) { const lbl = document.createElement('div'); lbl.className = 'apt-group-lbl'; lbl.textContent = 'Block ' + a.block; list.appendChild(lbl); lastBlock = a.block; }
+    const today = new Date();
+    const rs = reservas.filter(r => r.apt === a.num);
+    const active = rs.filter(r => new Date(r.hasta) >= today && new Date(r.desde) <= today);
+    const future = rs.filter(r => new Date(r.desde) > today);
+    const dotClass = active.length ? 'ocupado' : future.length ? 'parcial' : 'libre';
+    const item = document.createElement('div'); item.className = 'apt-list-item' + (a.num === selectedApt ? ' selected' : '');
+    item.innerHTML = `<div><div class="apt-list-num">Apt ${a.num}</div><div class="apt-list-tipo">${a.tipo}${a.pool ? ' 🏊' : ''}</div></div><div class="occ-dot ${dotClass}"></div>`;
+    item.onclick = () => { selectedApt = a.num; document.querySelectorAll('.apt-list-item').forEach(i => i.classList.remove('selected')); item.classList.add('selected'); renderCalendar(); renderResDetail(); };
+    list.appendChild(item);
+  });
+}
+
+function renderCalendar() {
+  const apt = APTS.find(a => a.num === selectedApt);
+  if (!apt) return;
+  document.getElementById('res-cal-title').textContent = `Apt ${selectedApt} · Block ${apt.block} · ${apt.tipo}${apt.pool ? ' · 🏊' : ''} · ${MONTHS[curMonth]} ${curYear}`;
+  const grid = document.getElementById('res-cal-grid'); grid.innerHTML = '';
+  DAYS_SHORT.forEach(d => { const el = document.createElement('div'); el.className = 'cal-day-name'; el.textContent = d; grid.appendChild(el); });
+  let startDow = new Date(curYear, curMonth, 1).getDay(); startDow = startDow === 0 ? 6 : startDow - 1;
+  const daysInMonth = new Date(curYear, curMonth + 1, 0).getDate();
+  const today = new Date();
+  for (let i = 0; i < startDow; i++) { const el = document.createElement('div'); el.className = 'cal-day empty'; grid.appendChild(el); }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const el = document.createElement('div');
+    const isToday = today.getFullYear() === curYear && today.getMonth() === curMonth && today.getDate() === d;
+    el.className = 'cal-day' + (isToday ? ' today' : '');
+    const numEl = document.createElement('div'); numEl.className = 'cal-day-num'; numEl.textContent = d; el.appendChild(numEl);
+    const date = new Date(curYear, curMonth, d);
+    reservas.filter(r => r.apt === selectedApt && date >= new Date(r.desde) && date <= new Date(r.hasta)).forEach(r => {
+      const rb = document.createElement('div'); rb.className = 'res-block ' + r.periodo;
+      const desde = new Date(r.desde);
+      rb.textContent = (desde.getDate() === d && desde.getMonth() === curMonth) ? r.huesped.split(' ')[0] : '·';
+      el.appendChild(rb);
+    });
+    grid.appendChild(el);
+  }
+}
+
+function renderResDetail() {
+  const rs = reservas.filter(r => r.apt === selectedApt);
+  const box = document.getElementById('res-detail-box'); const list = document.getElementById('res-detail-list');
+  box.style.display = rs.length ? 'block' : 'none'; list.innerHTML = '';
+  const labels = {finde:'Fin de semana', mensual:'Mensual', anual:'Anual'};
+  rs.sort((a,b) => new Date(a.desde) - new Date(b.desde)).forEach(r => {
+    const row = document.createElement('div'); row.className = 'res-row';
+    row.innerHTML = `<span class="res-tipo-badge ${r.periodo}">${labels[r.periodo]}</span><div style="flex:1;"><div class="res-huesped">${r.huesped}</div><div class="res-fechas">📅 ${r.desde} → ${r.hasta}</div><div class="res-agente">Por: ${r.agente}</div></div><button class="btn-quitar" onclick="eliminarReserva('${r.apt}','${r.desde}','${encodeURIComponent(r.huesped)}')">Quitar</button>`;
+    list.appendChild(row);
+  });
+}
+
+function changeMonth(dir) { curMonth += dir; if (curMonth > 11) { curMonth = 0; curYear++; } if (curMonth < 0) { curMonth = 11; curYear--; } renderCalendar(); }
+function eliminarReserva(apt, desde, huesped) { const h = decodeURIComponent(huesped); reservas = reservas.filter(r => !(r.apt === apt && r.desde === desde && r.huesped === h)); renderResDetail(); renderCalendar(); renderResSidebar(); }
+
+// TICKETS
+function renderTickets() {
+  const estadoF = document.getElementById('s-estado-filter').value;
+  const labels = {'en-curso':'En curso','listo':'Listo','pendiente':'Pendiente'};
+
+  const el = document.getElementById('tickets-Mantenimiento');
+  el.innerHTML = '';
+  const ts = tickets.filter(t => t.servicio === 'Mantenimiento' && (estadoF === 'all' || t.estado === estadoF));
+  if (!ts.length) { el.innerHTML = '<div class="empty-state"><i class="ti ti-checks"></i>Sin tickets</div>'; return; }
+  ts.forEach(t => {
+    const idx = tickets.indexOf(t);
+    const d = document.createElement('div'); d.className = 'ticket-item';
+    d.innerHTML = `<div style="flex:1;"><div class="ticket-apt">Apt ${t.apt}</div><div class="ticket-note">${t.tarea} · ${t.responsable}</div><div class="ticket-dates">📥 ${t.ingreso || '—'}${t.egreso ? '  📤 ' + t.egreso : ''}</div></div>
+      <div style="display:flex;align-items:center;gap:5px;">
+        <span class="badge ${t.estado}" onclick="avanzarTicket('${t.apt}','Mantenimiento','${t.tarea.replace(/'/g,"\\'")}')" title="Clic para avanzar estado">${labels[t.estado]}</span>
+        <button class="stock-btn" onclick="editarTicket(${idx})" title="Editar"><i class="ti ti-pencil" style="font-size:12px;"></i></button>
+        <button class="stock-del" onclick="eliminarTicket(${idx})" title="Eliminar">✕</button>
+      </div>`;
+    el.appendChild(d);
+  });
+  updateStats();
+}
+
+function eliminarTicket(idx) {
+  if (confirm('¿Eliminar el ticket de Apt ' + tickets[idx].apt + '?')) { tickets.splice(idx, 1); renderTickets(); syncDB(); }
+}
+
+function editarTicket(idx) {
+  openModal('ticket', 'Mantenimiento', idx);
+}
+
+function avanzarTicket(apt, servicio, tarea) {
+  const next = {'pendiente':'en-curso','en-curso':'listo','listo':'pendiente'};
+  const t = tickets.find(t => t.apt === apt && t.servicio === servicio && t.tarea === tarea);
+  if (t) {
+    t.estado = next[t.estado];
+    if (t.estado === 'listo' && !t.egreso) t.egreso = new Date().toISOString().split('T')[0];
+    if (t.estado === 'pendiente') t.egreso = '';
+    renderTickets();
+    syncDB();
+  }
+}
+
+// TAREAS DE MANTENIMIENTO (TRABAJOS INTERNOS)
+function renderTareasInternas() {
+  const list = document.getElementById('tareas-internas-list'); if (!list) return;
+  list.innerHTML = '';
+  const labels = {'en-curso':'En curso','listo':'Listo','pendiente':'Pendiente'};
+  if (!tareasInternas.length) { list.innerHTML = '<div class="empty-state"><i class="ti ti-checks"></i>Sin tareas internas</div>'; return; }
+  tareasInternas.forEach((t, idx) => {
+    const d = document.createElement('div'); d.className = 'ticket-item';
+    d.innerHTML = `<div style="flex:1;"><div class="ticket-apt"><i class="ti ti-building-warehouse" style="font-size:12px;margin-right:4px;color:var(--text-3);"></i>${t.zona}</div><div class="ticket-note">${t.tarea} · ${t.responsable}</div><div class="ticket-dates">📅 ${t.fecha}</div></div>
+      <div style="display:flex;align-items:center;gap:5px;">
+        <span class="badge ${t.estado}" onclick="avanzarTareaInterna(${idx})" title="Clic para avanzar estado">${labels[t.estado]}</span>
+        <button class="stock-btn" onclick="editarTareaInterna(${idx})" title="Editar"><i class="ti ti-pencil" style="font-size:12px;"></i></button>
+        <button class="stock-del" onclick="eliminarTareaInterna(${idx})" title="Eliminar">✕</button>
+      </div>`;
+    list.appendChild(d);
+  });
+}
+
+function avanzarTareaInterna(idx) {
+  const next = {'pendiente':'en-curso','en-curso':'listo','listo':'pendiente'};
+  tareasInternas[idx].estado = next[tareasInternas[idx].estado];
+  renderTareasInternas();
+  syncDB();
+}
+
+function editarTareaInterna(idx) {
+  openModal('tareaInterna', '', idx);
+}
+
+function eliminarTareaInterna(idx) {
+  if (confirm('¿Eliminar esta tarea interna?')) { tareasInternas.splice(idx, 1); renderTareasInternas(); syncDB(); }
+}
+
+// STOCK DE MATERIALES
+function renderStock() {
+  const grid = document.getElementById('stock-grid'); if (!grid) return;
+  grid.innerHTML = '';
+  Object.keys(stock).forEach(cat => {
+    const col = document.createElement('div'); col.className = 'mucamas-block';
+    col.innerHTML = `<div class="mucamas-block-header"><span class="mucamas-block-name">${cat}</span><button class="add-t-btn" style="border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);" onclick="openModal('stockItem','${cat}')">+ Ítem</button></div><div class="mucamas-body" id="stock-cat-${cat.replace(/\s+/g,'-')}"></div>`;
+    grid.appendChild(col);
+  });
+  Object.keys(stock).forEach(cat => {
+    const el = document.getElementById('stock-cat-' + cat.replace(/\s+/g,'-'));
+    const items = stock[cat];
+    if (!items.length) { el.innerHTML = '<div class="empty-state" style="padding:14px 0;font-size:11px;"><i class="ti ti-package" style="font-size:20px;"></i>Sin ítems</div>'; return; }
+    items.forEach((it, idx) => {
+      const row = document.createElement('div'); row.className = 'stock-row';
+      row.innerHTML = `<div style="flex:1;"><div class="stock-name">${it.nombre}</div><div class="stock-qty">${it.cantidad} ${it.unidad}</div></div>
+        <div class="stock-actions">
+          <button class="stock-btn" onclick="ajustarStock('${cat}',${idx},-1)" title="Restar">−</button>
+          <button class="stock-btn" onclick="ajustarStock('${cat}',${idx},1)" title="Sumar">+</button>
+          <button class="stock-del" onclick="eliminarStock('${cat}',${idx})" title="Eliminar">✕</button>
+        </div>`;
+      el.appendChild(row);
+    });
+  });
+}
+
+function ajustarStock(cat, idx, delta) {
+  const it = stock[cat][idx];
+  it.cantidad = Math.max(0, it.cantidad + delta);
+  renderStock();
+  syncDB();
+}
+
+function eliminarStock(cat, idx) {
+  if (confirm('¿Eliminar "' + stock[cat][idx].nombre + '" del stock?')) { stock[cat].splice(idx, 1); renderStock(); syncDB(); }
+}
+
+// HISTORIAL
+function initHistorialSelector() {
+  const sel = document.getElementById('h-apt-filter');
+  APTS.forEach(a => { const o = document.createElement('option'); o.value = a.num; o.textContent = 'Apt ' + a.num + ' · B' + a.block; sel.appendChild(o); });
+}
+
+function renderHistorial() {
+  const aptF = document.getElementById('h-apt-filter').value;
+  const tipoF = document.getElementById('h-tipo-filter').value;
+  const list = document.getElementById('hist-list'); list.innerHTML = '';
+  const tipoIcon = {reserva:'ti-calendar',servicio:'ti-tool',nota:'ti-notes'};
+  const tipoColor = {reserva:['#e8f4fb','var(--azul)'],servicio:['#fef4e4','#c47f10'],nota:['#eaf6e8','#2d9c2d']};
+  const filtered = historial.filter(h => (aptF === 'all' || h.apt === aptF) && (tipoF === 'all' || h.tipo === tipoF))
+    .sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+  if (!filtered.length) { list.innerHTML = '<div class="empty-state"><i class="ti ti-history"></i>Sin registros.</div>'; return; }
+  filtered.forEach(h => {
+    const [bg,col] = tipoColor[h.tipo];
+    const item = document.createElement('div'); item.className = 'hist-item';
+    item.innerHTML = `<div class="hist-icon" style="background:${bg};color:${col};"><i class="ti ${tipoIcon[h.tipo]}"></i></div><div style="flex:1;"><div class="hist-title">Apt ${h.apt} · ${h.desc}</div><div class="hist-sub">${h.agente}</div></div><div class="hist-date">${h.fecha}</div>`;
+    list.appendChild(item);
+  });
+}
+
+function renderActividadReciente() {
+  const list = document.getElementById('actividad-reciente-list'); if (!list) return;
+  list.innerHTML = '';
+  const tipoDot = {reserva:'var(--azul)', servicio:'#c47f10', nota:'#2d9c2d'};
+  const recientes = [...historial].sort((a,b) => new Date(b.fecha) - new Date(a.fecha)).slice(0, 5);
+  if (!recientes.length) { list.innerHTML = '<div class="empty-state"><i class="ti ti-history"></i>Sin actividad reciente.</div>'; return; }
+  recientes.forEach(h => {
+    const item = document.createElement('div'); item.className = 'activity-item';
+    item.innerHTML = `<div class="act-dot" style="background:${tipoDot[h.tipo] || '#888'};"></div><div class="act-text"><strong>Apt ${h.apt}</strong> · <span>${h.desc} · ${h.agente}</span></div><div class="act-time">${h.fecha}</div>`;
+    list.appendChild(item);
+  });
+}
+
+function borrarHistorial() {
+  if (confirm('¿Borrar TODO el historial y la actividad reciente? Esta acción no se puede deshacer.')) {
+    historial.length = 0;
+    renderHistorial();
+    renderActividadReciente();
+    syncDB();
+  }
+}
+
+// ESPACIOS
+function toggleSlot(el, label) {
+  el.className = 'slot ocupado';
+  el.textContent = label + ' · Reservado';
+}
+
+// MODAL
+function openModal(type, servicio = '', idx = null) {
+  modalType = type; presetServicio = servicio; editIndex = idx;
+  const title = document.getElementById('modal-title');
+  const body = document.getElementById('modal-body');
+  const aptOpts = APTS.map(a => `<option value="${a.num}">${a.num} · Block ${a.block} · ${a.tipo}${a.pool ? ' 🏊' : ''}</option>`).join('');
+  const today = new Date().toISOString().split('T')[0];
+
+  if (type === 'aptEstado') {
+    const apt = APTS.find(a => a.num === currentAptNum);
+    const estadoActual = getAptState(currentAptNum);
+    const tiposFijos = ['Monoambiente','2 Dormitorios','3 Dormitorios','4 Dormitorios'];
+    title.textContent = 'Apartamento · Block ' + apt.block;
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Número</label><input class="form-control" type="text" id="m-apt-num" value="${currentAptNum}"></div>
+      <div class="form-group"><label class="form-label">Tipo</label><select class="form-control" id="m-apt-tipo">${tiposFijos.map(t => `<option${t===apt.tipo?' selected':''}>${t}</option>`).join('')}</select></div>
+      <div class="form-group"><label class="form-label">Estado</label><select class="form-control" id="m-apt-estado">
+        <option value="libre"${estadoActual==='libre'?' selected':''}>Libre</option>
+        <option value="ocupado"${estadoActual==='ocupado'?' selected':''}>Ocupado</option>
+        <option value="vacio"${estadoActual==='vacio'?' selected':''}>Vacío</option>
+        <option value="mantenimiento"${estadoActual==='mantenimiento'?' selected':''}>Mantenimiento</option>
+      </select></div>`;
+  } else if (type === 'reserva') {
+    title.textContent = 'Nueva Reserva';
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Apartamento</label><select class="form-control" id="m-apt">${aptOpts}</select></div>
+      <div class="form-group"><label class="form-label">Huésped / Inquilino</label><input class="form-control" type="text" id="m-huesped" placeholder="Nombre completo"></div>
+      <div class="form-group"><label class="form-label">Período</label><select class="form-control" id="m-periodo"><option value="finde">Fin de semana</option><option value="mensual">Mensual</option><option value="anual">Anual</option></select></div>
+      <div class="form-group"><label class="form-label">Fecha de entrada</label><input class="form-control" type="date" id="m-desde" value="${today}"></div>
+      <div class="form-group"><label class="form-label">Fecha de salida</label><input class="form-control" type="date" id="m-hasta" value="${today}"></div>
+      <div class="form-group"><label class="form-label">Registrado por</label><select class="form-control" id="m-agente"><option>Propietario</option><option>Inmobiliaria</option></select></div>`;
+    if (selectedApt) document.getElementById('m-apt').value = selectedApt;
+  } else if (type === 'ticket') {
+    const editing = idx !== null;
+    title.textContent = editing ? 'Editar Ticket de Mantenimiento' : 'Nuevo Ticket de Mantenimiento';
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Apartamento</label><select class="form-control" id="m-apt">${aptOpts}</select></div>
+      <div class="form-group"><label class="form-label">Tarea / Descripción</label><input class="form-control" type="text" id="m-tarea" placeholder="Describí el trabajo"></div>
+      <div class="form-group"><label class="form-label">Responsable</label><input class="form-control" type="text" id="m-resp" placeholder="Nombre del operario"></div>
+      <div class="form-group"><label class="form-label">Fecha de ingreso</label><input class="form-control" type="date" id="m-ingreso" value="${today}"></div>
+      <div class="form-group"><label class="form-label">Fecha de egreso (opcional)</label><input class="form-control" type="date" id="m-egreso"></div>`;
+    if (editing) {
+      const t = tickets[idx];
+      document.getElementById('m-apt').value = t.apt;
+      document.getElementById('m-tarea').value = t.tarea;
+      document.getElementById('m-resp').value = t.responsable;
+      document.getElementById('m-ingreso').value = t.ingreso || today;
+      document.getElementById('m-egreso').value = t.egreso || '';
+    }
+  } else if (type === 'tareaInterna') {
+    const editing = idx !== null;
+    title.textContent = editing ? 'Editar Tarea de Mantenimiento' : 'Nueva Tarea de Mantenimiento (Interna)';
+    const zonasFijas = ['Sala de máquinas','Bomba de agua','Electricidad','Pintura','Sanitaria','Controles de incendio','Portón / Acceso','Piscina común','Piscinas privadas','Generador','Estacionamiento','Áreas verdes'];
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Zona / Ubicación</label><select class="form-control" id="m-zona" onchange="document.getElementById('m-zona-otro').style.display = this.value === 'Otro' ? 'block' : 'none';">
+        ${zonasFijas.map(z => `<option>${z}</option>`).join('')}
+        <option>Otro</option>
+      </select></div>
+      <div class="form-group" id="m-zona-otro" style="display:none;"><label class="form-label">Especificar zona</label><input class="form-control" type="text" id="m-zona-otro-txt" placeholder="Escribí la zona / ubicación"></div>
+      <div class="form-group"><label class="form-label">Tarea / Descripción</label><input class="form-control" type="text" id="m-tarea-int" placeholder="Describí el trabajo interno"></div>
+      <div class="form-group"><label class="form-label">Responsable</label><input class="form-control" type="text" id="m-resp-int" placeholder="Nombre del operario"></div>
+      <div class="form-group"><label class="form-label">Fecha</label><input class="form-control" type="date" id="m-fecha-int" value="${today}"></div>`;
+    if (editing) {
+      const t = tareasInternas[idx];
+      if (zonasFijas.includes(t.zona)) {
+        document.getElementById('m-zona').value = t.zona;
+      } else {
+        document.getElementById('m-zona').value = 'Otro';
+        document.getElementById('m-zona-otro').style.display = 'block';
+        document.getElementById('m-zona-otro-txt').value = t.zona;
+      }
+      document.getElementById('m-tarea-int').value = t.tarea;
+      document.getElementById('m-resp-int').value = t.responsable;
+      document.getElementById('m-fecha-int').value = t.fecha;
+    }
+  } else if (type === 'stockItem') {
+    title.textContent = 'Nuevo Ítem de Stock';
+    const catOpts = Object.keys(stock).map(c => `<option${c===servicio?' selected':''}>${c}</option>`).join('');
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Categoría</label><select class="form-control" id="m-stock-cat">${catOpts}</select></div>
+      <div class="form-group"><label class="form-label">Nombre del insumo</label><input class="form-control" type="text" id="m-stock-nombre" placeholder="Ej: Cable 2x1.5mm"></div>
+      <div class="form-group"><label class="form-label">Cantidad</label><input class="form-control" type="number" id="m-stock-cantidad" min="0" value="1"></div>
+      <div class="form-group"><label class="form-label">Unidad</label><input class="form-control" type="text" id="m-stock-unidad" placeholder="Ej: un, m, L, kg" value="un"></div>`;
+  }
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); editIndex = null; }
+
+function saveModal() {
+  const today = new Date().toISOString().split('T')[0];
+  if (modalType === 'aptEstado') {
+    const nuevoNum = document.getElementById('m-apt-num').value.trim();
+    const nuevoTipo = document.getElementById('m-apt-tipo').value;
+    const estado = document.getElementById('m-apt-estado').value;
+    if (!nuevoNum) { alert('El número de apartamento no puede quedar vacío.'); return; }
+    const apt = APTS.find(a => a.num === currentAptNum);
+    if (nuevoNum !== currentAptNum) {
+      if (APTS.find(a => a.num === nuevoNum)) { alert('Ya existe un apartamento con ese número.'); return; }
+      // Migrar referencias del número viejo al nuevo
+      if (aptEstadoManual[currentAptNum] !== undefined) { aptEstadoManual[nuevoNum] = aptEstadoManual[currentAptNum]; delete aptEstadoManual[currentAptNum]; }
+      tickets.forEach(t => { if (t.apt === currentAptNum) t.apt = nuevoNum; });
+      reservas.forEach(r => { if (r.apt === currentAptNum) r.apt = nuevoNum; });
+      historial.forEach(h => { if (h.apt === currentAptNum) h.apt = nuevoNum; });
+      if (MANT_APTS.includes(currentAptNum)) { MANT_APTS.splice(MANT_APTS.indexOf(currentAptNum), 1, nuevoNum); }
+      apt.num = nuevoNum;
+    }
+    apt.tipo = nuevoTipo;
+    aptEstadoManual[apt.num] = estado;
+    currentAptNum = apt.num;
+    closeModal(); renderAptBlocks(); renderTickets(); renderResSidebar(); renderHistorial(); updateStats();
+  } else if (modalType === 'reserva') {
+    const apt = document.getElementById('m-apt').value;
+    const huesped = document.getElementById('m-huesped').value.trim();
+    const periodo = document.getElementById('m-periodo').value;
+    const desde = document.getElementById('m-desde').value;
+    const hasta = document.getElementById('m-hasta').value;
+    const agente = document.getElementById('m-agente').value;
+    if (!huesped || !desde || !hasta) { alert('Completá todos los campos.'); return; }
+    reservas.push({apt, huesped, desde, hasta, periodo, agente});
+    historial.unshift({apt, tipo:'reserva', desc:`Reserva ${periodo} — ${huesped}`, fecha:desde, agente});
+    selectedApt = apt;
+    closeModal(); renderResSidebar(); renderCalendar(); renderResDetail();
+  } else if (modalType === 'ticket') {
+    const apt = document.getElementById('m-apt').value;
+    const servicio = 'Mantenimiento';
+    const tarea = document.getElementById('m-tarea').value.trim();
+    const responsable = document.getElementById('m-resp').value.trim();
+    const ingreso = document.getElementById('m-ingreso').value || today;
+    const egreso = document.getElementById('m-egreso').value || '';
+    if (!tarea) { alert('Describí la tarea.'); return; }
+    if (editIndex !== null) {
+      const t = tickets[editIndex];
+      Object.assign(t, {apt, servicio, tarea, responsable, ingreso, egreso});
+    } else {
+      tickets.push({apt, servicio, tarea, estado:'pendiente', responsable, fecha:today, ingreso, egreso});
+      historial.unshift({apt, tipo:'servicio', desc:`${servicio} — ${tarea}`, fecha:today, agente:responsable});
+    }
+    closeModal(); renderTickets();
+  } else if (modalType === 'tareaInterna') {
+    let zona = document.getElementById('m-zona').value;
+    if (zona === 'Otro') { const zOtro = document.getElementById('m-zona-otro-txt').value.trim(); if (zOtro) zona = zOtro; }
+    const tarea = document.getElementById('m-tarea-int').value.trim();
+    const responsable = document.getElementById('m-resp-int').value.trim();
+    const fecha = document.getElementById('m-fecha-int').value || today;
+    if (!tarea) { alert('Describí la tarea.'); return; }
+    if (editIndex !== null) {
+      const t = tareasInternas[editIndex];
+      Object.assign(t, {zona, tarea, responsable, fecha});
+    } else {
+      tareasInternas.push({zona, tarea, estado:'pendiente', responsable, fecha});
+      historial.unshift({apt:'Interno', tipo:'servicio', desc:`Mantenimiento interno — ${zona}: ${tarea}`, fecha, agente:responsable});
+    }
+    closeModal(); renderTareasInternas();
+  } else if (modalType === 'stockItem') {
+    const cat = document.getElementById('m-stock-cat').value;
+    const nombre = document.getElementById('m-stock-nombre').value.trim();
+    const cantidad = parseFloat(document.getElementById('m-stock-cantidad').value) || 0;
+    const unidad = document.getElementById('m-stock-unidad').value.trim() || 'un';
+    if (!nombre) { alert('Ingresá el nombre del insumo.'); return; }
+    if (!stock[cat]) stock[cat] = [];
+    stock[cat].push({nombre, cantidad, unidad});
+    closeModal(); renderStock();
+  }
+  updateStats();
+  renderActividadReciente();
+  syncDB();
+}
+
+document.getElementById('modal-overlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+// INIT
+updateStats();
+initHistorialSelector();
+renderTickets();
+renderTareasInternas();
+renderStock();
+renderHistorial();
+renderActividadReciente();
+</script>
+</body>
+</html>
