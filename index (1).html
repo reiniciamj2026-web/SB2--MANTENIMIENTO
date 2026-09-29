@@ -1,0 +1,2528 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sierra Ballena 2 · ReinicIA</title>
+<link rel="icon" type="image/jpeg" href="logo.jpg">
+<link rel="apple-touch-icon" href="logo.jpg">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b1f4d">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+<style>
+:root {
+  --azul-oscuro: #0d1b4b;
+  --azul-medio: #1a2f5e;
+  --azul: #0099cc;
+  --amarillo: #f5c400;
+  --amarillo-dark: #c49a00;
+  --blanco: #ffffff;
+  --bg: #f0f3f8;
+  --bg-card: #ffffff;
+  --border: #dde2ea;
+  --text: #0d1b4b;
+  --text-2: #374060;
+  --text-3: #6b7a9a;
+  --shadow: 0 1px 3px rgba(13,27,75,0.10), 0 1px 2px rgba(13,27,75,0.06);
+  --shadow-md: 0 4px 12px rgba(13,27,75,0.12);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+/* HEADER */
+.top-fixed { position: sticky; top: 0; z-index: 50; flex-shrink: 0; }
+.header {
+  background: var(--azul-oscuro);
+  padding: 10px 20px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  border-bottom: 2px solid var(--amarillo);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.header-left { display: flex; flex-direction: column; justify-content: center; }
+.header-logo { width: 42px; height: 42px; border-radius: 9px; object-fit: cover; flex-shrink: 0; }
+.header-edificio {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+.header-edificio em { color: var(--amarillo); font-style: normal; }
+.header-ubicacion { font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; margin-top: 1px; }
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.header-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+}
+.brand-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.brand-logo span { color: var(--azul); }
+.brand-logo-img { height: 26px; border-radius: 6px; display: block; }
+.brand-cel {
+  font-size: 10px;
+  color: var(--amarillo);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.header-notif { color: rgba(255,255,255,0.65); font-size: 20px; cursor: pointer; position: relative; }
+.notif-dot { position: absolute; top: 0; right: 0; width: 8px; height: 8px; background: var(--amarillo); border-radius: 50%; border: 2px solid var(--azul-oscuro); }
+.header-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--azul); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: white; letter-spacing: 0.5px; border: 2px solid var(--amarillo); cursor: pointer; }
+
+/* NAV */
+.nav-bar {
+  background: #e8ecf4;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 2px;
+  overflow-x: auto;
+  flex-shrink: 0;
+  border-bottom: 2px solid #c8d0e0;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.nav-bar::-webkit-scrollbar { display: none; }
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 14px;
+  border: none;
+  background: transparent;
+  color: #3a4870;
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.15s;
+  letter-spacing: 0.2px;
+}
+.nav-btn i { font-size: 15px; }
+.nav-btn:hover { color: var(--azul-oscuro); background: #d8dff0; border-radius: 6px 6px 0 0; }
+.nav-btn.active { color: var(--azul-oscuro); border-bottom-color: var(--amarillo); background: white; font-weight: 700; border-radius: 6px 6px 0 0; }
+
+@media (max-width: 700px) {
+  .header-edificio { font-size: 15px; }
+  .header { padding: 8px 14px; }
+  .nav-bar { display: grid; grid-template-columns: repeat(4, 1fr); overflow-x: visible; padding: 0 6px; gap: 0; }
+  .nav-btn { justify-content: center; padding: 10px 4px; font-size: 11px; gap: 4px; white-space: normal; text-align: center; }
+  .nav-btn i { font-size: 14px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr) !important; }
+  .blocks-grid { grid-template-columns: 1fr !important; gap: 18px !important; }
+  .stock-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+  .res-layout { grid-template-columns: 1fr !important; }
+  .res-sidebar { display: block; max-height: none; }
+  .res-main-panel { display: none; }
+  .res-layout.showing-detail .res-sidebar { display: none; }
+  .res-layout.showing-detail .res-main-panel { display: block; }
+  .res-back-btn { display: flex; }
+}
+
+/* MAIN */
+.main-content { flex: 1; padding: 18px 20px; overflow-y: auto; }
+.panel { display: none; } .panel.active { display: block; }
+
+/* STATS */
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+.stat-card { background: var(--bg-card); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); border: 1px solid var(--border); display: flex; align-items: center; gap: 12px; border-left: 3px solid transparent; }
+.stat-card.blue { border-left-color: var(--azul); }
+.stat-card.green { border-left-color: #2d9c2d; }
+.stat-card.amber { border-left-color: #c47f10; }
+.stat-card.red { border-left-color: #c03030; }
+.stat-icon { width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.stat-icon.blue { background: #e8f4fb; color: var(--azul); }
+.stat-icon.green { background: #eaf6e8; color: #2d9c2d; }
+.stat-icon.amber { background: #fef4e4; color: #c47f10; }
+.stat-icon.red { background: #fde8e8; color: #c03030; }
+.stat-label { font-size: 10px; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 2px; font-weight: 600; }
+.stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 800; line-height: 1; }
+.stat-num.blue { color: var(--azul); } .stat-num.green { color: #2d9c2d; } .stat-num.amber { color: #c47f10; } .stat-num.red { color: #c03030; }
+
+.section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; color: var(--azul-oscuro); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; padding-left: 8px; border-left: 3px solid var(--amarillo); }
+.card { background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 14px; }
+
+/* BLOCKS */
+.blocks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; }
+.block-card { background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
+.block-header { background: var(--azul-oscuro); color: white; padding: 9px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--amarillo); }
+.block-name { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+.pool-badge { background: var(--azul); font-size: 9px; font-weight: 700; padding: 3px 7px; border-radius: 20px; letter-spacing: 0.3px; }
+.floor-label { font-size: 10px; font-weight: 800; color: #4a5680; padding: 7px 10px 3px; text-transform: uppercase; letter-spacing: 0.6px; }
+.apt-row { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 0 8px 7px; }
+.apt-cell { border-radius: var(--radius-sm); padding: 5px 8px; font-size: 11px; border: 2px solid; cursor: pointer; transition: transform 0.1s; font-weight: 600; }
+.apt-cell:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.apt-cell.ocupado { background: #cfe8fb; border-color: #3d9bdb; color: #0a3d63; }
+.apt-cell.libre { background: #cdf0c6; border-color: #34a834; color: #175417; }
+.apt-cell.mantenimiento { background: #fce0a8; border-color: #e2960a; color: #6b3d00; }
+.apt-cell.vacio { background: #dfe2e8; border-color: #8992a3; color: #333a49; }
+.apt-cell { cursor: pointer; }
+.apt-num-lbl { font-weight: 700; font-size: 12px; }
+.apt-tipo-lbl { font-size: 10px; color: #374060; font-weight: 500; margin-top: 1px; }
+.apt-pool-lbl { font-size: 9px; color: var(--azul); margin-top: 1px; }
+hr.floor-div { border: none; border-top: 1px dashed var(--border); margin: 2px 8px 4px; }
+
+/* TICKETS */
+.ticket-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); gap: 8px; }
+.ticket-item:last-child { border-bottom: none; }
+.ticket-apt { font-size: 13px; font-weight: 700; color: var(--azul-oscuro); }
+.ticket-note { font-size: 12px; color: #374060; margin-top: 2px; font-weight: 500; }
+.ticket-dates { font-size: 11px; color: var(--azul); margin-top: 3px; font-weight: 600; }
+.badge { font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px; white-space: nowrap; letter-spacing: 0.3px; text-transform: uppercase; cursor: pointer; }
+.badge.pendiente { background: #fef4e4; color: #c47f10; }
+.badge.en-curso { background: #e8f4fb; color: #0c447c; }
+.badge.listo { background: #eaf6e8; color: #1a5c1a; }
+.badge.vencida, .badge.falla { background: #fde8e8; color: #c03030; }
+.badge.fija { cursor: default; }
+
+/* SERVICIOS */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.serv-card { background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 14px; }
+.serv-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 2px solid var(--bg); }
+.s-icon { width: 34px; height: 34px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 17px; }
+.s-icon.blue { background: #e8f4fb; color: var(--azul); }
+.s-icon.amber { background: #fef4e4; color: #c47f10; }
+.s-icon.green { background: #eaf6e8; color: #2d9c2d; }
+.s-icon.purple { background: #f0ebff; color: #6030c0; }
+.s-name { font-weight: 700; font-size: 13px; color: var(--azul-oscuro); }
+.s-sub { font-size: 11px; color: #374060; font-weight: 500; }
+.add-t-btn { margin-left: auto; background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 9px; font-size: 11px; cursor: pointer; color: var(--text-2); font-family: 'Barlow', sans-serif; font-weight: 500; transition: all 0.15s; white-space: nowrap; }
+.add-t-btn:hover { background: var(--azul-oscuro); color: white; border-color: var(--azul-oscuro); }
+
+/* MUCAMAS POR BLOCK */
+.mucamas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.mucamas-block { background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
+.mucamas-block-header { background: var(--azul-oscuro); color: white; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--amarillo); }
+.mucamas-block-name { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+.mucamas-body { padding: 10px 12px; }
+
+/* STOCK */
+.stock-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.stock-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); gap: 8px; }
+.stock-row:last-child { border-bottom: none; }
+.stock-name { font-size: 12px; font-weight: 700; color: var(--azul-oscuro); }
+.stock-qty { font-size: 11px; color: #374060; font-weight: 600; margin-top: 1px; }
+.stock-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.stock-btn { width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; font-size: 13px; color: var(--text-2); display: flex; align-items: center; justify-content: center; font-family: 'Barlow', sans-serif; font-weight: 700; transition: all 0.15s; }
+.stock-btn:hover { background: var(--azul-oscuro); color: white; border-color: var(--azul-oscuro); }
+.stock-del { width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--border); background: transparent; cursor: pointer; font-size: 11px; color: var(--text-3); display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.stock-del:hover { background: #fde8e8; border-color: #f09090; color: #c03030; }
+
+/* RESERVAS */
+.res-layout { display: grid; grid-template-columns: 190px 1fr; gap: 0; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; min-height: 480px; }
+.res-sidebar { border-right: 1px solid var(--border); overflow-y: auto; max-height: 540px; }
+.res-sidebar-hdr { padding: 10px 12px; background: var(--azul-oscuro); font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.6px; position: sticky; top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.apt-group-lbl { font-size: 10px; font-weight: 700; color: var(--text-3); padding: 7px 12px 3px; text-transform: uppercase; letter-spacing: 0.6px; background: var(--bg); border-bottom: 1px solid var(--border); }
+.apt-list-item { padding: 7px 12px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: background 0.1s; }
+.apt-list-item:hover { background: var(--bg); }
+.apt-list-item.selected { background: #e8f4fb; border-left: 3px solid var(--azul); }
+.apt-list-num { font-size: 12px; font-weight: 700; color: var(--azul-oscuro); }
+.apt-list-tipo { font-size: 11px; color: #374060; font-weight: 500; }
+.occ-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.occ-dot.ocupado { background: #c03030; } .occ-dot.libre { background: #2d9c2d; } .occ-dot.parcial { background: #c47f10; }
+.res-main-panel { padding: 14px; }
+.res-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.res-cal-title { font-size: 12px; font-weight: 700; color: var(--azul-oscuro); }
+.cal-nav-btns { display: flex; gap: 5px; }
+.cal-nav-btns button { width: 26px; height: 26px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg); cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; color: var(--text-2); transition: all 0.15s; }
+.cal-nav-btns button:hover { background: var(--azul-oscuro); color: white; border-color: var(--azul-oscuro); }
+.legend-strip { display: flex; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+.leg-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--text-2); font-weight: 500; }
+.leg-sq { width: 11px; height: 11px; border-radius: 3px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-day-name { text-align: center; font-size: 9px; font-weight: 700; color: var(--text-3); padding: 3px 0; text-transform: uppercase; letter-spacing: 0.4px; }
+.cal-day { min-height: 48px; border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 3px; background: white; cursor: pointer; transition: border-color 0.1s; }
+.cal-day:hover { border-color: var(--azul); }
+.cal-day.empty { background: transparent; border-color: transparent; cursor: default; }
+.cal-day.today { border-color: var(--amarillo); }
+.cal-day-num { font-size: 10px; color: var(--text-2); margin-bottom: 1px; font-weight: 600; }
+.cal-day.today .cal-day-num { color: var(--amarillo-dark); font-weight: 800; }
+.res-block { font-size: 9px; border-radius: 3px; padding: 1px 3px; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 700; }
+.res-block.finde { background: #b5d4f4; color: #042c53; }
+.res-block.mensual { background: #c0dd97; color: #173404; }
+.res-block.anual { background: #fac775; color: #412402; }
+.res-detail-box { margin-top: 12px; background: var(--bg); border-radius: var(--radius); padding: 10px; border: 1px solid var(--border); }
+.res-back-btn { display: none; align-items: center; gap: 4px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 12px; font-weight: 700; color: var(--azul-oscuro); cursor: pointer; font-family: 'Barlow', sans-serif; }
+.res-detail-title { font-size: 11px; font-weight: 700; color: var(--text-2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.res-row { background: white; border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 8px 10px; display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.res-tipo-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.3px; }
+.res-tipo-badge.finde { background: #b5d4f4; color: #042c53; }
+.res-tipo-badge.mensual { background: #c0dd97; color: #173404; }
+.res-tipo-badge.anual { background: #fac775; color: #412402; }
+.res-huesped { font-size: 13px; font-weight: 800; color: var(--azul-oscuro); }
+.res-fechas { font-size: 12px; color: #374060; font-weight: 600; }
+.res-agente { font-size: 11px; color: #6b7a9a; margin-top: 1px; font-weight: 500; }
+.btn-quitar { font-size: 11px; padding: 3px 8px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: transparent; color: var(--text-2); cursor: pointer; font-family: 'Barlow', sans-serif; transition: all 0.15s; }
+.btn-quitar:hover { background: #fde8e8; border-color: #f09090; color: #c03030; }
+
+/* ESPACIOS */
+.espacio-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px; margin-bottom: 12px; }
+.espacio-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.espacio-icon { width: 38px; height: 38px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.espacio-title { font-size: 13px; font-weight: 700; color: var(--azul-oscuro); }
+.espacio-sub { font-size: 11px; color: var(--text-2); }
+.slots { display: flex; gap: 6px; flex-wrap: wrap; }
+.slot { font-size: 11px; font-weight: 600; padding: 5px 11px; border-radius: 20px; border: 1px solid; cursor: pointer; transition: all 0.15s; }
+.slot.ocupado { background: #fde8e8; border-color: #f09090; color: #c03030; }
+.slot.libre { background: #eaf6e8; border-color: #a0d4a0; color: #1a5c1a; }
+.slot.libre:hover { background: #c8f0c8; }
+
+/* HISTORIAL */
+.hist-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+.hist-item:last-child { border-bottom: none; }
+.hist-icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+.hist-title { font-size: 13px; font-weight: 700; color: var(--azul-oscuro); }
+.hist-sub { font-size: 12px; color: #374060; margin-top: 2px; font-weight: 500; }
+.hist-date { font-size: 11px; color: #6b7a9a; margin-left: auto; white-space: nowrap; padding-top: 2px; font-weight: 600; }
+
+/* BUTTONS */
+.btn-primary { background: var(--azul-oscuro); color: white; border: none; border-radius: var(--radius-sm); padding: 8px 16px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.15s; border: 1px solid transparent; }
+.btn-primary:hover { background: var(--azul); }
+.btn-secondary { background: transparent; color: var(--text-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 16px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+.btn-secondary:hover { background: var(--bg); }
+.btn-amarillo { background: var(--amarillo); color: var(--azul-oscuro); border: none; border-radius: var(--radius-sm); padding: 8px 16px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.15s; }
+.btn-amarillo:hover { background: var(--amarillo-dark); }
+
+/* TOOLBAR */
+.toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 10px; flex-wrap: wrap; }
+.toolbar-left { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.filter-select { font-family: 'Barlow', sans-serif; font-size: 12px; font-weight: 500; padding: 7px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-card); color: var(--text); cursor: pointer; }
+
+/* MODAL */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(13,27,75,0.55); z-index: 200; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+.modal-overlay.open { display: flex; }
+.modal { background: white; border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(13,27,75,0.25); padding: 22px; width: 380px; max-width: 96vw; max-height: 90vh; overflow-y: auto; }
+.modal-title { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 800; color: var(--azul-oscuro); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 3px solid var(--amarillo); }
+.form-group { margin-bottom: 11px; }
+.form-label { font-size: 11px; font-weight: 700; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; display: block; }
+.form-control { width: 100%; font-family: 'Barlow', sans-serif; font-size: 13px; padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg); color: var(--text); transition: border-color 0.15s; }
+.form-control:focus { outline: none; border-color: var(--azul); background: white; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+
+/* ACTIVITY */
+.activity-item { display: flex; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.activity-item:last-child { border-bottom: none; }
+.act-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.act-text { flex: 1; font-size: 13px; color: #0d1b4b; }
+.act-text strong { font-weight: 800; color: #0d1b4b; }
+.act-text span { color: #374060; font-weight: 500; }
+.act-time { font-size: 11px; color: #6b7a9a; white-space: nowrap; font-weight: 600; }
+
+.empty-state { text-align: center; padding: 24px; color: var(--text-3); font-size: 12px; }
+.empty-state i { font-size: 28px; margin-bottom: 7px; display: block; }
+</style>
+</head>
+<body>
+
+<div class="top-fixed">
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left" style="flex-direction:row;align-items:center;gap:10px;">
+    <img src="logo.jpg" alt="Sierra Ballena 2" class="header-logo">
+    <div>
+      <div class="header-edificio">SIERRA BALLENA 2</div>
+      <div class="header-ubicacion">Punta Ballena · Maldonado · Uruguay</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="header-notif"><i class="ti ti-bell"></i><div class="notif-dot"></div></div>
+      <div class="header-avatar">ADM</div>
+    </div>
+    <div style="width:1px;height:36px;background:rgba(255,255,255,0.15);"></div>
+    <div class="header-brand">
+      <img src="logo-reinicia.png" alt="ReinicIA" class="brand-logo-img">
+      <div class="brand-cel">📱 092 161 241</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-bar">
+  <button class="nav-btn active" onclick="showPanel('resumen',this)"><i class="ti ti-layout-dashboard"></i>Resumen</button>
+  <button class="nav-btn" onclick="showPanel('apartamentos',this)"><i class="ti ti-building"></i>Apartamentos</button>
+  <button class="nav-btn" onclick="showPanel('reservas',this)"><i class="ti ti-calendar"></i>Reservas</button>
+  <button class="nav-btn" onclick="showPanel('espacios',this)"><i class="ti ti-pool"></i>Espacios</button>
+  <button class="nav-btn" onclick="showPanel('servicios',this)"><i class="ti ti-tools"></i>Servicios</button>
+  <button class="nav-btn" onclick="showPanel('historial',this)"><i class="ti ti-history"></i>Historial</button>
+  <button class="nav-btn" onclick="showPanel('pedidos',this)"><i class="ti ti-package"></i>Pedidos</button>
+  <button class="nav-btn" onclick="showPanel('stock',this)"><i class="ti ti-boxes"></i>Stock</button>
+  <button class="nav-btn" onclick="showPanel('proveedores',this)"><i class="ti ti-truck"></i>Proveedores</button>
+  <button class="nav-btn" onclick="showPanel('planificacion',this)"><i class="ti ti-calendar-event"></i>Planificación</button>
+  <button class="nav-btn" onclick="showPanel('seguridad',this)"><i class="ti ti-shield-check"></i>Seguridad</button>
+</div>
+</div>
+
+<div class="main-content">
+
+<!-- RESUMEN -->
+<div id="panel-resumen" class="panel active">
+  <div class="stats-row">
+    <div class="stat-card blue"><div class="stat-icon blue"><i class="ti ti-building"></i></div><div><div class="stat-label">Apartamentos</div><div class="stat-num blue" id="stat-total-apts">—</div></div></div>
+    <div class="stat-card green"><div class="stat-icon green"><i class="ti ti-home-check"></i></div><div><div class="stat-label">Ocupados hoy</div><div class="stat-num green" id="stat-ocupados">—</div></div></div>
+    <div class="stat-card amber"><div class="stat-icon amber"><i class="ti ti-tools"></i></div><div><div class="stat-label">Mantenimiento</div><div class="stat-num amber" id="stat-mantenimiento">—</div></div></div>
+    <div class="stat-card red"><div class="stat-icon red"><i class="ti ti-alert-circle"></i></div><div><div class="stat-label">Tickets abiertos</div><div class="stat-num red" id="stat-tickets">—</div></div></div>
+  </div>
+  <div class="blocks-grid">
+    <div class="block-card">
+      <div class="block-header"><span class="block-name" id="block-name-1">Block 1</span><span style="font-size:11px;opacity:.6;" id="block-count-1">14 apts</span></div>
+      <div style="padding:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-2);margin-bottom:6px;" id="block-summary-1"><span>Ocupados: 11</span><span>Libres: 3</span></div>
+        <div style="background:#e8edf2;border-radius:4px;height:7px;overflow:hidden;"><div style="background:var(--azul);height:100%;width:78%;border-radius:4px;" id="block-bar-1"></div></div>
+        <div style="margin-top:7px;font-size:11px;color:var(--text-3);" id="block-breakdown-1">Mono: 6 · 2D: 4 · 3D: 2 · 4D: 2</div>
+      </div>
+    </div>
+    <div class="block-card">
+      <div class="block-header"><span class="block-name" id="block-name-2">Block 2</span><span class="pool-badge">2 piscinas priv.</span></div>
+      <div style="padding:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-2);margin-bottom:6px;" id="block-summary-2"><span>Ocupados: 10</span><span>Mant: 2 · Libre: 2</span></div>
+        <div style="background:#e8edf2;border-radius:4px;height:7px;overflow:hidden;"><div style="background:var(--azul);height:100%;width:71%;border-radius:4px;" id="block-bar-2"></div></div>
+        <div style="margin-top:7px;font-size:11px;color:var(--text-3);" id="block-breakdown-2">Mono: 6 · 2D: 4 · 3D: 2 · 4D: 2</div>
+      </div>
+    </div>
+    <div class="block-card">
+      <div class="block-header"><span class="block-name" id="block-name-3">Block 3</span><span class="pool-badge">2 piscinas priv.</span></div>
+      <div style="padding:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-2);margin-bottom:6px;" id="block-summary-3"><span>Ocupados: 9</span><span>Mant: 2 · Libre: 3</span></div>
+        <div style="background:#e8edf2;border-radius:4px;height:7px;overflow:hidden;"><div style="background:var(--azul);height:100%;width:64%;border-radius:4px;" id="block-bar-3"></div></div>
+        <div style="margin-top:7px;font-size:11px;color:var(--text-3);" id="block-breakdown-3">Mono: 6 · 2D: 4 · 3D: 2 · 4D: 2</div>
+      </div>
+    </div>
+  </div>
+  <div class="section-title" style="display:flex;align-items:center;justify-content:space-between;">
+    <span>Actividad reciente</span>
+    <button class="stock-del" style="width:auto;padding:4px 10px;border-radius:6px;font-size:11px;" onclick="borrarHistorial()" title="Borrar todo el historial de actividad">Borrar actividad</button>
+  </div>
+  <div class="card"><div id="actividad-reciente-list"></div></div>
+</div>
+
+<!-- APARTAMENTOS -->
+<div id="panel-apartamentos" class="panel">
+  <div class="toolbar">
+    <div style="display:flex;gap:12px;font-size:12px;color:var(--text-2);align-items:center;flex-wrap:wrap;">
+      <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:#cfe8fb;border:2px solid #3d9bdb;display:inline-block;"></span>Ocupado</span>
+      <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:#cdf0c6;border:2px solid #34a834;display:inline-block;"></span>Libre</span>
+      <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:#dfe2e8;border:2px solid #8992a3;display:inline-block;"></span>Vacío</span>
+      <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:3px;background:#fce0a8;border:2px solid #e2960a;display:inline-block;"></span>Mantenimiento</span>
+      <span style="font-size:11px;color:var(--text-3);margin-left:auto;"><i class="ti ti-hand-click" style="vertical-align:-2px;margin-right:3px;"></i>Tocá un apartamento para cambiar su estado</span>
+    </div>
+  </div>
+  <div class="blocks-grid" id="apt-blocks-render"></div>
+
+  <!-- LISTA DE PROPIETARIOS -->
+  <div class="section-title" style="margin-top:22px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span>Lista de Propietarios</span>
+    <select class="filter-select" id="prop-block-filter" onchange="renderPropietarios()">
+      <option value="all">Todos los blocks</option>
+      <option value="1">Block A</option>
+      <option value="2">Block B</option>
+      <option value="3">Block C</option>
+    </select>
+  </div>
+  <div class="card" style="margin-bottom:16px;">
+    <div style="font-size:11px;color:var(--text-2);margin-bottom:12px;">Cargá o actualizá acá el nombre y celular fijo del dueño de cada apartamento — no hace falta crear una reserva para esto. Útil también si se vende y cambia de propietario.</div>
+    <div id="propietarios-list"></div>
+  </div>
+</div>
+
+<!-- RESERVAS -->
+<div id="panel-reservas" class="panel">
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <select class="filter-select" id="r-block-filter" onchange="renderResSidebar()">
+        <option value="all">Todos los blocks</option>
+        <option value="1" id="opt-block-1">Block 1</option>
+        <option value="2" id="opt-block-2">Block 2</option>
+        <option value="3" id="opt-block-3">Block 3</option>
+      </select>
+    </div>
+    <button class="btn-amarillo" onclick="openModal('reserva')"><i class="ti ti-plus"></i>Nueva reserva</button>
+  </div>
+  <div class="res-layout" id="res-layout">
+    <div class="res-sidebar">
+      <div class="res-sidebar-hdr">Apartamentos</div>
+      <div id="res-sidebar-list"></div>
+    </div>
+    <div class="res-main-panel">
+      <div class="res-cal-header">
+        <button id="res-back-btn" class="res-back-btn" onclick="volverListaApts()"><i class="ti ti-arrow-left"></i> Apartamentos</button>
+        <div class="res-cal-title" id="res-cal-title">Seleccioná un apartamento</div>
+        <div class="cal-nav-btns">
+          <button onclick="changeMonth(-1)">&#8592;</button>
+          <button onclick="changeMonth(1)">&#8594;</button>
+        </div>
+      </div>
+      <div class="legend-strip">
+        <div class="leg-item"><div class="leg-sq" style="background:#b5d4f4;"></div>Fin de semana</div>
+        <div class="leg-item"><div class="leg-sq" style="background:#c0dd97;"></div>Mensual</div>
+        <div class="leg-item"><div class="leg-sq" style="background:#fac775;"></div>Anual</div>
+      </div>
+      <div class="cal-grid" id="res-cal-grid"></div>
+      <div class="res-detail-box" id="res-detail-box" style="display:none;">
+        <div class="res-detail-title">Reservas registradas</div>
+        <div id="res-detail-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ESPACIOS -->
+<div id="panel-espacios" class="panel">
+  <div class="section-title">Espacios comunes</div>
+  <div class="espacio-card">
+    <div class="espacio-header">
+      <div class="espacio-icon" style="background:#e8f4fb;color:var(--azul);"><i class="ti ti-pool"></i></div>
+      <div style="flex:1;"><div class="espacio-title">Piscina Grande · Uso Común (3 Blocks)</div><div class="espacio-sub">Franjas de 2 horas · Reserva por apartamento · Libre uso de todos los blocks</div></div>
+      <button class="stock-del" style="width:auto;padding:5px 10px;border-radius:6px;font-size:11px;" onclick="borrarReservasEspacio('piscinaGrande')" title="Liberar todas las franjas del día">Borrar reservas del día</button>
+    </div>
+    <div class="slots" id="slots-piscinaGrande"></div>
+  </div>
+  <div class="espacio-card">
+    <div class="espacio-header">
+      <div class="espacio-icon" style="background:#fef4e4;color:#c47f10;"><i class="ti ti-flame"></i></div>
+      <div style="flex:1;"><div class="espacio-title">Parrillero Doble · Solo temporada de verano</div><div class="espacio-sub">Agenda de reservas por fecha, hora y apartamento</div></div>
+      <button class="add-t-btn" onclick="openModal('reservaParrillero')">+ Reservar</button>
+    </div>
+    <div id="agenda-parrillero"></div>
+  </div>
+  <div class="espacio-card">
+    <div class="espacio-header">
+      <div class="espacio-icon" style="background:#e8f4fb;color:var(--azul);"><i class="ti ti-pool"></i></div>
+      <div><div class="espacio-title">Piscinas Privadas · Block 2 y Block 3</div><div class="espacio-sub">Exclusivo apts 213, 214 (B2) y 313, 314 (B3) · Tocá para cambiar el estado</div></div>
+    </div>
+    <div class="slots" id="slots-piscinasPrivadas"></div>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<div id="panel-servicios" class="panel">
+  <!-- HUÉSPEDES / APARTAMENTOS DE HOY -->
+  <div class="section-title" style="margin-bottom:10px;">Apartamentos con huéspedes hoy</div>
+  <div class="card" id="huespedes-hoy-card" style="margin-bottom:16px;">
+    <div id="huespedes-hoy-list"></div>
+  </div>
+
+  <!-- TAREAS DE MANTENIMIENTO: TRABAJOS INTERNOS -->
+  <div class="section-title" style="margin-bottom:10px;">Tareas de Mantenimiento · Trabajos Internos</div>
+  <div class="card" id="tareas-internas-card" style="margin-bottom:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+      <div style="font-size:11px;color:var(--text-2);">Trabajos generales del edificio (no vinculados a un apartamento): bombas, ascensores, portones, generador, áreas comunes, etc.</div>
+      <button class="add-t-btn" onclick="openModal('tareaInterna')" style="flex-shrink:0;">+ Nueva tarea</button>
+    </div>
+    <div id="tareas-internas-list"></div>
+  </div>
+
+  <!-- TICKETS POR APARTAMENTO -->
+  <div class="section-title" style="margin-bottom:10px;">Mantenimiento por Apartamento</div>
+  <div class="serv-card" style="margin-bottom:16px;">
+    <div class="serv-card-header">
+      <div class="s-icon amber"><i class="ti ti-tool"></i></div>
+      <div><div class="s-name">Mantenimiento</div><div class="s-sub">Trabajos y controles por apartamento</div></div>
+      <button class="add-t-btn" onclick="openModal('ticket','Mantenimiento')">+ Ticket</button>
+    </div>
+    <div id="tickets-Mantenimiento"></div>
+  </div>
+</div>
+
+<!-- HISTORIAL -->
+<div id="panel-historial" class="panel">
+  <div class="section-title" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span>Historial · Trabajos Internos del Edificio</span>
+    <div style="display:flex;gap:8px;">
+      <button class="add-t-btn" onclick="descargarHistorialPDF('interno')"><i class="ti ti-file-download"></i> Descargar PDF</button>
+      <button class="add-t-btn" style="background:var(--azul-oscuro);color:white;border-color:var(--azul-oscuro);" onclick="cerrarMes('interno')"><i class="ti ti-lock"></i> Cerrar mes</button>
+      <button class="stock-del" style="width:auto;padding:5px 10px;border-radius:6px;font-size:11px;" onclick="borrarHistorialTipo('interno')" title="Borrar este historial">Borrar</button>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:14px;"><div id="hist-list-interno"></div></div>
+  <div style="font-size:11px;color:var(--text-2);font-weight:700;margin:0 0 8px 2px;">Informes mensuales cerrados</div>
+  <div class="card" style="margin-bottom:20px;"><div id="informes-interno-list"></div></div>
+
+  <div class="section-title" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span>Historial · Mantenimiento por Apartamento</span>
+    <div style="display:flex;gap:8px;">
+      <button class="add-t-btn" onclick="descargarHistorialPDF('apto')"><i class="ti ti-file-download"></i> Descargar PDF</button>
+      <button class="add-t-btn" style="background:var(--azul-oscuro);color:white;border-color:var(--azul-oscuro);" onclick="cerrarMes('apto')"><i class="ti ti-lock"></i> Cerrar mes</button>
+      <button class="stock-del" style="width:auto;padding:5px 10px;border-radius:6px;font-size:11px;" onclick="borrarHistorialTipo('apto')" title="Borrar este historial">Borrar</button>
+    </div>
+  </div>
+  <div class="toolbar" style="padding:0;margin-bottom:10px;">
+    <select class="filter-select" id="h-apt-filter" onchange="renderHistorialApto()">
+      <option value="all">Todos los apartamentos</option>
+    </select>
+  </div>
+  <div class="card" style="margin-bottom:14px;"><div id="hist-list-apto"></div></div>
+  <div style="font-size:11px;color:var(--text-2);font-weight:700;margin:0 0 8px 2px;">Informes mensuales cerrados</div>
+  <div class="card"><div id="informes-apto-list"></div></div>
+</div>
+
+<!-- PEDIDOS DE MATERIALES -->
+<div id="panel-pedidos" class="panel">
+  <div class="toolbar">
+    <div style="font-size:11px;color:var(--text-2);max-width:600px;">Registrá lo que pediste, y cuando llegue material anotá cuánto llegó — se suma solo al Stock y queda visible lo que todavía falta.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="add-t-btn" onclick="descargarPedidosPDF()"><i class="ti ti-file-download"></i> Descargar PDF</button>
+      <button class="btn-amarillo" onclick="openModal('nuevoPedido')"><i class="ti ti-plus"></i>Nuevo pedido</button>
+    </div>
+  </div>
+  <div class="card"><div id="pedidos-list"></div></div>
+</div>
+
+<!-- STOCK DE MATERIALES -->
+<div id="panel-stock" class="panel">
+  <div class="toolbar">
+    <div style="font-size:11px;color:var(--text-2);max-width:600px;">Se actualiza solo: baja cuando marcás gasto y sube cuando llega un pedido o cargás un ítem nuevo.</div>
+    <button class="btn-amarillo" onclick="openModal('nuevoRubroStock')"><i class="ti ti-plus"></i>Nuevo rubro</button>
+  </div>
+  <div class="stock-grid" id="stock-grid"></div>
+</div>
+
+<!-- PROVEEDORES -->
+<div id="panel-proveedores" class="panel">
+  <div class="toolbar">
+    <div style="font-size:11px;color:var(--text-2);max-width:600px;">Agenda de proveedores del edificio: a quién comprarle, cómo contactarlo y en qué condiciones de pago.</div>
+    <button class="btn-amarillo" onclick="openModal('proveedor')"><i class="ti ti-plus"></i>Nuevo proveedor</button>
+  </div>
+  <div class="card"><div id="proveedores-list"></div></div>
+</div>
+
+<!-- PLANIFICACIÓN DE TAREAS A FUTURO -->
+<div id="panel-planificacion" class="panel">
+  <div class="toolbar">
+    <div style="font-size:11px;color:var(--text-2);max-width:600px;">Tareas que hay que hacer más adelante. Si una tarea se repite (mensual, anual, etc.), al marcarla como hecha se reprograma sola para la próxima fecha.</div>
+    <button class="btn-amarillo" onclick="openModal('planTarea')"><i class="ti ti-plus"></i>Nueva tarea</button>
+  </div>
+  <div class="card" style="margin-bottom:14px;"><div id="plan-list"></div></div>
+  <div style="font-size:11px;color:var(--text-2);font-weight:700;margin:0 0 8px 2px;">Realizadas (tareas que no se repiten)</div>
+  <div class="card"><div id="plan-hechas-list"></div></div>
+</div>
+
+<!-- HISTORIAL DE CONTROLES DE SEGURIDAD -->
+<div id="panel-seguridad" class="panel">
+  <div class="toolbar">
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <select class="filter-select" id="seg-filter" onchange="renderControlesSeg()"></select>
+      <div style="font-size:11px;color:var(--text-2);max-width:480px;">Historial de mantenimiento de los controles de seguridad. Si cargás la fecha del próximo control, te avisa cuando se vence.</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="add-t-btn" onclick="openModal('listaControles')"><i class="ti ti-list"></i> Editar lista</button>
+      <button class="add-t-btn" onclick="descargarControlesSegPDF()"><i class="ti ti-file-download"></i> Descargar PDF</button>
+      <button class="btn-amarillo" onclick="openModal('controlSeg')"><i class="ti ti-plus"></i>Registrar control</button>
+    </div>
+  </div>
+  <div class="card"><div id="seg-list"></div></div>
+</div>
+
+</div><!-- /main-content -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">Nueva reserva</div>
+    <div id="modal-body"></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn-amarillo" onclick="saveModal()"><i class="ti ti-check"></i>Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+  import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCne21WCsmkKYfNavkhgtL9tyZxxf5jA5Q",
+    authDomain: "sb2-mantenimiento.firebaseapp.com",
+    projectId: "sb2-mantenimiento",
+    storageBucket: "sb2-mantenimiento.firebasestorage.app",
+    messagingSenderId: "886116736588",
+    appId: "1:886116736588:web:16a0a475b799fa5724dee9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+  const dataRef = doc(db, 'sb2', 'data');
+  let aplicandoRemoto = false; // evita reenviar a Firestore lo que acabamos de recibir de Firestore
+  let listenerActivo = false;
+
+  // Guarda TODO el estado actual (tickets, tareas internas, stock, apartamentos, reservas, historial) en Firestore
+  window.guardarEnFirestore = async function () {
+    if (aplicandoRemoto) return;
+    try {
+      await setDoc(dataRef, {
+        tickets: window.tickets,
+        tareasInternas: window.tareasInternas,
+        stock: window.stock,
+        aptEstadoManual: window.aptEstadoManual,
+        reservas: window.reservas,
+        historial: window.historial,
+        APTS: window.APTS,
+        BLOCK_NAMES: window.BLOCK_NAMES,
+        espacios: window.espacios,
+        informesMensuales: window.informesMensuales,
+        pedidos: window.pedidos,
+        proveedores: window.proveedores,
+        planificacion: window.planificacion,
+        controlesSeg: window.controlesSeg,
+        controlesLista: window.CONTROLES_SEG,
+        actualizado: new Date().toISOString()
+      });
+    } catch (e) {
+      console.error('Error guardando en Firestore:', e);
+    }
+  };
+
+  // Escucha cambios en tiempo real (propios o de otro dispositivo) y actualiza la pantalla
+  function iniciarListenerFirestore() {
+    if (listenerActivo) return;
+    listenerActivo = true;
+    onSnapshot(dataRef, (snap) => {
+    if (!snap.exists()) {
+      // Primera vez: no hay nada en Firestore todavía, subimos los datos de ejemplo actuales
+      window.guardarEnFirestore();
+      return;
+    }
+    const d = snap.data();
+    aplicandoRemoto = true;
+    if (d.tickets) { window.tickets.length = 0; window.tickets.push(...d.tickets); }
+    if (d.tareasInternas) { window.tareasInternas.length = 0; window.tareasInternas.push(...d.tareasInternas); }
+    if (d.stock) { Object.keys(window.stock).forEach(k => delete window.stock[k]); Object.assign(window.stock, d.stock); }
+    if (d.aptEstadoManual) { Object.keys(window.aptEstadoManual).forEach(k => delete window.aptEstadoManual[k]); Object.assign(window.aptEstadoManual, d.aptEstadoManual); }
+    if (d.reservas) { window.reservas.length = 0; window.reservas.push(...d.reservas); }
+    if (d.historial) { window.historial.length = 0; window.historial.push(...d.historial); }
+    if (d.APTS) { window.APTS.length = 0; window.APTS.push(...d.APTS); }
+    let aptsCorregidos = false;
+    if (typeof repararAPTS === 'function') aptsCorregidos = repararAPTS();
+    if (typeof repararReferenciasApt === 'function' && repararReferenciasApt()) aptsCorregidos = true;
+    if (d.BLOCK_NAMES) { Object.keys(window.BLOCK_NAMES).forEach(k => delete window.BLOCK_NAMES[k]); Object.assign(window.BLOCK_NAMES, d.BLOCK_NAMES); }
+    if (d.espacios) { Object.assign(window.espacios, d.espacios); }
+    if (d.informesMensuales) { window.informesMensuales.length = 0; window.informesMensuales.push(...d.informesMensuales); }
+    if (d.pedidos) { window.pedidos.length = 0; window.pedidos.push(...d.pedidos); }
+    if (d.proveedores) { window.proveedores.length = 0; window.proveedores.push(...d.proveedores); }
+    if (d.planificacion) { window.planificacion.length = 0; window.planificacion.push(...d.planificacion); }
+    if (d.controlesSeg) { window.controlesSeg.length = 0; window.controlesSeg.push(...d.controlesSeg); }
+    if (d.controlesLista) { window.CONTROLES_SEG.length = 0; window.CONTROLES_SEG.push(...d.controlesLista); }
+    if (typeof renderTickets === 'function') renderTickets();
+    if (typeof renderTareasInternas === 'function') renderTareasInternas();
+    if (typeof renderStock === 'function') renderStock();
+    if (typeof renderAptBlocks === 'function') renderAptBlocks();
+    if (typeof renderPropietarios === 'function') renderPropietarios();
+    if (typeof renderPedidos === 'function') renderPedidos();
+    if (typeof renderProveedores === 'function') renderProveedores();
+    if (typeof renderPlanificacion === 'function') renderPlanificacion();
+    if (typeof renderControlesSeg === 'function') renderControlesSeg();
+    if (typeof renderBlockNames === 'function') renderBlockNames();
+    if (typeof renderEspacios === 'function') renderEspacios();
+    if (typeof renderHuespedesHoy === 'function') renderHuespedesHoy();
+    if (typeof renderResSidebar === 'function') renderResSidebar();
+    if (typeof renderCalendar === 'function') renderCalendar();
+    if (typeof renderHistorial === 'function') renderHistorial();
+    if (typeof renderActividadReciente === 'function') renderActividadReciente();
+    if (typeof updateStats === 'function') updateStats();
+    aplicandoRemoto = false;
+    if (aptsCorregidos) setTimeout(() => { if (typeof window.guardarEnFirestore === 'function') window.guardarEnFirestore(); }, 100);
+    }, (err) => console.error('Error escuchando Firestore:', err));
+  }
+
+  // Inicia sesión anónima y recién ahí conecta Firestore
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      iniciarListenerFirestore();
+    }
+  });
+  signInAnonymously(auth).catch((err) => {
+    console.error('Error de autenticación anónima:', err);
+    alert('No se pudo conectar con la base de datos (autenticación). Revisá tu conexión a internet.');
+  });
+</script>
+<script>
+// ===================== DATA =====================
+var BLOCK_NAMES = {1:'Block A', 2:'Block B', 3:'Block C'};
+function blockLabel(b) { return BLOCK_NAMES[b] || ('Block ' + b); }
+
+// Devuelve "111 (001A)" si el apartamento tiene catastro cargado, o solo "111" si no.
+function aptLabel(num) {
+  if (num === 'Interno') return num;
+  const apt = APTS.find(a => a.num === num);
+  return (apt && apt.catastro) ? `${num} (${apt.catastro})` : num;
+}
+
+// Reconstruye la lista de apartamentos en orden y formato correcto, usando el
+// Catastro (que siempre es único y correcto) como referencia para recuperar
+// el número real y conservar los datos de propietario ya cargados.
+function repararAPTS() {
+  const canonico = [
+    {num:'111',block:1,tipo:'Monoambiente',pool:false,catastro:'001A'},
+    {num:'112',block:1,tipo:'Monoambiente',pool:false,catastro:'002A'},
+    {num:'113',block:1,tipo:'Monoambiente',pool:false,catastro:'003A'},
+    {num:'114',block:1,tipo:'Monoambiente',pool:false,catastro:'004A'},
+    {num:'115',block:1,tipo:'3 Dormitorios',pool:false,catastro:'005A'},
+    {num:'116',block:1,tipo:'3 Dormitorios',pool:false,catastro:'006A'},
+    {num:'121',block:1,tipo:'Monoambiente',pool:false,catastro:'101A'},
+    {num:'122',block:1,tipo:'Monoambiente',pool:false,catastro:'102A'},
+    {num:'123',block:1,tipo:'2 Dormitorios',pool:false,catastro:'103A'},
+    {num:'124',block:1,tipo:'2 Dormitorios',pool:false,catastro:'104A'},
+    {num:'131',block:1,tipo:'Monoambiente',pool:false,catastro:'201A'},
+    {num:'132',block:1,tipo:'Monoambiente',pool:false,catastro:'202A'},
+    {num:'133',block:1,tipo:'2 Dormitorios',pool:false,catastro:'203A'},
+    {num:'134',block:1,tipo:'2 Dormitorios',pool:false,catastro:'204A'},
+    {num:'211',block:2,tipo:'Monoambiente',pool:false,catastro:'001B'},
+    {num:'212',block:2,tipo:'Monoambiente',pool:false,catastro:'002B'},
+    {num:'213',block:2,tipo:'3 Dormitorios',pool:true,catastro:'003B'},
+    {num:'214',block:2,tipo:'3 Dormitorios',pool:true,catastro:'004B'},
+    {num:'221',block:2,tipo:'Monoambiente',pool:false,catastro:'101B'},
+    {num:'222',block:2,tipo:'Monoambiente',pool:false,catastro:'102B'},
+    {num:'223',block:2,tipo:'2 Dormitorios',pool:false,catastro:'103B'},
+    {num:'224',block:2,tipo:'2 Dormitorios',pool:false,catastro:'104B'},
+    {num:'231',block:2,tipo:'Monoambiente',pool:false,catastro:'201B'},
+    {num:'232',block:2,tipo:'Monoambiente',pool:false,catastro:'202B'},
+    {num:'233',block:2,tipo:'2 Dormitorios',pool:false,catastro:'203B'},
+    {num:'234',block:2,tipo:'2 Dormitorios',pool:false,catastro:'204B'},
+    {num:'311',block:3,tipo:'Monoambiente',pool:false,catastro:'001C'},
+    {num:'312',block:3,tipo:'Monoambiente',pool:false,catastro:'002C'},
+    {num:'313',block:3,tipo:'3 Dormitorios',pool:true,catastro:'003C'},
+    {num:'314',block:3,tipo:'3 Dormitorios',pool:true,catastro:'004C'},
+    {num:'321',block:3,tipo:'Monoambiente',pool:false,catastro:'101C'},
+    {num:'322',block:3,tipo:'Monoambiente',pool:false,catastro:'102C'},
+    {num:'323',block:3,tipo:'2 Dormitorios',pool:false,catastro:'103C'},
+    {num:'324',block:3,tipo:'2 Dormitorios',pool:false,catastro:'104C'},
+    {num:'331',block:3,tipo:'Monoambiente',pool:false,catastro:'201C'},
+    {num:'332',block:3,tipo:'Monoambiente',pool:false,catastro:'202C'},
+    {num:'333',block:3,tipo:'2 Dormitorios',pool:false,catastro:'203C'},
+    {num:'334',block:3,tipo:'2 Dormitorios',pool:false,catastro:'204C'},
+  ];
+  const porCatastro = {};
+  APTS.forEach(a => { if (a.catastro) porCatastro[a.catastro] = a; });
+  let huboCambios = APTS.length !== canonico.length;
+  const nuevo = canonico.map(c => {
+    const viejo = porCatastro[c.catastro];
+    if (viejo && viejo.num !== c.num) huboCambios = true;
+    return Object.assign({}, c, {
+      propietario: (viejo && viejo.propietario) ? viejo.propietario : {nombre:'', celular:''}
+    });
+  });
+  APTS.length = 0;
+  APTS.push(...nuevo);
+  return huboCambios;
+}
+
+// Limpia valores de "apt" corruptos (ej: "A 103 * 123 *") dejando solo el
+// número real de apartamento (ej: "123"), en reservas, tickets e historial.
+function limpiarNumApt(str) {
+  if (typeof str !== 'string') return str;
+  const m = str.match(/(\d{3})\s*\*?\s*$/);
+  return m ? m[1] : str;
+}
+
+function repararReferenciasApt() {
+  let huboCambios = false;
+  [reservas, tickets, historial].forEach(arr => {
+    arr.forEach(item => {
+      if (item.apt && item.apt !== 'Interno') {
+        const limpio = limpiarNumApt(item.apt);
+        if (limpio !== item.apt) { item.apt = limpio; huboCambios = true; }
+      }
+    });
+  });
+  return huboCambios;
+}
+
+var espacios = {
+  piscinaGrande: [
+    {label:'8:00–10:00', estado:'ocupado', apt:'115'},
+    {label:'10:00–12:00', estado:'libre', apt:''},
+    {label:'12:00–14:00', estado:'ocupado', apt:'231'},
+    {label:'14:00–16:00', estado:'libre', apt:''},
+    {label:'16:00–18:00', estado:'ocupado', apt:'332'},
+    {label:'18:00–20:00', estado:'libre', apt:''},
+  ],
+  parrillero: [
+    {parrillero:'A', fecha:'2026-05-09', hora:'12:00–15:00', apt:'213'},
+  ],
+  piscinasPrivadas: [
+    {label:'B2 · Apt 213', estado:'en-uso'},
+    {label:'B2 · Apt 214', estado:'mantenimiento'},
+    {label:'B3 · Apt 313', estado:'en-uso'},
+    {label:'B3 · Apt 314', estado:'mantenimiento'},
+  ],
+};
+
+var APTS = [
+  {num:'111',block:1,tipo:'Monoambiente',pool:false,catastro:'001A',propietario:{nombre:'MANZUOLI FLORENCIA',celular:''}},{num:'112',block:1,tipo:'Monoambiente',pool:false,catastro:'002A',propietario:{nombre:'PEREZ CLAUDIO',celular:''}},
+  {num:'113',block:1,tipo:'Monoambiente',pool:false,catastro:'003A',propietario:{nombre:'FOSANELLA SANDRA',celular:''}},{num:'114',block:1,tipo:'Monoambiente',pool:false,catastro:'004A',propietario:{nombre:'VIERA MAURO',celular:''}},
+  {num:'115',block:1,tipo:'3 Dormitorios',pool:false,catastro:'005A',propietario:{nombre:'VILLAVERDE XAVIER',celular:''}},{num:'116',block:1,tipo:'3 Dormitorios',pool:false,catastro:'006A',propietario:{nombre:'PIREDDU FRANCISCO',celular:''}},
+  {num:'121',block:1,tipo:'Monoambiente',pool:false,catastro:'101A',propietario:{nombre:'BALTAR GONZALO',celular:''}},{num:'122',block:1,tipo:'Monoambiente',pool:false,catastro:'102A',propietario:{nombre:'BAZ MANUEL',celular:''}},
+  {num:'123',block:1,tipo:'2 Dormitorios',pool:false,catastro:'103A',propietario:{nombre:'OTTIERI PABLO',celular:''}},{num:'124',block:1,tipo:'2 Dormitorios',pool:false,catastro:'104A',propietario:{nombre:'CAPDEVILA IGNACIO',celular:''}},
+  {num:'131',block:1,tipo:'Monoambiente',pool:false,catastro:'201A',propietario:{nombre:'LAGAR CLAUDIO',celular:''}},{num:'132',block:1,tipo:'Monoambiente',pool:false,catastro:'202A',propietario:{nombre:'PORRAS MARTIN',celular:''}},
+  {num:'133',block:1,tipo:'2 Dormitorios',pool:false,catastro:'203A',propietario:{nombre:'LAGAR CLAUDIO',celular:''}},{num:'134',block:1,tipo:'2 Dormitorios',pool:false,catastro:'204A',propietario:{nombre:'BERGARA DIEGO',celular:''}},
+  {num:'211',block:2,tipo:'Monoambiente',pool:false,catastro:'001B',propietario:{nombre:'ZANATTA ADRIANA',celular:''}},{num:'212',block:2,tipo:'Monoambiente',pool:false,catastro:'002B',propietario:{nombre:'LONIGRO MARCELO',celular:''}},
+  {num:'213',block:2,tipo:'3 Dormitorios',pool:true,catastro:'003B',propietario:{nombre:'SCHILIRO SERGIO',celular:''}},{num:'214',block:2,tipo:'3 Dormitorios',pool:true,catastro:'004B',propietario:{nombre:'PORTELA JORGE',celular:''}},
+  {num:'221',block:2,tipo:'Monoambiente',pool:false,catastro:'101B',propietario:{nombre:'VIERA MAURO',celular:''}},{num:'222',block:2,tipo:'Monoambiente',pool:false,catastro:'102B',propietario:{nombre:'RAGGHIANTI CHRISTIAN / COMASTRI NICOLAS',celular:''}},
+  {num:'223',block:2,tipo:'2 Dormitorios',pool:false,catastro:'103B',propietario:{nombre:'GAONA OSCAR Y OTROS',celular:''}},{num:'224',block:2,tipo:'2 Dormitorios',pool:false,catastro:'104B',propietario:{nombre:'SHILTON DICK / SANCHEZ PINEDO MARTIN',celular:''}},
+  {num:'231',block:2,tipo:'Monoambiente',pool:false,catastro:'201B',propietario:{nombre:'AMAYA SANTIAGO',celular:''}},{num:'232',block:2,tipo:'Monoambiente',pool:false,catastro:'202B',propietario:{nombre:'SCUTICCHIO ATILIO',celular:''}},
+  {num:'233',block:2,tipo:'2 Dormitorios',pool:false,catastro:'203B',propietario:{nombre:'BLANCO GUSTAVO',celular:''}},{num:'234',block:2,tipo:'2 Dormitorios',pool:false,catastro:'204B',propietario:{nombre:'COPPA OLIVER RICARDO',celular:''}},
+  {num:'311',block:3,tipo:'Monoambiente',pool:false,catastro:'001C',propietario:{nombre:'YABRAN ALI ROBERTO',celular:''}},{num:'312',block:3,tipo:'Monoambiente',pool:false,catastro:'002C',propietario:{nombre:'VELECICO NICOLAS',celular:''}},
+  {num:'313',block:3,tipo:'3 Dormitorios',pool:true,catastro:'003C',propietario:{nombre:'BAUML WILLI',celular:''}},{num:'314',block:3,tipo:'3 Dormitorios',pool:true,catastro:'004C',propietario:{nombre:'DAYAN ARIEL',celular:''}},
+  {num:'321',block:3,tipo:'Monoambiente',pool:false,catastro:'101C',propietario:{nombre:'LONIGRO MARCELO',celular:''}},{num:'322',block:3,tipo:'Monoambiente',pool:false,catastro:'102C',propietario:{nombre:'FRANCHI LUCIANO',celular:''}},
+  {num:'323',block:3,tipo:'2 Dormitorios',pool:false,catastro:'103C',propietario:{nombre:'GOMEZ MARCELO',celular:''}},{num:'324',block:3,tipo:'2 Dormitorios',pool:false,catastro:'104C',propietario:{nombre:'OPOCZYNSKI FLAVIA',celular:''}},
+  {num:'331',block:3,tipo:'Monoambiente',pool:false,catastro:'201C',propietario:{nombre:'FRANCHI ERNESTO',celular:''}},{num:'332',block:3,tipo:'Monoambiente',pool:false,catastro:'202C',propietario:{nombre:'VILLAVERDE XAVIER',celular:''}},
+  {num:'333',block:3,tipo:'2 Dormitorios',pool:false,catastro:'203C',propietario:{nombre:'MARTIN VERONICA',celular:''}},{num:'334',block:3,tipo:'2 Dormitorios',pool:false,catastro:'204C',propietario:{nombre:'MORALES JOSE LUIS / GRONDONA',celular:''}},
+];
+const MANT_APTS = ['133','214','314','223'];
+
+var reservas = [
+  {apt:'115',huesped:'Familia Rodríguez',desde:'2026-05-01',hasta:'2026-05-31',periodo:'mensual',agente:'Inmobiliaria'},
+  {apt:'213',huesped:'Carlos Méndez',desde:'2026-05-10',hasta:'2026-05-11',periodo:'finde',agente:'Propietario'},
+  {apt:'313',huesped:'Empresa XSA',desde:'2026-01-01',hasta:'2026-12-31',periodo:'anual',agente:'Inmobiliaria'},
+  {apt:'123',huesped:'Laura Pérez',desde:'2026-05-17',hasta:'2026-05-18',periodo:'finde',agente:'Propietario'},
+  {apt:'232',huesped:'Martín Suárez',desde:'2026-05-15',hasta:'2026-05-31',periodo:'mensual',agente:'Inmobiliaria'},
+  {apt:'334',huesped:'Roberto Vila',desde:'2026-04-01',hasta:'2026-06-30',periodo:'mensual',agente:'Inmobiliaria'},
+];
+
+var tickets = [
+  {apt:'133',servicio:'Mantenimiento',tarea:'Filtración en techo',estado:'en-curso',responsable:'Jorge Rodríguez',fecha:'2026-05-06',ingreso:'2026-05-06',egreso:''},
+  {apt:'223',servicio:'Mantenimiento',tarea:'Grifo baño principal',estado:'pendiente',responsable:'Jorge Rodríguez',fecha:'2026-05-07',ingreso:'2026-05-07',egreso:''},
+  {apt:'313',servicio:'Mantenimiento',tarea:'Ventana dormitorio',estado:'pendiente',responsable:'Jorge Rodríguez',fecha:'2026-05-07',ingreso:'2026-05-07',egreso:''},
+];
+
+var historial = [
+  {apt:'115',tipo:'reserva',desc:'Reserva mensual mayo — Familia Rodríguez',fecha:'2026-05-01',agente:'Inmobiliaria'},
+  {apt:'133',tipo:'servicio',desc:'Mantenimiento — Filtración en techo',fecha:'2026-05-06',agente:'Jorge Rodríguez'},
+  {apt:'213',tipo:'reserva',desc:'Reserva fin de semana — Carlos Méndez',fecha:'2026-05-03',agente:'Propietario'},
+  {apt:'323',tipo:'servicio',desc:'Mucamas — Cambio de ropa completado',fecha:'2026-05-06',agente:'Laura González'},
+  {apt:'313',tipo:'reserva',desc:'Reserva anual — Empresa XSA',fecha:'2026-01-01',agente:'Inmobiliaria'},
+  {apt:'114',tipo:'servicio',desc:'Vidriero — Ventanal fisura reportada',fecha:'2026-05-05',agente:'Ana Vidal'},
+  {apt:'334',tipo:'nota',desc:'Propietario solicita pintura antes de junio',fecha:'2026-04-28',agente:'Administración'},
+];
+
+var informesMensuales = [];
+
+var tareasInternas = [
+  {zona:'Bomba de agua', tarea:'Revisión mensual de presión', estado:'pendiente', responsable:'Jorge Rodríguez', fecha:'2026-05-08'},
+  {zona:'Electricidad', tarea:'Revisión tablero general', estado:'en-curso', responsable:'Jorge Rodríguez', fecha:'2026-05-05'},
+  {zona:'Generador', tarea:'Prueba de encendido y nivel de combustible', estado:'listo', responsable:'Jorge Rodríguez', fecha:'2026-05-02'},
+];
+
+var stock = {
+  'Electricidad': [
+    {nombre:'Cable 2x1.5mm', cantidad:40, unidad:'m'},
+    {nombre:'Lámparas LED', cantidad:15, unidad:'un'},
+    {nombre:'Llaves térmicas', cantidad:6, unidad:'un'},
+  ],
+  'Sanitaria': [
+    {nombre:'Caños PVC 1/2"', cantidad:10, unidad:'un'},
+    {nombre:'Juntas de goma', cantidad:25, unidad:'un'},
+  ],
+  'Pintura': [
+    {nombre:'Látex blanco', cantidad:8, unidad:'L'},
+    {nombre:'Rodillos', cantidad:5, unidad:'un'},
+  ],
+  'Herramientas': [
+    {nombre:'Taladro', cantidad:2, unidad:'un'},
+    {nombre:'Escalera', cantidad:1, unidad:'un'},
+  ],
+};
+
+var pedidos = [];
+var proveedores = [];
+var planificacion = [];
+var controlesSeg = [];
+
+let selectedApt = '111';
+let curYear = 2026, curMonth = 4;
+let modalType = 'reserva';
+let presetServicio = '';
+let editIndex = null;
+
+const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const DAYS_SHORT = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+
+var aptEstadoManual = {};
+
+// Guarda el estado actual en Firestore (si ya está conectado)
+function syncDB() {
+  if (typeof window.guardarEnFirestore === 'function') window.guardarEnFirestore();
+}
+let currentAptNum = null;
+let currentEspacioTipo = null;
+let currentEspacioIdx = null;
+let currentPedidoIdx = null;
+
+function getAptState(num) {
+  if (aptEstadoManual[num]) return aptEstadoManual[num];
+  if (MANT_APTS.includes(num)) return 'mantenimiento';
+  const today = new Date();
+  const active = reservas.find(r => r.apt === num && new Date(r.desde) <= today && new Date(r.hasta) >= today);
+  return active ? 'ocupado' : 'libre';
+}
+
+// NAV
+function showPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'resumen') renderActividadReciente();
+  if (id === 'apartamentos') { renderAptBlocks(); renderPropietarios(); }
+  if (id === 'reservas') { volverListaApts(); renderResSidebar(); renderCalendar(); renderResDetail(); }
+  if (id === 'espacios') renderEspacios();
+  if (id === 'servicios') { renderTickets(); renderTareasInternas(); renderHuespedesHoy(); }
+  if (id === 'historial') renderHistorial();
+  if (id === 'pedidos') renderPedidos();
+  if (id === 'stock') renderStock();
+  if (id === 'proveedores') renderProveedores();
+  if (id === 'planificacion') renderPlanificacion();
+  if (id === 'seguridad') renderControlesSeg();
+}
+
+function updateStats() {
+  document.getElementById('stat-total-apts').textContent = APTS.length;
+  const ocupados = APTS.filter(a => getAptState(a.num) === 'ocupado').length;
+  document.getElementById('stat-ocupados').textContent = ocupados;
+  const mant = APTS.filter(a => getAptState(a.num) === 'mantenimiento').length;
+  document.getElementById('stat-mantenimiento').textContent = mant;
+  const abiertos = tickets.filter(t => t.estado !== 'listo').length;
+  document.getElementById('stat-tickets').textContent = abiertos;
+  renderBlockSummaryCards();
+}
+
+function renderBlockSummaryCards() {
+  [1,2,3].forEach(b => {
+    const apts = APTS.filter(a => a.block === b);
+    const total = apts.length;
+    const ocupados = apts.filter(a => getAptState(a.num) === 'ocupado').length;
+    const libres = apts.filter(a => getAptState(a.num) === 'libre').length;
+    const mant = apts.filter(a => getAptState(a.num) === 'mantenimiento').length;
+    const vacios = apts.filter(a => getAptState(a.num) === 'vacio').length;
+    const mono = apts.filter(a => a.tipo === 'Monoambiente').length;
+    const d2 = apts.filter(a => a.tipo === '2 Dormitorios').length;
+    const d3 = apts.filter(a => a.tipo === '3 Dormitorios').length;
+    const d4 = apts.filter(a => a.tipo === '4 Dormitorios').length;
+    const pct = total ? Math.round((ocupados / total) * 100) : 0;
+    const countEl = document.getElementById('block-count-' + b);
+    if (countEl) countEl.textContent = total + ' apts';
+    const summaryEl = document.getElementById('block-summary-' + b);
+    if (summaryEl) {
+      const extras = [mant ? 'Mant: ' + mant : null, vacios ? 'Vacíos: ' + vacios : null].filter(Boolean).join(' · ');
+      summaryEl.innerHTML = `<span>Ocupados: ${ocupados}</span><span>Libres: ${libres}${extras ? ' · ' + extras : ''}</span>`;
+    }
+    const barEl = document.getElementById('block-bar-' + b);
+    if (barEl) barEl.style.width = pct + '%';
+    const breakdownEl = document.getElementById('block-breakdown-' + b);
+    if (breakdownEl) breakdownEl.textContent = `Mono: ${mono} · 2D: ${d2} · 3D: ${d3} · 4D: ${d4}`;
+  });
+}
+
+// APARTAMENTOS
+function renderBlockNames() {
+  [1,2,3].forEach(b => {
+    const el = document.getElementById('block-name-' + b);
+    if (el) el.textContent = blockLabel(b);
+    const opt = document.getElementById('opt-block-' + b);
+    if (opt) opt.textContent = blockLabel(b);
+  });
+}
+
+function renombrarBlock(b) {
+  const actual = blockLabel(b);
+  const nuevo = prompt('Nombre para este block:', actual);
+  if (nuevo && nuevo.trim()) {
+    BLOCK_NAMES[b] = nuevo.trim();
+    renderBlockNames();
+    renderAptBlocks();
+    renderResSidebar();
+    if (typeof renderCalendar === 'function' && selectedApt) renderCalendar();
+    syncDB();
+  }
+}
+
+function renderAptBlocks() {
+  const grid = document.getElementById('apt-blocks-render');
+  grid.innerHTML = '';
+  [1,2,3].forEach(b => {
+    const card = document.createElement('div'); card.className = 'block-card';
+    const apts = APTS.filter(a => a.block === b);
+    const hasPool = b > 1;
+    card.innerHTML = `<div class="block-header"><span class="block-name">${blockLabel(b)}</span><button onclick="renombrarBlock(${b})" title="Renombrar" style="background:rgba(255,255,255,0.15);border:none;color:white;width:22px;height:22px;border-radius:5px;cursor:pointer;margin-left:6px;"><i class="ti ti-pencil" style="font-size:12px;"></i></button>${hasPool ? '<span class="pool-badge">2 piscinas priv.</span>' : ''}</div>`;
+    const floors = {};
+    apts.forEach(a => { const f = a.num.substring(0,2); if (!floors[f]) floors[f] = []; floors[f].push(a); });
+    const floorKeys = Object.keys(floors).sort((x,y) => parseInt(y) - parseInt(x));
+    floorKeys.forEach((fk, fi) => {
+      if (fi > 0) { const hr = document.createElement('hr'); hr.className = 'floor-div'; card.appendChild(hr); }
+      const lbl = document.createElement('div'); lbl.className = 'floor-label'; lbl.textContent = 'Piso ' + fk; card.appendChild(lbl);
+      const row = document.createElement('div'); row.className = 'apt-row';
+      floors[fk].forEach(a => {
+        const st = getAptState(a.num);
+        const cell = document.createElement('div'); cell.className = 'apt-cell ' + st;
+        cell.innerHTML = `<div class="apt-num-lbl">${aptLabel(a.num)}</div><div class="apt-tipo-lbl">${a.tipo}</div>${a.pool ? '<div class="apt-pool-lbl">🏊 Piscina priv.</div>' : ''}`;
+        cell.onclick = () => abrirEstadoApt(a.num);
+        row.appendChild(cell);
+      });
+      card.appendChild(row);
+    });
+    grid.appendChild(card);
+  });
+}
+
+function abrirEstadoApt(num) {
+  currentAptNum = num;
+  openModal('aptEstado');
+}
+
+// LISTA DE PROPIETARIOS
+function renderPropietarios() {
+  const cont = document.getElementById('propietarios-list'); if (!cont) return;
+  const filtro = document.getElementById('prop-block-filter').value;
+  cont.innerHTML = '';
+  [1,2,3].forEach(b => {
+    if (filtro !== 'all' && String(b) !== filtro) return;
+    const apts = APTS.filter(a => a.block === b).sort((x,y) => x.num.localeCompare(y.num, undefined, {numeric:true}));
+    if (!apts.length) return;
+    const groupTitle = document.createElement('div');
+    groupTitle.style.cssText = 'font-weight:800;color:var(--azul-oscuro);margin:14px 0 8px;font-size:12px;';
+    groupTitle.textContent = blockLabel(b);
+    cont.appendChild(groupTitle);
+    apts.forEach(a => {
+      const row = document.createElement('div');
+      row.style.cssText = 'border:1px solid var(--border);border-radius:8px;padding:9px 10px;margin-bottom:8px;';
+      row.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
+          <div style="font-weight:700;font-size:12px;color:var(--text-2);">Apt ${a.num} · ${a.tipo}</div>
+          <div style="font-size:11px;color:var(--text-3);white-space:nowrap;">Catastro: <input type="text" value="${a.catastro || ''}" placeholder="—" style="width:70px;border:1px solid var(--border);border-radius:5px;padding:2px 5px;font-size:11px;text-align:center;font-weight:700;color:var(--azul-oscuro);" onchange="guardarPropietarioInline('${a.num}','catastro',this.value)"></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <input class="form-control" style="flex:1;min-width:140px;font-size:12px;padding:6px 8px;" type="text" placeholder="Nombre del propietario" value="${(a.propietario && a.propietario.nombre) || ''}" onchange="guardarPropietarioInline('${a.num}','nombre',this.value)">
+          <input class="form-control" style="flex:1;min-width:140px;font-size:12px;padding:6px 8px;" type="tel" placeholder="Celular del propietario" value="${(a.propietario && a.propietario.celular) || ''}" onchange="guardarPropietarioInline('${a.num}','celular',this.value)">
+        </div>`;
+      cont.appendChild(row);
+    });
+  });
+}
+
+function guardarPropietarioInline(num, campo, valor) {
+  const apt = APTS.find(a => a.num === num); if (!apt) return;
+  if (campo === 'catastro') { apt.catastro = valor.trim(); syncDB(); return; }
+  if (!apt.propietario) apt.propietario = {nombre:'', celular:''};
+  apt.propietario[campo] = valor.trim();
+  syncDB();
+}
+
+// RESERVAS
+function volverListaApts() {
+  const layout = document.getElementById('res-layout');
+  if (layout) layout.classList.remove('showing-detail');
+}
+
+function renderResSidebar() {
+  const blockF = document.getElementById('r-block-filter').value;
+  const list = document.getElementById('res-sidebar-list'); list.innerHTML = '';
+  let lastBlock = null;
+  APTS.forEach(a => {
+    if (blockF !== 'all' && a.block !== parseInt(blockF)) return;
+    if (lastBlock !== a.block) { const lbl = document.createElement('div'); lbl.className = 'apt-group-lbl'; lbl.textContent = blockLabel(a.block); list.appendChild(lbl); lastBlock = a.block; }
+    const today = new Date();
+    const rs = reservas.filter(r => r.apt === a.num);
+    const active = rs.filter(r => new Date(r.hasta) >= today && new Date(r.desde) <= today);
+    const future = rs.filter(r => new Date(r.desde) > today);
+    const dotClass = active.length ? 'ocupado' : future.length ? 'parcial' : 'libre';
+    const item = document.createElement('div'); item.className = 'apt-list-item' + (a.num === selectedApt ? ' selected' : '');
+    item.innerHTML = `<div><div class="apt-list-num">Apt ${aptLabel(a.num)}</div><div class="apt-list-tipo">${a.tipo}${a.pool ? ' 🏊' : ''}</div></div><div class="occ-dot ${dotClass}"></div>`;
+    item.onclick = () => { selectedApt = a.num; document.querySelectorAll('.apt-list-item').forEach(i => i.classList.remove('selected')); item.classList.add('selected'); renderCalendar(); renderResDetail(); document.getElementById('res-layout').classList.add('showing-detail'); };
+    list.appendChild(item);
+  });
+}
+
+function renderCalendar() {
+  const apt = APTS.find(a => a.num === selectedApt);
+  if (!apt) return;
+  document.getElementById('res-cal-title').textContent = `Apt ${aptLabel(selectedApt)} · ${blockLabel(apt.block)} · ${apt.tipo}${apt.pool ? ' · 🏊' : ''} · ${MONTHS[curMonth]} ${curYear}`;
+  const grid = document.getElementById('res-cal-grid'); grid.innerHTML = '';
+  DAYS_SHORT.forEach(d => { const el = document.createElement('div'); el.className = 'cal-day-name'; el.textContent = d; grid.appendChild(el); });
+  let startDow = new Date(curYear, curMonth, 1).getDay(); startDow = startDow === 0 ? 6 : startDow - 1;
+  const daysInMonth = new Date(curYear, curMonth + 1, 0).getDate();
+  const today = new Date();
+  for (let i = 0; i < startDow; i++) { const el = document.createElement('div'); el.className = 'cal-day empty'; grid.appendChild(el); }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const el = document.createElement('div');
+    const isToday = today.getFullYear() === curYear && today.getMonth() === curMonth && today.getDate() === d;
+    el.className = 'cal-day' + (isToday ? ' today' : '');
+    const numEl = document.createElement('div'); numEl.className = 'cal-day-num'; numEl.textContent = d; el.appendChild(numEl);
+    const date = new Date(curYear, curMonth, d);
+    reservas.filter(r => r.apt === selectedApt && date >= new Date(r.desde) && date <= new Date(r.hasta)).forEach(r => {
+      const rb = document.createElement('div'); rb.className = 'res-block ' + r.periodo;
+      const desde = new Date(r.desde);
+      rb.textContent = (desde.getDate() === d && desde.getMonth() === curMonth) ? r.huesped.split(' ')[0] : '·';
+      el.appendChild(rb);
+    });
+    grid.appendChild(el);
+  }
+}
+
+function renderResDetail() {
+  const rs = reservas.filter(r => r.apt === selectedApt);
+  const box = document.getElementById('res-detail-box'); const list = document.getElementById('res-detail-list');
+  box.style.display = rs.length ? 'block' : 'none'; list.innerHTML = '';
+  const labels = {finde:'Fin de semana', mensual:'Mensual', anual:'Anual'};
+  rs.sort((a,b) => new Date(a.desde) - new Date(b.desde)).forEach(r => {
+    const idx = reservas.indexOf(r);
+    const row = document.createElement('div'); row.className = 'res-row';
+    const agenteInfo = r.agenteNombre ? `${r.agente} · ${r.agenteNombre}${r.agenteTel ? ' · ' + r.agenteTel : ''}` : r.agente;
+    row.innerHTML = `<span class="res-tipo-badge ${r.periodo}">${labels[r.periodo]}</span><div style="flex:1;"><div class="res-huesped">${r.huesped}${r.celular ? ' · 📱 ' + r.celular : ''}</div><div class="res-fechas">📅 ${r.desde} → ${r.hasta}</div><div class="res-agente">Por: ${agenteInfo}</div></div>
+      <div style="display:flex;gap:5px;">
+        <button class="stock-btn" onclick="editarReserva(${idx})" title="Editar"><i class="ti ti-pencil" style="font-size:12px;"></i></button>
+        <button class="btn-quitar" onclick="eliminarReservaIdx(${idx})">Quitar</button>
+      </div>`;
+    list.appendChild(row);
+  });
+}
+
+function editarReserva(idx) {
+  openModal('reserva', '', idx);
+}
+
+function changeMonth(dir) { curMonth += dir; if (curMonth > 11) { curMonth = 0; curYear++; } if (curMonth < 0) { curMonth = 11; curYear--; } renderCalendar(); }
+function eliminarReservaIdx(idx) {
+  if (confirm('¿Quitar esta reserva?')) { reservas.splice(idx, 1); renderResDetail(); renderCalendar(); renderResSidebar(); renderHuespedesHoy(); syncDB(); }
+}
+
+// HUÉSPEDES / APARTAMENTOS DE HOY
+function renderHuespedesHoy() {
+  const cont = document.getElementById('huespedes-hoy-list'); if (!cont) return;
+  cont.innerHTML = '';
+  const hoy = new Date().toISOString().split('T')[0];
+  const activas = reservas.filter(r => r.desde <= hoy && r.hasta >= hoy).sort((a,b) => a.apt.localeCompare(b.apt, undefined, {numeric:true}));
+  if (!activas.length) { cont.innerHTML = '<div class="empty-state"><i class="ti ti-users"></i>No hay huéspedes registrados para hoy.</div>'; return; }
+  activas.forEach(r => {
+    const idx = reservas.indexOf(r);
+    const item = document.createElement('div'); item.className = 'ticket-item';
+    const periodoTxt = r.periodo === 'permanente' ? 'Vive todo el año' : (r.periodo === 'finde' ? 'Fin de semana' : r.periodo === 'mensual' ? 'Mensual' : 'Anual');
+    item.innerHTML = `<div style="flex:1;"><div class="ticket-apt">Apt ${aptLabel(r.apt)} · ${r.huesped}</div><div class="ticket-note">${periodoTxt}${r.celular ? ' · 📱 ' + r.celular : ''}</div></div>
+      <div style="display:flex;align-items:center;gap:5px;">
+        <button class="stock-btn" onclick="editarReserva(${idx})" title="Editar"><i class="ti ti-pencil" style="font-size:12px;"></i></button>
+        <button class="stock-del" onclick="eliminarReservaIdx(${idx})" title="Eliminar / se fue antes">✕</button>
+      </div>`;
+    cont.appendChild(item);
+  });
+}
+
+// TICKETS
+function renderTickets() {
+  const labels = {'en-curso':'En curso','listo':'Listo','pendiente':'Pendiente'};
+
+  const el = document.getElementById('tickets-Mantenimiento');
+  el.innerHTML = '';
+  const ts = tickets.filter(t => t.servicio === 'Mantenimiento');
+  if (!ts.length) { el.innerHTML = '<div class="empty-state"><i class="ti ti-checks"></i>Sin tickets</div>'; return; }
+  ts.forEach(t => {
+    const idx = tickets.indexOf(t);
+    const d = document.createElement('div'); d.className = 'ticket-item';
+    d.innerHTML = `<div style="flex:1;"><div class="ticket-apt">Apt ${aptLabel(t.apt)}</div><div class="ticket-note">${t.tarea} · ${t.responsable}</div><div class="ticket-dates">📥 ${t.ingreso || '—'}${t.egreso ? '  📤 ' + t.egreso : ''}</div></div>
+      <div style="display:flex;align-items:center;gap:5px;">
+        <span class="badge ${t.estado}" onclick="avanzarTicket('${t.apt}','Mantenimiento','${t.tarea.replace(/'/g,"\\'")}')" title="Clic para avanzar estado">${labels[t.estado]}</span>
+        <button class="stock-btn" onclick="editarTicket(${idx})" title="Editar"><i class="ti ti-pencil" style="font-size:12px;"></i></button>
+        <button class="stock-del" onclick="eliminarTicket(${idx})" title="Eliminar">✕</button>
+      </div>`;
+    el.appendChild(d);
+  });
+  updateStats();
+}
+
+function eliminarTicket(idx) {
+  if (confirm('¿Eliminar el ticket de Apt ' + tickets[idx].apt + '?')) { tickets.splice(idx, 1); renderTickets(); syncDB(); }
+}
+
+function editarTicket(idx) {
+  openModal('ticket', 'Mantenimiento', idx);
+}
+
+function avanzarTicket(apt, servicio, tarea) {
+  const next = {'pendiente':'en-curso','en-curso':'listo','listo':'pendiente'};
+  const t = tickets.find(t => t.apt === apt && t.servicio === servicio && t.tarea === tarea);
+  if (t) {
+    t.estado = next[t.estado];
+    if (t.estado === 'listo' && !t.egreso) t.egreso = new Date().toISOString().split('T')[0];
+    if (t.estado === 'pendiente') t.egreso = '';
+    renderTickets();
+    syncDB();
+  }
+}
+
+// TAREAS DE MANTENIMIENTO (TRABAJOS INTERNOS)
+function renderTareasInternas() {
+  const list = document.getElementById('tareas-internas-list'); if (!list) return;
+  list.innerHTML = '';
+  const labels = {'en-curso':'En curso','listo':'Listo','pendiente':'Pendiente'};
+  if (!tareasInternas.length) { list.innerHTML = '<div class="empty-state"><i class="ti ti-checks"></i>Sin tareas internas</div>'; return; }
+  tareasInternas.forEach((t, idx) => {
+    const d = document.createElement('div'); d.className = 'ticket-item';
+    d.innerHTML = `<div style="flex:1;"><div class="ticket-apt"><i class="ti ti-building-warehouse" style="font-size:12px;margin-right:4px;color:var(--text-3);"></i>${t.zona}</div><div class="ticket-note">${t.tarea} · ${t.responsable}</div><div class="ticket-dates">📅 ${t.fecha}${t.fechaListo ? '  📅 ' + t.fechaListo : ''}</div></div>
+      <div style="display:flex;align-items:center;gap:5px;">
+        <span class="badge ${t.estado}" onclick="avanzarTareaInterna(${idx})" title="Clic para avanzar estado">${labels[t.estado]}</span>
+        <button class="stock-btn" onclick="editarTareaInterna(${idx})" title="Editar"><i class="ti ti-pencil" style="font-size:12px;"></i></button>
+        <button class="stock-del" onclick="eliminarTareaInterna(${idx})" title="Eliminar">✕</button>
+      </div>`;
+    list.appendChild(d);
+  });
+}
+
+function avanzarTareaInterna(idx) {
+  const next = {'pendiente':'en-curso','en-curso':'listo','listo':'pendiente'};
+  const t = tareasInternas[idx];
+  t.estado = next[t.estado];
+  if (t.estado === 'listo' && !t.fechaListo) t.fechaListo = new Date().toISOString().split('T')[0];
+  if (t.estado === 'pendiente') t.fechaListo = '';
+  renderTareasInternas();
+  if (typeof renderHistorialInterno === 'function') renderHistorialInterno();
+  syncDB();
+}
+
+function editarTareaInterna(idx) {
+  openModal('tareaInterna', '', idx);
+}
+
+function eliminarTareaInterna(idx) {
+  if (confirm('¿Eliminar esta tarea interna?')) { tareasInternas.splice(idx, 1); renderTareasInternas(); syncDB(); }
+}
+
+// STOCK DE MATERIALES
+function renderStock() {
+  const grid = document.getElementById('stock-grid'); if (!grid) return;
+  grid.innerHTML = '';
+  Object.keys(stock).forEach(cat => {
+    const col = document.createElement('div'); col.className = 'mucamas-block';
+    col.innerHTML = `<div class="mucamas-block-header"><span class="mucamas-block-name">${cat}</span><button class="add-t-btn" style="border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);" onclick="openModal('stockItem','${cat}')">+ Ítem</button></div><div class="mucamas-body" id="stock-cat-${cat.replace(/\s+/g,'-')}"></div>`;
+    grid.appendChild(col);
+  });
+  Object.keys(stock).forEach(cat => {
+    const el = document.getElementById('stock-cat-' + cat.replace(/\s+/g,'-'));
+    const items = stock[cat];
+    if (!items.length) { el.innerHTML = '<div class="empty-state" style="padding:14px 0;font-size:11px;"><i class="ti ti-package" style="font-size:20px;"></i>Sin ítems</div>'; return; }
+    items.forEach((it, idx) => {
+      const row = document.createElement('div'); row.className = 'stock-row';
+      row.innerHTML = `<div style="flex:1;"><div class="stock-name">${it.nombre}</div><div class="stock-qty">${it.cantidad} ${it.unidad}</div></div>
+        <div class="stock-actions">
+          <button class="stock-btn" onclick="ajustarStock('${cat}',${idx},-1)" title="Restar">−</button>
+          <button class="stock-btn" onclick="ajustarStock('${cat}',${idx},1)" title="Sumar">+</button>
+          <button class="stock-del" onclick="eliminarStock('${cat}',${idx})" title="Eliminar">✕</button>
+        </div>`;
+      el.appendChild(row);
+    });
+  });
+}
+
+function ajustarStock(cat, idx, delta) {
+  const it = stock[cat][idx];
+  it.cantidad = Math.max(0, it.cantidad + delta);
+  renderStock();
+  syncDB();
+}
+
+function eliminarStock(cat, idx) {
+  if (confirm('¿Eliminar "' + stock[cat][idx].nombre + '" del stock?')) { stock[cat].splice(idx, 1); renderStock(); syncDB(); }
+}
+
+// PEDIDOS DE MATERIALES
+function estadoPedido(p) {
+  if (p.recibido <= 0) return 'pendiente';
+  if (p.recibido < p.pedido) return 'en-curso'; // parcial
+  return 'listo'; // completo
+}
+
+function renderPedidos() {
+  const cont = document.getElementById('pedidos-list'); if (!cont) return;
+  cont.innerHTML = '';
+  if (!pedidos.length) { cont.innerHTML = '<div class="empty-state"><i class="ti ti-package"></i>Sin pedidos cargados.</div>'; return; }
+  const labels = {pendiente:'Pendiente', 'en-curso':'Parcial', listo:'Completo'};
+  const ordenados = [...pedidos].sort((a,b) => {
+    const ea = estadoPedido(a), eb = estadoPedido(b);
+    if ((ea === 'listo') !== (eb === 'listo')) return ea === 'listo' ? 1 : -1;
+    return new Date(b.fecha) - new Date(a.fecha);
+  });
+  ordenados.forEach(p => {
+    const idx = pedidos.indexOf(p);
+    const est = estadoPedido(p);
+    const falta = Math.max(0, p.pedido - p.recibido);
+    const entregas = p.entregas || [];
+    let fechasHtml = `📅 Pedido: ${p.fecha}`;
+    if (entregas.length) {
+      if (est === 'listo') {
+        const ultima = entregas[entregas.length - 1];
+        const parciales = entregas.slice(0, -1);
+        if (parciales.length) fechasHtml += parciales.map(e => `  📦 Parcial ${e.fecha}: ${e.cantidad} ${p.unidad}`).join('');
+        fechasHtml += `  ✅ Entrega final ${ultima.fecha}: ${ultima.cantidad} ${p.unidad}`;
+      } else {
+        fechasHtml += entregas.map(e => `  📦 Parcial ${e.fecha}: ${e.cantidad} ${p.unidad}`).join('');
+      }
+    }
+    const item = document.createElement('div'); item.className = 'ticket-item';
+    item.innerHTML = `<div style="flex:1;"><div class="ticket-apt">${p.categoria} · ${p.nombre}</div><div class="ticket-note">Pedido: ${p.pedido} ${p.unidad} · Recibido: ${p.recibido} ${p.unidad} · Falta: ${falta} ${p.unidad}${p.proveedor ? ' · Prov: ' + p.proveedor : ''}</div><div class="ticket-dates">${fechasHtml}</div></div>
+      <div style="display:flex;align-items:center;gap:5px;">
+        <span class="badge ${est}">${labels[est]}</span>
+        ${est !== 'listo' ? `<button class="stock-btn" onclick="abrirLlegadaPedido(${idx})" title="Registrar llegada"><i class="ti ti-truck-delivery" style="font-size:12px;"></i></button>` : ''}
+        <button class="stock-del" onclick="eliminarPedido(${idx})" title="Eliminar">✕</button>
+      </div>`;
+    cont.appendChild(item);
+  });
+}
+
+// ===== PLANIFICACIÓN Y CONTROLES DE SEGURIDAD =====
+const LOGO_SB2 = "data:image/jpeg;base64,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";
+const ZONAS_PLAN = ['Sala de máquinas','Bomba de agua','Electricidad','Pintura','Sanitaria','Controles de incendio','Portón / Acceso','Piscina común','Piscinas privadas','Generador','Estacionamiento','Áreas verdes'];
+var CONTROLES_SEG = ['Extintores','Alarma de incendio','Detectores de humo','Luces de emergencia','Mangueras / hidrantes','Salidas de emergencia','Cámaras de seguridad','Portón / Acceso','Pararrayos'];
+const FRECUENCIAS = {unica:'No se repite', semanal:'Cada semana', mensual:'Cada mes', trimestral:'Cada 3 meses', semestral:'Cada 6 meses', anual:'Cada año'};
+const FREC_MESES = {mensual:1, trimestral:3, semestral:6, anual:12};
+
+function esc(v) { return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtFecha(dt) { return dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0'); }
+function hoyLocal() { return fmtFecha(new Date()); }
+function diasHasta(iso) {
+  const [y,m,d] = iso.split('-').map(Number), [y2,m2,d2] = hoyLocal().split('-').map(Number);
+  return Math.round((new Date(y,m-1,d) - new Date(y2,m2-1,d2)) / 86400000);
+}
+function siguienteFecha(iso, frec) {
+  const [y,m,d] = iso.split('-').map(Number);
+  if (frec === 'semanal') return fmtFecha(new Date(y, m-1, d+7));
+  const n = FREC_MESES[frec]; if (!n) return iso;
+  const dt = new Date(y, m-1+n, 1);
+  const ultimo = new Date(dt.getFullYear(), dt.getMonth()+1, 0).getDate();
+  dt.setDate(Math.min(d, ultimo));
+  return fmtFecha(dt);
+}
+
+function renderPlanificacion() {
+  const list = document.getElementById('plan-list'), listH = document.getElementById('plan-hechas-list');
+  if (!list || !listH) return;
+  list.innerHTML = ''; listH.innerHTML = '';
+  const pend = planificacion.map((t,i) => ({t,i})).filter(x => !x.t.hecha).sort((a,b) => a.t.fecha.localeCompare(b.t.fecha));
+  const hechas = planificacion.map((t,i) => ({t,i})).filter(x => x.t.hecha).sort((a,b) => (b.t.fechaHecha||'').localeCompare(a.t.fechaHecha||''));
+  if (!pend.length) list.innerHTML = '<div class="empty-state"><i class="ti ti-calendar-event"></i>No hay tareas planificadas.</div>';
+  pend.forEach(({t,i}) => {
+    const dias = diasHasta(t.fecha);
+    let cls, txt;
+    if (dias < 0) { cls = 'vencida'; txt = 'Vencida hace ' + (-dias) + (dias === -1 ? ' día' : ' días'); }
+    else if (dias === 0) { cls = 'pendiente'; txt = 'Hoy'; }
+    else { cls = 'en-curso'; txt = 'En ' + dias + (dias === 1 ? ' día' : ' días'); }
+    const d = document.createElement('div'); d.className = 'ticket-item';
+    d.innerHTML = `<div style="flex:1;">
+        <div class="ticket-apt"><i class="ti ti-building-warehouse" style="font-size:12px;margin-right:4px;color:var(--text-3);"></i>${esc(t.zona)}</div>
+        <div class="ticket-note">${esc(t.tarea)}${t.responsable ? ' · ' + esc(t.responsable) : ''}</div>
+        <div class="ticket-dates">📅 ${esc(t.fecha)} · ${FRECUENCIAS[t.frecuencia] || FRECUENCIAS.unica}${t.ultimaVez ? ' · Última vez: ' + esc(t.ultimaVez) : ''}</div>
+        ${t.notas ? `<div class="ticket-dates">${esc(t.notas)}</div>` : ''}
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;">
+        <span class="badge ${cls} fija">${txt}</span>
+        <button class="stock-btn" onclick="marcarPlanHecha(${i})" title="Marcar como hecha"><i class="ti ti-check" style="font-size:12px;"></i></button>
+        <button class="stock-btn" onclick="openModal('planTarea','',${i})" title="Editar"><i class="ti ti-pencil" style="font-size:12px;"></i></button>
+        <button class="stock-del" onclick="eliminarPlan(${i})" title="Eliminar">✕</button>
+      </div>`;
+    list.appendChild(d);
+  });
+  if (!hechas.length) listH.innerHTML = '<div class="empty-state">Todavía no hay tareas realizadas.</div>';
+  hechas.forEach(({t,i}) => {
+    const d = document.createElement('div'); d.className = 'ticket-item';
+    d.innerHTML = `<div style="flex:1;">
+        <div class="ticket-apt">${esc(t.zona)}</div>
+        <div class="ticket-note">${esc(t.tarea)}${t.responsable ? ' · ' + esc(t.responsable) : ''}</div>
+        <div class="ticket-dates">📅 Prevista: ${esc(t.fecha)} · ✅ Hecha: ${esc(t.fechaHecha || '')}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;">
+        <span class="badge listo fija">Hecha</span>
+        <button class="stock-btn" onclick="reabrirPlan(${i})" title="Volver a pendiente"><i class="ti ti-arrow-back-up" style="font-size:12px;"></i></button>
+        <button class="stock-del" onclick="eliminarPlan(${i})" title="Eliminar">✕</button>
+      </div>`;
+    listH.appendChild(d);
+  });
+}
+
+function marcarPlanHecha(idx) {
+  const t = planificacion[idx], hoy = hoyLocal();
+  if (t.frecuencia && t.frecuencia !== 'unica') {
+    let prox = siguienteFecha(t.fecha, t.frecuencia);
+    while (prox <= hoy) prox = siguienteFecha(prox, t.frecuencia);
+    if (!confirm('¿Marcar "' + t.tarea + '" como hecha? Se reprograma para el ' + prox + '.')) return;
+    t.ultimaVez = hoy; t.fecha = prox;
+  } else {
+    if (!confirm('¿Marcar "' + t.tarea + '" como hecha?')) return;
+    t.hecha = true; t.fechaHecha = hoy;
+  }
+  renderPlanificacion(); syncDB();
+}
+function reabrirPlan(idx) { planificacion[idx].hecha = false; planificacion[idx].fechaHecha = ''; renderPlanificacion(); syncDB(); }
+function eliminarPlan(idx) {
+  if (confirm('¿Eliminar la tarea "' + planificacion[idx].tarea + '"?')) { planificacion.splice(idx, 1); renderPlanificacion(); syncDB(); }
+}
+
+function renderControlesSeg() {
+  const cont = document.getElementById('seg-list'), sel = document.getElementById('seg-filter');
+  if (!cont || !sel) return;
+  const actual = sel.value || 'all';
+  const nombres = [...new Set([...CONTROLES_SEG, ...controlesSeg.map(r => r.control)])];
+  sel.innerHTML = '<option value="all">Todos los controles</option>' + nombres.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
+  sel.value = nombres.includes(actual) ? actual : 'all';
+  const filtro = sel.value;
+  const ultimo = {};
+  controlesSeg.forEach((r,i) => { const l = ultimo[r.control]; if (l === undefined || r.fecha >= controlesSeg[l].fecha) ultimo[r.control] = i; });
+  const lista = controlesSeg.map((r,i) => ({r,i})).filter(x => filtro === 'all' || x.r.control === filtro).sort((a,b) => b.r.fecha.localeCompare(a.r.fecha));
+  cont.innerHTML = '';
+  if (!lista.length) { cont.innerHTML = '<div class="empty-state"><i class="ti ti-shield-check"></i>Sin controles registrados.</div>'; return; }
+  const resLabel = {ok:'OK', observaciones:'Con observaciones', falla:'Falla'};
+  const resCls = {ok:'listo', observaciones:'pendiente', falla:'falla'};
+  const hoy = hoyLocal();
+  lista.forEach(({r,i}) => {
+    const vencido = ultimo[r.control] === i && r.proximo && r.proximo < hoy;
+    const d = document.createElement('div'); d.className = 'ticket-item';
+    d.innerHTML = `<div style="flex:1;">
+        <div class="ticket-apt"><i class="ti ti-shield-check" style="font-size:12px;margin-right:4px;color:var(--text-3);"></i>${esc(r.control)}</div>
+        <div class="ticket-note">${esc(r.trabajo)}${r.responsable ? ' · ' + esc(r.responsable) : ''}</div>
+        <div class="ticket-dates">📅 ${esc(r.fecha)}${r.proximo ? ' · Próximo control: ' + esc(r.proximo) : ''}</div>
+        ${r.obs ? `<div class="ticket-dates">${esc(r.obs)}</div>` : ''}
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:flex-end;">
+        ${vencido ? '<span class="badge vencida fija">Control vencido</span>' : ''}
+        <span class="badge ${resCls[r.resultado] || 'listo'} fija">${resLabel[r.resultado] || 'OK'}</span>
+        <button class="stock-btn" onclick="openModal('controlSeg','',${i})" title="Editar"><i class="ti ti-pencil" style="font-size:12px;"></i></button>
+        <button class="stock-del" onclick="eliminarControlSeg(${i})" title="Eliminar">✕</button>
+      </div>`;
+    cont.appendChild(d);
+  });
+}
+function descargarControlesSegPDF() {
+  if (!window.jspdf) { alert('No se pudo cargar el generador de PDF. Revisá tu conexión a internet.'); return; }
+  const sel = document.getElementById('seg-filter');
+  const filtro = sel ? sel.value : 'all';
+  const lista = controlesSeg.filter(r => filtro === 'all' || r.control === filtro).sort((a,b) => b.fecha.localeCompare(a.fecha));
+  if (!lista.length) { alert('No hay controles registrados para descargar.'); return; }
+  const ultimo = {};
+  controlesSeg.forEach((r,i) => { const l = ultimo[r.control]; if (l === undefined || r.fecha >= controlesSeg[l].fecha) ultimo[r.control] = i; });
+  const hoy = hoyLocal();
+  const resLabel = {ok:'OK', observaciones:'Con observaciones', falla:'Falla'};
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
+  pdf.setFontSize(14);
+  pdf.text('Sierra Ballena 2 · Historial - Controles de Seguridad', 14, 16);
+  pdf.setFontSize(9);
+  pdf.text('Generado: ' + new Date().toLocaleDateString('es-UY') + (filtro !== 'all' ? '   ·   Control: ' + filtro : ''), 14, 22);
+  pdf.addImage(LOGO_SB2, 'JPEG', 182, 6, 16, 16);
+  let y = 32;
+  lista.forEach(r => {
+    const vencido = ultimo[r.control] === controlesSeg.indexOf(r) && r.proximo && r.proximo < hoy;
+    const l1 = r.fecha + '  —  ' + r.control;
+    const l2 = pdf.splitTextToSize('Trabajo: ' + r.trabajo + '   ·   Responsable: ' + (r.responsable || '—') + '   ·   Resultado: ' + (resLabel[r.resultado] || 'OK'), 182);
+    const l3 = r.obs ? pdf.splitTextToSize('Observaciones: ' + r.obs, 182) : [];
+    const l4 = r.proximo ? 'Próximo control: ' + r.proximo + (vencido ? '   (CONTROL VENCIDO)' : '') : '';
+    const alto = 6 + l2.length * 5 + l3.length * 5 + (l4 ? 5 : 0) + 5;
+    if (y + alto > 285) { pdf.addPage(); y = 20; }
+    pdf.setFontSize(10);
+    pdf.setFont(undefined, 'bold'); pdf.text(l1, 14, y); y += 5;
+    pdf.setFont(undefined, 'normal'); pdf.text(l2, 14, y); y += l2.length * 5;
+    if (l3.length) { pdf.text(l3, 14, y); y += l3.length * 5; }
+    if (l4) { if (vencido) pdf.setTextColor(192, 48, 48); pdf.text(l4, 14, y); pdf.setTextColor(0, 0, 0); y += 5; }
+    y += 5;
+  });
+  pdf.save('historial-controles-seguridad.pdf');
+}
+
+function agregarFilaControl(valor, orig) {
+  const cont = document.getElementById('m-lista-controles'); if (!cont) return;
+  const row = document.createElement('div'); row.className = 'lista-ctrl-row'; row.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;align-items:center;';
+  row.innerHTML = `<input class="form-control" type="text" data-orig="${esc(orig)}" value="${esc(valor)}" placeholder="Nombre del control"><button type="button" class="stock-del" title="Quitar de la lista" onclick="this.parentNode.remove()">✕</button>`;
+  cont.appendChild(row);
+  if (!valor) row.querySelector('input').focus();
+}
+
+function eliminarControlSeg(idx) {
+  if (confirm('¿Eliminar este registro de "' + controlesSeg[idx].control + '"?')) { controlesSeg.splice(idx, 1); renderControlesSeg(); syncDB(); }
+}
+
+// PROVEEDORES
+function renderProveedores() {
+  const cont = document.getElementById('proveedores-list'); if (!cont) return;
+  cont.innerHTML = '';
+  if (!proveedores.length) { cont.innerHTML = '<div class="empty-state"><i class="ti ti-truck"></i>Sin proveedores cargados.</div>'; return; }
+  const ordenados = [...proveedores].sort((a,b) => a.nombre.localeCompare(b.nombre));
+  ordenados.forEach(p => {
+    const idx = proveedores.indexOf(p);
+    const item = document.createElement('div'); item.className = 'ticket-item';
+    const telLimpio = (p.telefono || '').replace(/\D/g,'');
+    item.innerHTML = `<div style="flex:1;">
+        <div class="ticket-apt">${p.nombre} <span style="font-weight:400;color:var(--text-3);">· ${p.rubro}</span></div>
+        <div class="ticket-note">${p.contacto ? p.contacto + ' · ' : ''}${p.telefono || 'sin teléfono'}${p.condiciones ? ' · ' + p.condiciones : ''}</div>
+        ${p.notas ? `<div class="ticket-dates">${p.notas}</div>` : ''}
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;">
+        ${telLimpio ? `<a class="stock-btn" href="https://wa.me/598${telLimpio.replace(/^0+/,'')}" target="_blank" title="WhatsApp"><i class="ti ti-brand-whatsapp" style="font-size:12px;"></i></a>` : ''}
+        <button class="stock-del" onclick="eliminarProveedor(${idx})" title="Eliminar">✕</button>
+      </div>`;
+    cont.appendChild(item);
+  });
+}
+
+function eliminarProveedor(idx) {
+  if (confirm('¿Eliminar el proveedor "' + proveedores[idx].nombre + '"?')) { proveedores.splice(idx, 1); renderProveedores(); syncDB(); }
+}
+
+function abrirLlegadaPedido(idx) {
+  currentPedidoIdx = idx;
+  openModal('llegadaPedido');
+}
+
+function eliminarPedido(idx) {
+  if (confirm('¿Eliminar el pedido de "' + pedidos[idx].nombre + '"?')) { pedidos.splice(idx, 1); renderPedidos(); syncDB(); }
+}
+
+function descargarPedidosPDF() {
+  if (!window.jspdf) { alert('No se pudo cargar el generador de PDF. Revisá tu conexión a internet.'); return; }
+  if (!pedidos.length) { alert('No hay pedidos cargados todavía.'); return; }
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
+  if (typeof pdf.autoTable !== 'function') { alert('No se pudo cargar el generador de tablas del PDF. Revisá tu conexión a internet.'); return; }
+  const labels = {pendiente:'Pendiente', 'en-curso':'Parcial', listo:'Completo'};
+
+  const grupos = [
+    ['PENDIENTE', p => estadoPedido(p) === 'pendiente', [211,47,47]],
+    ['PARCIAL', p => estadoPedido(p) === 'en-curso', [25,90,170]],
+    ['COMPLETO', p => estadoPedido(p) === 'listo', [46,139,66]],
+  ];
+  const conteo = grupos.map(([titulo, filtro]) => [titulo, pedidos.filter(filtro).length]);
+
+  // Encabezado
+  pdf.setFontSize(18);
+  pdf.setFont(undefined, 'bold');
+  pdf.text('SIERRA BALLENA 2 · PEDIDOS DE MATERIALES', 14, 18);
+  pdf.setFontSize(9);
+  pdf.setFont(undefined, 'normal');
+  pdf.setTextColor(90, 90, 90);
+  pdf.text('Actualizado al ' + new Date().toLocaleDateString('es-UY') + '  ·  Código de estado: Pendiente = rojo · Parcial = azul · Completo = verde', 14, 25);
+  pdf.setTextColor(0, 0, 0);
+
+  // Logo del edificio arriba a la derecha
+  pdf.addImage(LOGO_SB2, 'JPEG', 178, 8, 18, 18);
+
+  // Tabla resumen ESTADO / CANTIDAD
+  pdf.autoTable({
+    startY: 32,
+    head: [['ESTADO', 'CANTIDAD']],
+    body: conteo.map(([t, n]) => [labels[{PENDIENTE:'pendiente', PARCIAL:'en-curso', COMPLETO:'listo'}[t]], String(n)]),
+    theme: 'grid',
+    styles: { fontSize: 10, halign: 'center' },
+    headStyles: { fillColor: [230, 230, 230], textColor: [0, 0, 0], fontStyle: 'bold' },
+    columnStyles: { 0: { cellWidth: 60 }, 1: { cellWidth: 30 } },
+    margin: { left: 14, right: 14 },
+    didParseCell: (data) => {
+      if (data.section === 'body' && data.column.index === 0) {
+        const colores = { Pendiente: [252, 226, 226], Parcial: [214, 232, 250], Completo: [222, 240, 223] };
+        data.cell.styles.fillColor = colores[data.cell.raw] || [255, 255, 255];
+      }
+    },
+  });
+
+  const colWidths = { 0: { cellWidth: 21 }, 1: { cellWidth: 25 }, 2: { cellWidth: 58 }, 3: { cellWidth: 19, halign: 'center' }, 4: { cellWidth: 19, halign: 'center' }, 5: { cellWidth: 19, halign: 'center' }, 6: { cellWidth: 21, halign: 'center' } };
+
+  grupos.forEach(([titulo, filtro, colorRGB]) => {
+    const items = pedidos.filter(filtro).sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+    const y0 = pdf.lastAutoTable.finalY + 10;
+    pdf.setFontSize(12);
+    pdf.setFont(undefined, 'bold');
+    pdf.setTextColor(colorRGB[0], colorRGB[1], colorRGB[2]);
+    pdf.text(`${titulo} (${items.length})`, 14, y0);
+    pdf.setTextColor(0, 0, 0);
+
+    pdf.autoTable({
+      startY: y0 + 3,
+      head: [['Fecha', 'Categoría', 'Artículo', 'Pedido', 'Recibido', 'Falta', 'Estado']],
+      body: items.map(p => {
+        const falta = Math.max(0, p.pedido - p.recibido);
+        return [p.fecha, p.categoria, p.nombre, `${p.pedido} ${p.unidad}`, `${p.recibido} ${p.unidad}`, `${falta} ${p.unidad}`, labels[estadoPedido(p)]];
+      }),
+      theme: 'grid',
+      styles: { fontSize: 8.5, cellPadding: 2 },
+      headStyles: { fillColor: [60, 60, 60], textColor: [255, 255, 255], fontStyle: 'bold' },
+      columnStyles: colWidths,
+      margin: { left: 14, right: 14 },
+      didParseCell: (data) => {
+        if (data.section === 'body' && data.column.index === 6) {
+          const colores = { Pendiente: [211, 47, 47], Parcial: [25, 90, 170], Completo: [46, 139, 66] };
+          data.cell.styles.textColor = colores[data.cell.raw] || [0, 0, 0];
+          data.cell.styles.fontStyle = 'bold';
+        }
+      },
+    });
+  });
+
+  pdf.save('pedidos-materiales.pdf');
+}
+
+// HISTORIAL
+function initHistorialSelector() {
+  const sel = document.getElementById('h-apt-filter');
+  APTS.forEach(a => { const o = document.createElement('option'); o.value = a.num; o.textContent = 'Apt ' + a.num + ' · ' + blockLabel(a.block); sel.appendChild(o); });
+}
+
+// Resuelve el estado ACTUAL (pendiente/en-curso/listo) de una tarea interna
+// del historial, buscando la tarea viva en tareasInternas (por id, o si es
+// una entrada vieja sin id, por coincidencia de zona+tarea+fecha).
+function estadoDeHistorialInterno(h) {
+  if (h.tareaId) {
+    const t = tareasInternas.find(x => x.id === h.tareaId);
+    if (t) return t.estado;
+  }
+  const t2 = tareasInternas.find(x => `Mantenimiento interno — ${x.zona}: ${x.tarea}` === h.desc && x.fecha === h.fecha);
+  return t2 ? t2.estado : 'listo';
+}
+
+function renderHistorialInterno() {
+  const list = document.getElementById('hist-list-interno'); if (!list) return;
+  list.innerHTML = '';
+  const filtered = historial.filter(h => h.apt === 'Interno');
+  if (!filtered.length) { list.innerHTML = '<div class="empty-state"><i class="ti ti-history"></i>Sin registros.</div>'; return; }
+  const conEstado = filtered.map(h => Object.assign({}, h, {estado: estadoDeHistorialInterno(h)}));
+  const pendientes = conEstado.filter(h => h.estado !== 'listo').sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+  const completadas = conEstado.filter(h => h.estado === 'listo').sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+  const estLabel = {pendiente:'Pendiente', 'en-curso':'En curso', listo:'Listo'};
+
+  const renderGrupo = (titulo, color, items) => {
+    const header = document.createElement('div');
+    header.style.cssText = `font-size:11px;font-weight:800;color:${color};margin:12px 0 8px;text-transform:uppercase;letter-spacing:.4px;`;
+    header.textContent = `${titulo} (${items.length})`;
+    list.appendChild(header);
+    if (!items.length) {
+      const vacio = document.createElement('div'); vacio.className = 'empty-state'; vacio.style.padding = '10px 0';
+      vacio.innerHTML = '<i class="ti ti-checks"></i>Sin trabajos en esta categoría.';
+      list.appendChild(vacio);
+      return;
+    }
+    items.forEach(h => {
+      const item = document.createElement('div'); item.className = 'hist-item';
+      item.innerHTML = `<div class="hist-icon" style="background:#fef4e4;color:#c47f10;"><i class="ti ti-tool"></i></div><div style="flex:1;"><div class="hist-title">${h.desc}</div><div class="hist-sub">${h.agente} · ${estLabel[h.estado]}</div></div><div class="hist-date">${h.fecha}</div>`;
+      list.appendChild(item);
+    });
+  };
+  renderGrupo('🟠 Pendientes / En curso', '#c47f10', pendientes);
+  renderGrupo('🟢 Completadas', '#2d9c2d', completadas);
+}
+
+function renderHistorialApto() {
+  const list = document.getElementById('hist-list-apto'); if (!list) return;
+  const aptF = document.getElementById('h-apt-filter').value;
+  list.innerHTML = '';
+  const filtered = historial.filter(h => h.apt !== 'Interno' && h.tipo === 'servicio' && (aptF === 'all' || h.apt === aptF))
+    .sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+  if (!filtered.length) { list.innerHTML = '<div class="empty-state"><i class="ti ti-history"></i>Sin registros.</div>'; return; }
+  filtered.forEach(h => {
+    const item = document.createElement('div'); item.className = 'hist-item';
+    item.innerHTML = `<div class="hist-icon" style="background:#fef4e4;color:#c47f10;"><i class="ti ti-tool"></i></div><div style="flex:1;"><div class="hist-title">Apt ${aptLabel(h.apt)} · ${h.desc}</div><div class="hist-sub">${h.agente}</div></div><div class="hist-date">${h.fecha}</div>`;
+    list.appendChild(item);
+  });
+}
+
+function renderHistorial() {
+  renderHistorialInterno();
+  renderHistorialApto();
+  renderInformesMensuales('interno');
+  renderInformesMensuales('apto');
+}
+
+function renderActividadReciente() {
+  const list = document.getElementById('actividad-reciente-list'); if (!list) return;
+  list.innerHTML = '';
+  const tipoDot = {reserva:'var(--azul)', servicio:'#c47f10', nota:'#2d9c2d'};
+  const recientes = [...historial].sort((a,b) => new Date(b.fecha) - new Date(a.fecha)).slice(0, 5);
+  if (!recientes.length) { list.innerHTML = '<div class="empty-state"><i class="ti ti-history"></i>Sin actividad reciente.</div>'; return; }
+  recientes.forEach(h => {
+    const item = document.createElement('div'); item.className = 'activity-item';
+    item.innerHTML = `<div class="act-dot" style="background:${tipoDot[h.tipo] || '#888'};"></div><div class="act-text"><strong>Apt ${aptLabel(h.apt)}</strong> · <span>${h.desc} · ${h.agente}</span></div><div class="act-time">${h.fecha}</div>`;
+    list.appendChild(item);
+  });
+}
+
+function borrarHistorialTipo(cual) {
+  const esInterno = cual === 'interno';
+  const label = esInterno ? 'de Trabajos Internos' : 'de Mantenimiento por Apartamento';
+  if (confirm('¿Borrar el historial ' + label + '? Esta acción no se puede deshacer.')) {
+    historial = historial.filter(h => esInterno ? h.apt !== 'Interno' : !(h.apt !== 'Interno' && h.tipo === 'servicio'));
+    renderHistorial();
+    renderActividadReciente();
+    syncDB();
+  }
+}
+
+function generarPDFRegistros(titulo, registros, esInterno, nombreArchivo) {
+  if (!window.jspdf) { alert('No se pudo cargar el generador de PDF. Revisá tu conexión a internet.'); return; }
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
+  pdf.setFontSize(14);
+  pdf.text('Sierra Ballena 2 · ' + titulo, 14, 16);
+  pdf.setFontSize(9);
+  pdf.text('Generado: ' + new Date().toLocaleDateString('es-UY'), 14, 22);
+  let y = 32;
+  pdf.setFontSize(10);
+  if (!registros.length) {
+    pdf.text('Sin registros.', 14, y);
+  } else {
+    registros.forEach(h => {
+      if (y > 280) { pdf.addPage(); y = 20; }
+      const encabezado = esInterno ? h.desc : ('Apt ' + aptLabel(h.apt) + ' · ' + h.desc);
+      pdf.setFont(undefined, 'bold');
+      pdf.text(h.fecha + '  —  ' + encabezado, 14, y);
+      pdf.setFont(undefined, 'normal');
+      pdf.text('Responsable: ' + (h.agente || '—'), 14, y + 5);
+      y += 12;
+    });
+  }
+  pdf.save(nombreArchivo + '.pdf');
+}
+
+function generarPDFTrabajosInternos(titulo, registros, nombreArchivo) {
+  if (!window.jspdf) { alert('No se pudo cargar el generador de PDF. Revisá tu conexión a internet.'); return; }
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
+  pdf.setFontSize(14);
+  pdf.text('Sierra Ballena 2 · ' + titulo, 14, 16);
+  pdf.setFontSize(9);
+  pdf.text('Generado: ' + new Date().toLocaleDateString('es-UY'), 14, 22);
+
+  const conEstado = registros.map(h => Object.assign({}, h, {estado: h.estado || estadoDeHistorialInterno(h)}));
+  const pendientes = conEstado.filter(h => h.estado !== 'listo').sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
+  const completadas = conEstado.filter(h => h.estado === 'listo').sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
+  const estLabel = {pendiente:'Pendiente', 'en-curso':'En curso', listo:'Listo'};
+
+  let primeraSeccion = true;
+  const dibujarSeccion = (tituloSec, items, colorRGB) => {
+    // Cada grupo arranca siempre en una hoja nueva (excepto el primero, que ya tiene el encabezado)
+    if (!primeraSeccion) { pdf.addPage(); }
+    primeraSeccion = false;
+    let y = 32;
+
+    pdf.setFillColor(colorRGB[0], colorRGB[1], colorRGB[2]);
+    pdf.rect(14, y - 8, 182, 12, 'F');
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(13);
+    pdf.setFont(undefined, 'bold');
+    pdf.text(`${tituloSec}  (${items.length})`, 18, y);
+    pdf.setTextColor(0, 0, 0);
+    y += 14;
+
+    pdf.setFontSize(10);
+    if (!items.length) {
+      pdf.setFont(undefined, 'normal');
+      pdf.text('Sin trabajos en esta categoría.', 14, y);
+      return;
+    }
+    items.forEach(h => {
+      if (y > 280) { pdf.addPage(); y = 20; }
+      pdf.setFont(undefined, 'bold');
+      pdf.text(h.fecha + '  —  ' + h.desc, 14, y);
+      pdf.setFont(undefined, 'normal');
+      pdf.text('Responsable: ' + (h.agente || '—') + '   ·   Estado: ' + estLabel[h.estado], 14, y + 5);
+      y += 12;
+    });
+  };
+
+  dibujarSeccion('PENDIENTES / EN CURSO', pendientes, [196, 127, 16]);
+  dibujarSeccion('COMPLETADAS', completadas, [45, 156, 45]);
+
+  pdf.save(nombreArchivo + '.pdf');
+}
+
+function descargarHistorialPDF(cual) {
+  const esInterno = cual === 'interno';
+  if (esInterno) {
+    const filtered = historial.filter(h => h.apt === 'Interno').sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+    generarPDFTrabajosInternos('Historial - Trabajos Internos del Edificio', filtered, 'historial-trabajos-internos');
+    return;
+  }
+  const titulo = 'Historial - Mantenimiento por Apartamento';
+  const filtered = historial.filter(h => h.apt !== 'Interno' && h.tipo === 'servicio').sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+  generarPDFRegistros(titulo, filtered, false, 'historial-mantenimiento-apartamentos');
+}
+
+const MESES_LARGO = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+function mesLabelDe(mesStr) {
+  const [y,m] = mesStr.split('-');
+  return MESES_LARGO[parseInt(m,10) - 1] + ' ' + y;
+}
+
+function cerrarMes(cual) {
+  const esInterno = cual === 'interno';
+  const hoy = new Date();
+  const mesActual = hoy.toISOString().slice(0, 7); // 'YYYY-MM'
+  const registros = (esInterno
+    ? historial.filter(h => h.apt === 'Interno')
+    : historial.filter(h => h.apt !== 'Interno' && h.tipo === 'servicio')
+  ).filter(h => h.fecha.slice(0,7) === mesActual).sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
+
+  if (!registros.length) { alert('No hay trabajos cargados este mes (' + mesLabelDe(mesActual) + ') para cerrar.'); return; }
+
+  // Para trabajos internos, congelamos el estado (pendiente/en-curso/listo) tal
+  // como está en el momento del cierre, para que el informe no cambie después.
+  const registrosFinal = esInterno ? registros.map(h => Object.assign({}, h, {estado: estadoDeHistorialInterno(h)})) : registros;
+
+  const existente = informesMensuales.find(i => i.tipo === cual && i.mes === mesActual);
+  if (existente && !confirm('Ya cerraste el informe de ' + mesLabelDe(mesActual) + '. ¿Volver a cerrarlo con los datos actuales? Se reemplaza el anterior.')) return;
+  if (!existente && !confirm('¿Cerrar el mes de ' + mesLabelDe(mesActual) + ' con ' + registros.length + ' trabajo(s)? Queda guardado como informe fijo, aunque después se borre el historial.')) return;
+
+  const informe = {
+    id: existente ? existente.id : Date.now(),
+    tipo: cual,
+    mes: mesActual,
+    mesLabel: mesLabelDe(mesActual),
+    fechaCierre: hoy.toISOString().split('T')[0],
+    registros: JSON.parse(JSON.stringify(registrosFinal)),
+  };
+  if (existente) { Object.assign(existente, informe); }
+  else { informesMensuales.push(informe); }
+
+  renderInformesMensuales(cual);
+  syncDB();
+  const tituloInforme = 'Informe cerrado - ' + (esInterno ? 'Trabajos Internos' : 'Mantenimiento por Apartamento') + ' - ' + informe.mesLabel;
+  if (esInterno) generarPDFTrabajosInternos(tituloInforme, informe.registros, 'informe-' + cual + '-' + informe.mes);
+  else generarPDFRegistros(tituloInforme, informe.registros, false, 'informe-' + cual + '-' + informe.mes);
+}
+
+function renderInformesMensuales(cual) {
+  const cont = document.getElementById('informes-' + cual + '-list'); if (!cont) return;
+  cont.innerHTML = '';
+  const lista = informesMensuales.filter(i => i.tipo === cual).sort((a,b) => b.mes.localeCompare(a.mes));
+  if (!lista.length) { cont.innerHTML = '<div class="empty-state"><i class="ti ti-lock"></i>Todavía no cerraste ningún mes.</div>'; return; }
+  lista.forEach(i => {
+    const item = document.createElement('div'); item.className = 'ticket-item';
+    item.innerHTML = `<div style="flex:1;"><div class="ticket-apt"><i class="ti ti-lock" style="font-size:12px;margin-right:4px;color:var(--azul-oscuro);"></i>${i.mesLabel}</div><div class="ticket-note">${i.registros.length} trabajo(s) · Cerrado el ${i.fechaCierre}</div></div>
+      <div style="display:flex;align-items:center;gap:5px;">
+        <button class="stock-btn" onclick="descargarInformePDF(${i.id})" title="Descargar PDF"><i class="ti ti-file-download" style="font-size:12px;"></i></button>
+        <button class="stock-del" onclick="eliminarInformeMensual(${i.id})" title="Eliminar informe">✕</button>
+      </div>`;
+    cont.appendChild(item);
+  });
+}
+
+function descargarInformePDF(id) {
+  const i = informesMensuales.find(x => x.id === id); if (!i) return;
+  const esInterno = i.tipo === 'interno';
+  const titulo = 'Informe cerrado - ' + (esInterno ? 'Trabajos Internos' : 'Mantenimiento por Apartamento') + ' - ' + i.mesLabel;
+  if (esInterno) generarPDFTrabajosInternos(titulo, i.registros, 'informe-' + i.tipo + '-' + i.mes);
+  else generarPDFRegistros(titulo, i.registros, false, 'informe-' + i.tipo + '-' + i.mes);
+}
+
+function eliminarInformeMensual(id) {
+  if (confirm('¿Eliminar este informe cerrado? Esta acción no se puede deshacer.')) {
+    informesMensuales = informesMensuales.filter(i => i.id !== id);
+    renderInformesMensuales('interno');
+    renderInformesMensuales('apto');
+    syncDB();
+  }
+}
+
+// ESPACIOS
+function renderEspacios() {
+  renderPiscinaGrande();
+  renderParrilleroAgenda();
+  renderPiscinasPrivadas();
+}
+
+function renderPiscinaGrande() {
+  const cont = document.getElementById('slots-piscinaGrande'); if (!cont) return;
+  cont.innerHTML = '';
+  espacios.piscinaGrande.forEach((s, idx) => {
+    const el = document.createElement('div');
+    el.className = 'slot ' + s.estado;
+    el.textContent = s.estado === 'ocupado' ? `${s.label} · Apt ${aptLabel(s.apt)}` : `${s.label} · Libre`;
+    if (s.estado === 'libre') el.onclick = () => reservarEspacio('piscinaGrande', idx);
+    else el.onclick = () => liberarEspacio('piscinaGrande', idx);
+    cont.appendChild(el);
+  });
+}
+
+function renderParrilleroAgenda() {
+  const cont = document.getElementById('agenda-parrillero'); if (!cont) return;
+  cont.innerHTML = '';
+  const hoy = new Date().toISOString().split('T')[0];
+  const lista = [...espacios.parrillero].sort((a,b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora));
+  if (!lista.length) { cont.innerHTML = '<div class="empty-state"><i class="ti ti-calendar"></i>Sin reservas de parrillero.</div>'; return; }
+  lista.forEach((r) => {
+    const idx = espacios.parrillero.indexOf(r);
+    const [y,m,d] = r.fecha.split('-');
+    const fechaFmt = `${d}/${m}/${y}`;
+    const pasada = r.fecha < hoy;
+    const item = document.createElement('div'); item.className = 'ticket-item'; if (pasada) item.style.opacity = '0.5';
+    item.innerHTML = `<div style="flex:1;"><div class="ticket-apt"><i class="ti ti-flame" style="font-size:12px;margin-right:4px;color:#c47f10;"></i>Parrillero ${r.parrillero} · ${fechaFmt}</div><div class="ticket-note">${r.hora} · Apt ${aptLabel(r.apt)}</div></div>
+      <button class="stock-del" onclick="cancelarParrillero(${idx})" title="Cancelar">✕</button>`;
+    cont.appendChild(item);
+  });
+}
+
+function cancelarParrillero(idx) {
+  if (confirm('¿Cancelar esta reserva de parrillero?')) { espacios.parrillero.splice(idx, 1); renderParrilleroAgenda(); syncDB(); }
+}
+
+function renderPiscinasPrivadas() {
+  const cont = document.getElementById('slots-piscinasPrivadas'); if (!cont) return;
+  cont.innerHTML = '';
+  const labels = {'en-uso':'En uso','mantenimiento':'En mantenimiento','libre':'Libre'};
+  const next = {'en-uso':'mantenimiento','mantenimiento':'libre','libre':'en-uso'};
+  espacios.piscinasPrivadas.forEach((s, idx) => {
+    const el = document.createElement('div');
+    el.className = 'slot ' + (s.estado === 'en-uso' ? 'ocupado' : 'libre');
+    el.textContent = `${s.label} · ${labels[s.estado]}`;
+    el.title = 'Tocá para cambiar el estado';
+    el.onclick = () => { s.estado = next[s.estado]; renderPiscinasPrivadas(); syncDB(); };
+    cont.appendChild(el);
+  });
+}
+
+// Abre el modal para elegir apartamento al reservar una franja de la Piscina Grande
+function reservarEspacio(tipo, idx) {
+  currentEspacioTipo = tipo; currentEspacioIdx = idx;
+  openModal('reservaEspacio');
+}
+
+function liberarEspacio(tipo, idx) {
+  const s = espacios[tipo][idx];
+  if (confirm('¿Liberar "' + s.label + '"?')) {
+    s.estado = 'libre'; s.apt = '';
+    renderPiscinaGrande();
+    syncDB();
+  }
+}
+
+function borrarReservasEspacio(tipo) {
+  if (confirm('¿Liberar todas las franjas de la Piscina Grande? Esta acción no se puede deshacer.')) {
+    espacios[tipo].forEach(s => { s.estado = 'libre'; s.apt = ''; });
+    renderPiscinaGrande();
+    syncDB();
+  }
+}
+
+// MODAL
+function avisarSiMantenimiento() {
+  const sel = document.getElementById('m-apt');
+  const warn = document.getElementById('m-apt-mant-warning');
+  if (!sel || !warn) return;
+  warn.style.display = getAptState(sel.value) === 'mantenimiento' ? 'block' : 'none';
+}
+
+function mostrarCamposAgente() {
+  const agente = document.getElementById('m-agente').value;
+  const nombreGroup = document.getElementById('m-agente-nombre-group');
+  const nombreLabel = document.getElementById('m-agente-nombre-label');
+  const telGroup = document.getElementById('m-agente-tel-group');
+  const telLabel = document.getElementById('m-agente-tel-label');
+  if (!agente || !nombreGroup) return;
+  if (agente === 'Propietario') {
+    nombreLabel.textContent = 'Nombre del propietario';
+    document.getElementById('m-agente-nombre').placeholder = 'Nombre completo';
+    telLabel.textContent = 'Celular del propietario';
+    document.getElementById('m-agente-tel').placeholder = 'Ej: 099 123 456';
+    telGroup.style.display = 'block';
+  } else if (agente === 'Inmobiliaria') {
+    nombreLabel.textContent = 'Nombre de la inmobiliaria';
+    document.getElementById('m-agente-nombre').placeholder = 'Ej: Inmobiliaria del Este';
+    telLabel.textContent = 'Teléfono de la inmobiliaria';
+    document.getElementById('m-agente-tel').placeholder = 'Ej: 099 123 456';
+    telGroup.style.display = 'block';
+  } else {
+    nombreLabel.textContent = 'Nombre de la plataforma';
+    document.getElementById('m-agente-nombre').placeholder = 'Ej: Airbnb, Booking.com...';
+    telLabel.textContent = 'Teléfono / contacto (opcional)';
+    document.getElementById('m-agente-tel').placeholder = 'Opcional';
+    telGroup.style.display = 'block';
+  }
+}
+
+function precargarPropietario() {
+  const aptSel = document.getElementById('m-apt');
+  const agenteSel = document.getElementById('m-agente');
+  const nombreInput = document.getElementById('m-agente-nombre');
+  const telInput = document.getElementById('m-agente-tel');
+  if (!aptSel || !agenteSel || !nombreInput || !telInput) return;
+  if (agenteSel.value !== 'Propietario') return;
+  const apt = APTS.find(a => a.num === aptSel.value);
+  if (!apt) return;
+  nombreInput.value = (apt.propietario && apt.propietario.nombre) || '';
+  telInput.value = (apt.propietario && apt.propietario.celular) || '';
+}
+
+function mostrarCamposPeriodo() {
+  const periodo = document.getElementById('m-periodo').value;
+  const hastaGroup = document.getElementById('m-hasta-group');
+  if (!hastaGroup) return;
+  if (periodo === 'permanente') {
+    hastaGroup.style.display = 'none';
+    document.getElementById('m-hasta').value = '2099-12-31';
+  } else {
+    hastaGroup.style.display = 'block';
+    if (document.getElementById('m-hasta').value === '2099-12-31') document.getElementById('m-hasta').value = document.getElementById('m-desde').value;
+  }
+}
+
+function openModal(type, servicio = '', idx = null) {
+  modalType = type; presetServicio = servicio; editIndex = idx;
+  const title = document.getElementById('modal-title');
+  const body = document.getElementById('modal-body');
+  const aptOpts = APTS.map(a => `<option value="${a.num}">${aptLabel(a.num)} · ${blockLabel(a.block)} · ${a.tipo}${a.pool ? ' 🏊' : ''}</option>`).join('');
+  const today = new Date().toISOString().split('T')[0];
+
+  if (type === 'reservaEspacio') {
+    const s = espacios[currentEspacioTipo][currentEspacioIdx];
+    title.textContent = 'Reservar · ' + s.label;
+    body.innerHTML = `<div class="form-group"><label class="form-label">Apartamento</label><select class="form-control" id="m-espacio-apt">${aptOpts}</select></div>`;
+    if (selectedApt) { const sel = document.getElementById('m-espacio-apt'); if (sel) sel.value = selectedApt; }
+  } else if (type === 'reservaParrillero') {
+    title.textContent = 'Reservar Parrillero';
+    const horasParrillero = ['9:00–12:00','12:00–15:00','15:00–18:00','18:00–21:00','21:00–24:00'];
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Parrillero</label><select class="form-control" id="m-parrillero-cual"><option value="A">Parrillero A</option><option value="B">Parrillero B</option></select></div>
+      <div class="form-group"><label class="form-label">Fecha</label><input class="form-control" type="date" id="m-parrillero-fecha" value="${today}"></div>
+      <div class="form-group"><label class="form-label">Hora</label><select class="form-control" id="m-parrillero-hora">${horasParrillero.map(h => `<option>${h}</option>`).join('')}</select></div>
+      <div class="form-group"><label class="form-label">Apartamento</label><select class="form-control" id="m-parrillero-apt">${aptOpts}</select></div>`;
+    if (selectedApt) { const sel = document.getElementById('m-parrillero-apt'); if (sel) sel.value = selectedApt; }
+  } else if (type === 'aptEstado') {
+    const apt = APTS.find(a => a.num === currentAptNum);
+    const estadoActual = getAptState(currentAptNum);
+    const tiposFijos = ['Monoambiente','2 Dormitorios','3 Dormitorios','4 Dormitorios'];
+    const propNombre = (apt.propietario && apt.propietario.nombre) || '';
+    const propCelular = (apt.propietario && apt.propietario.celular) || '';
+    title.textContent = 'Apartamento ' + aptLabel(currentAptNum) + ' · ' + blockLabel(apt.block);
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Número</label><input class="form-control" type="text" id="m-apt-num" value="${currentAptNum}"></div>
+      <div class="form-group"><label class="form-label">Tipo</label><select class="form-control" id="m-apt-tipo">${tiposFijos.map(t => `<option${t===apt.tipo?' selected':''}>${t}</option>`).join('')}</select></div>
+      <div class="form-group"><label class="form-label">Estado</label><select class="form-control" id="m-apt-estado">
+        <option value="libre"${estadoActual==='libre'?' selected':''}>Libre</option>
+        <option value="ocupado"${estadoActual==='ocupado'?' selected':''}>Ocupado</option>
+        <option value="vacio"${estadoActual==='vacio'?' selected':''}>Vacío</option>
+        <option value="mantenimiento"${estadoActual==='mantenimiento'?' selected':''}>Mantenimiento</option>
+      </select></div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:6px 0 10px;">
+      <div style="font-size:11px;color:var(--text-2);font-weight:700;margin-bottom:8px;">Ficha fija del propietario (no cambia aunque alquiles el apartamento)</div>
+      <div class="form-group"><label class="form-label">Nombre del propietario</label><input class="form-control" type="text" id="m-apt-prop-nombre" value="${propNombre}" placeholder="Nombre completo"></div>
+      <div class="form-group"><label class="form-label">Celular del propietario</label><input class="form-control" type="tel" id="m-apt-prop-celular" value="${propCelular}" placeholder="Ej: 099 123 456"></div>`;
+  } else if (type === 'reserva') {
+    const editing = idx !== null;
+    title.textContent = editing ? 'Editar Reserva' : 'Nueva Reserva';
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Apartamento</label><select class="form-control" id="m-apt" onchange="avisarSiMantenimiento(); precargarPropietario();">${aptOpts}</select></div>
+      <div id="m-apt-mant-warning" style="display:none;background:#fce0a8;border:1px solid #e2960a;color:#6b3d00;border-radius:8px;padding:8px 10px;font-size:11px;font-weight:700;margin-bottom:10px;"><i class="ti ti-alert-triangle"></i> Este apartamento está marcado como Mantenimiento.</div>
+      <div class="form-group"><label class="form-label">Huésped / Inquilino</label><input class="form-control" type="text" id="m-huesped" placeholder="Nombre completo"></div>
+      <div class="form-group"><label class="form-label">Celular del inquilino</label><input class="form-control" type="tel" id="m-celular" placeholder="Ej: 099 123 456"></div>
+      <div class="form-group"><label class="form-label">Período</label><select class="form-control" id="m-periodo" onchange="mostrarCamposPeriodo()"><option value="finde">Fin de semana</option><option value="mensual">Mensual</option><option value="anual">Anual</option><option value="permanente">Todo el año (propietario vive allí)</option></select></div>
+      <div class="form-group" id="m-desde-group"><label class="form-label">Fecha de entrada</label><input class="form-control" type="date" id="m-desde" value="${today}"></div>
+      <div class="form-group" id="m-hasta-group"><label class="form-label">Fecha de salida</label><input class="form-control" type="date" id="m-hasta" value="${today}"></div>
+      <div class="form-group"><label class="form-label">Registrado por</label><select class="form-control" id="m-agente" onchange="mostrarCamposAgente(); precargarPropietario();"><option>Propietario</option><option>Inmobiliaria</option><option value="Otro">Otro (Airbnb, Booking, etc.)</option></select></div>
+      <div class="form-group" id="m-agente-nombre-group"><label class="form-label" id="m-agente-nombre-label">Nombre del propietario</label><input class="form-control" type="text" id="m-agente-nombre" placeholder="Nombre completo"></div>
+      <div class="form-group" id="m-agente-tel-group" style="display:none;"><label class="form-label" id="m-agente-tel-label">Teléfono de la inmobiliaria</label><input class="form-control" type="tel" id="m-agente-tel" placeholder="Ej: 099 123 456"></div>`;
+    if (editing) {
+      const r = reservas[idx];
+      document.getElementById('m-apt').value = r.apt;
+      document.getElementById('m-huesped').value = r.huesped;
+      document.getElementById('m-celular').value = r.celular || '';
+      document.getElementById('m-periodo').value = r.periodo;
+      document.getElementById('m-desde').value = r.desde;
+      document.getElementById('m-hasta').value = r.hasta;
+      document.getElementById('m-agente').value = r.agente === 'Propietario' || r.agente === 'Inmobiliaria' ? r.agente : 'Otro';
+      setTimeout(() => {
+        avisarSiMantenimiento(); mostrarCamposAgente(); mostrarCamposPeriodo();
+        document.getElementById('m-agente-nombre').value = r.agenteNombre || '';
+        document.getElementById('m-agente-tel').value = r.agenteTel || '';
+      }, 0);
+    } else {
+      if (selectedApt) document.getElementById('m-apt').value = selectedApt;
+      setTimeout(() => { avisarSiMantenimiento(); mostrarCamposAgente(); mostrarCamposPeriodo(); precargarPropietario(); }, 0);
+    }
+  } else if (type === 'ticket') {
+    const editing = idx !== null;
+    title.textContent = editing ? 'Editar Ticket de Mantenimiento' : 'Nuevo Ticket de Mantenimiento';
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Apartamento</label><select class="form-control" id="m-apt">${aptOpts}</select></div>
+      <div class="form-group"><label class="form-label">Tarea / Descripción</label><input class="form-control" type="text" id="m-tarea" placeholder="Describí el trabajo"></div>
+      <div class="form-group"><label class="form-label">Responsable</label><input class="form-control" type="text" id="m-resp" placeholder="Nombre del operario"></div>
+      <div class="form-group"><label class="form-label">Fecha de ingreso</label><input class="form-control" type="date" id="m-ingreso" value="${today}"></div>
+      <div class="form-group"><label class="form-label">Fecha de egreso (opcional)</label><input class="form-control" type="date" id="m-egreso"></div>`;
+    if (editing) {
+      const t = tickets[idx];
+      document.getElementById('m-apt').value = t.apt;
+      document.getElementById('m-tarea').value = t.tarea;
+      document.getElementById('m-resp').value = t.responsable;
+      document.getElementById('m-ingreso').value = t.ingreso || today;
+      document.getElementById('m-egreso').value = t.egreso || '';
+    }
+  } else if (type === 'tareaInterna') {
+    const editing = idx !== null;
+    title.textContent = editing ? 'Editar Tarea de Mantenimiento' : 'Nueva Tarea de Mantenimiento (Interna)';
+    const zonasFijas = ['Sala de máquinas','Bomba de agua','Electricidad','Pintura','Sanitaria','Controles de incendio','Portón / Acceso','Piscina común','Piscinas privadas','Generador','Estacionamiento','Áreas verdes'];
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Zona / Ubicación</label><select class="form-control" id="m-zona" onchange="document.getElementById('m-zona-otro').style.display = this.value === 'Otro' ? 'block' : 'none';">
+        ${zonasFijas.map(z => `<option>${z}</option>`).join('')}
+        <option>Otro</option>
+      </select></div>
+      <div class="form-group" id="m-zona-otro" style="display:none;"><label class="form-label">Especificar zona</label><input class="form-control" type="text" id="m-zona-otro-txt" placeholder="Escribí la zona / ubicación"></div>
+      <div class="form-group"><label class="form-label">Tarea / Descripción</label><input class="form-control" type="text" id="m-tarea-int" placeholder="Describí el trabajo interno"></div>
+      <div class="form-group"><label class="form-label">Responsable</label><input class="form-control" type="text" id="m-resp-int" placeholder="Nombre del operario"></div>
+      <div class="form-group"><label class="form-label">Fecha</label><input class="form-control" type="date" id="m-fecha-int" value="${today}"></div>`;
+    if (editing) {
+      const t = tareasInternas[idx];
+      if (zonasFijas.includes(t.zona)) {
+        document.getElementById('m-zona').value = t.zona;
+      } else {
+        document.getElementById('m-zona').value = 'Otro';
+        document.getElementById('m-zona-otro').style.display = 'block';
+        document.getElementById('m-zona-otro-txt').value = t.zona;
+      }
+      document.getElementById('m-tarea-int').value = t.tarea;
+      document.getElementById('m-resp-int').value = t.responsable;
+      document.getElementById('m-fecha-int').value = t.fecha;
+    }
+  } else if (type === 'stockItem') {
+    title.textContent = 'Nuevo Ítem de Stock';
+    const catOpts = [...Object.keys(stock), 'Otro'].map(c => `<option${c===servicio?' selected':''}>${c}</option>`).join('');
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Categoría</label><select class="form-control" id="m-stock-cat" onchange="document.getElementById('m-stock-cat-otro').style.display = this.value==='Otro' ? 'block':'none';">${catOpts}</select>
+        <input class="form-control" type="text" id="m-stock-cat-otro" placeholder="Especificá la categoría" style="display:none;margin-top:6px;"></div>
+      <div class="form-group"><label class="form-label">Nombre del insumo</label><input class="form-control" type="text" id="m-stock-nombre" placeholder="Ej: Cable 2x1.5mm"></div>
+      <div class="form-group"><label class="form-label">Cantidad</label><input class="form-control" type="number" id="m-stock-cantidad" min="0" value="1"></div>
+      <div class="form-group"><label class="form-label">Unidad</label><input class="form-control" type="text" id="m-stock-unidad" placeholder="Ej: un, m, L, kg" value="un"></div>`;
+  } else if (type === 'planTarea') {
+    const editing = idx !== null;
+    title.textContent = editing ? 'Editar Tarea Planificada' : 'Nueva Tarea Planificada';
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Zona / Ubicación</label><select class="form-control" id="m-plan-zona" onchange="document.getElementById('m-plan-zona-otro').style.display = this.value === 'Otro' ? 'block' : 'none';">${[...ZONAS_PLAN, 'Otro'].map(z => `<option>${z}</option>`).join('')}</select>
+        <input class="form-control" type="text" id="m-plan-zona-otro" placeholder="Escribí la zona / ubicación" style="display:none;margin-top:6px;"></div>
+      <div class="form-group"><label class="form-label">Tarea / Descripción</label><input class="form-control" type="text" id="m-plan-tarea" placeholder="Describí qué hay que hacer"></div>
+      <div class="form-group"><label class="form-label">Responsable</label><input class="form-control" type="text" id="m-plan-resp" placeholder="Nombre del operario o empresa"></div>
+      <div class="form-group"><label class="form-label">Fecha prevista</label><input class="form-control" type="date" id="m-plan-fecha" value="${hoyLocal()}"></div>
+      <div class="form-group"><label class="form-label">Se repite</label><select class="form-control" id="m-plan-frec">${Object.keys(FRECUENCIAS).map(k => `<option value="${k}">${FRECUENCIAS[k]}</option>`).join('')}</select></div>
+      <div class="form-group"><label class="form-label">Notas (opcional)</label><input class="form-control" type="text" id="m-plan-notas"></div>`;
+    if (editing) {
+      const t = planificacion[idx];
+      if (ZONAS_PLAN.includes(t.zona)) { document.getElementById('m-plan-zona').value = t.zona; }
+      else { document.getElementById('m-plan-zona').value = 'Otro'; document.getElementById('m-plan-zona-otro').style.display = 'block'; document.getElementById('m-plan-zona-otro').value = t.zona; }
+      document.getElementById('m-plan-tarea').value = t.tarea;
+      document.getElementById('m-plan-resp').value = t.responsable || '';
+      document.getElementById('m-plan-fecha').value = t.fecha;
+      document.getElementById('m-plan-frec').value = t.frecuencia || 'unica';
+      document.getElementById('m-plan-notas').value = t.notas || '';
+    }
+  } else if (type === 'controlSeg') {
+    const editing = idx !== null;
+    title.textContent = editing ? 'Editar Control de Seguridad' : 'Registrar Control de Seguridad';
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Control</label><select class="form-control" id="m-seg-control" onchange="document.getElementById('m-seg-control-otro').style.display = this.value === 'Otro' ? 'block' : 'none';">${[...CONTROLES_SEG, 'Otro'].map(c => `<option>${c}</option>`).join('')}</select>
+        <input class="form-control" type="text" id="m-seg-control-otro" placeholder="Especificá el control" style="display:none;margin-top:6px;"></div>
+      <div class="form-group"><label class="form-label">Fecha del control</label><input class="form-control" type="date" id="m-seg-fecha" value="${hoyLocal()}"></div>
+      <div class="form-group"><label class="form-label">Trabajo realizado</label><input class="form-control" type="text" id="m-seg-trabajo" placeholder="Ej: Revisión y recarga"></div>
+      <div class="form-group"><label class="form-label">Responsable / Empresa</label><input class="form-control" type="text" id="m-seg-resp" placeholder="Quién lo hizo"></div>
+      <div class="form-group"><label class="form-label">Resultado</label><select class="form-control" id="m-seg-resultado"><option value="ok">OK</option><option value="observaciones">Con observaciones</option><option value="falla">Falla</option></select></div>
+      <div class="form-group"><label class="form-label">Observaciones (opcional)</label><input class="form-control" type="text" id="m-seg-obs"></div>
+      <div class="form-group"><label class="form-label">Fecha del próximo control (opcional)</label><input class="form-control" type="date" id="m-seg-proximo"></div>`;
+    if (editing) {
+      const r = controlesSeg[idx];
+      if (CONTROLES_SEG.includes(r.control)) { document.getElementById('m-seg-control').value = r.control; }
+      else { document.getElementById('m-seg-control').value = 'Otro'; document.getElementById('m-seg-control-otro').style.display = 'block'; document.getElementById('m-seg-control-otro').value = r.control; }
+      document.getElementById('m-seg-fecha').value = r.fecha;
+      document.getElementById('m-seg-trabajo').value = r.trabajo;
+      document.getElementById('m-seg-resp').value = r.responsable || '';
+      document.getElementById('m-seg-resultado').value = r.resultado || 'ok';
+      document.getElementById('m-seg-obs').value = r.obs || '';
+      document.getElementById('m-seg-proximo').value = r.proximo || '';
+    }
+  } else if (type === 'listaControles') {
+    title.textContent = 'Editar lista de controles';
+    body.innerHTML = `
+      <div style="font-size:11px;color:var(--text-2);margin-bottom:10px;">Cambiá el nombre, quitá con ✕ o agregá controles. Si cambiás un nombre, se actualiza también en los registros ya cargados. La opción "Otro" siempre queda disponible.</div>
+      <div id="m-lista-controles"></div>
+      <button type="button" class="add-t-btn" style="margin-left:0;margin-top:4px;" onclick="agregarFilaControl('','')">+ Agregar control</button>`;
+    CONTROLES_SEG.forEach(c => agregarFilaControl(c, c));
+  } else if (type === 'nuevoRubroStock') {
+    title.textContent = 'Nuevo Rubro de Stock';
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Nombre del rubro</label><input class="form-control" type="text" id="m-rubro-nombre" placeholder="Ej: Jardinería"></div>`;
+  } else if (type === 'proveedor') {
+    title.textContent = 'Nuevo Proveedor';
+    const rubrosFijos = [...Object.keys(stock), 'Otro'];
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Nombre / Empresa</label><input class="form-control" type="text" id="m-prov-nombre" placeholder="Ej: Ferretería Central"></div>
+      <div class="form-group"><label class="form-label">Rubro</label><select class="form-control" id="m-prov-rubro" onchange="document.getElementById('m-prov-rubro-otro').style.display = this.value==='Otro' ? 'block':'none';">${rubrosFijos.map(r => `<option>${r}</option>`).join('')}</select>
+        <input class="form-control" type="text" id="m-prov-rubro-otro" placeholder="Especificá el rubro" style="display:none;margin-top:6px;"></div>
+      <div class="form-group"><label class="form-label">Persona de contacto</label><input class="form-control" type="text" id="m-prov-contacto" placeholder="Nombre de quien atiende"></div>
+      <div class="form-group"><label class="form-label">Teléfono</label><input class="form-control" type="tel" id="m-prov-telefono" placeholder="Ej: 099 123 456"></div>
+      <div class="form-group"><label class="form-label">Condiciones de pago</label><select class="form-control" id="m-prov-condiciones"><option value="">Sin especificar</option><option>Contado</option><option>15 días</option><option>30 días</option><option>Cuenta corriente</option></select></div>
+      <div class="form-group"><label class="form-label">Notas</label><input class="form-control" type="text" id="m-prov-notas" placeholder="Ej: entrega a domicilio, horario, etc."></div>`;
+  } else if (type === 'nuevoPedido') {
+    title.textContent = 'Nuevo Pedido de Materiales';
+    const catOpts2 = [...Object.keys(stock), 'Otro'].map(c => `<option>${c}</option>`).join('');
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Categoría</label><select class="form-control" id="m-pedido-cat" onchange="document.getElementById('m-pedido-cat-otro').style.display = this.value==='Otro' ? 'block':'none';">${catOpts2}</select>
+        <input class="form-control" type="text" id="m-pedido-cat-otro" placeholder="Especificá la categoría" style="display:none;margin-top:6px;"></div>
+      <div class="form-group"><label class="form-label">Nombre del insumo</label><input class="form-control" type="text" id="m-pedido-nombre" placeholder="Ej: Cable 2x1.5mm"></div>
+      <div class="form-group"><label class="form-label">Cantidad pedida</label><input class="form-control" type="number" id="m-pedido-cantidad" min="0.01" step="any" value="1"></div>
+      <div class="form-group"><label class="form-label">Unidad</label><input class="form-control" type="text" id="m-pedido-unidad" placeholder="Ej: un, m, L, kg" value="un"></div>
+      <div class="form-group"><label class="form-label">Fecha del pedido</label><input class="form-control" type="date" id="m-pedido-fecha" value="${today}"></div>
+      <div class="form-group"><label class="form-label">Proveedor (opcional)</label><select class="form-control" id="m-pedido-proveedor"><option value="">Sin especificar</option>${proveedores.map(p => `<option>${p.nombre}</option>`).join('')}</select></div>`;
+  } else if (type === 'llegadaPedido') {
+    const p = pedidos[currentPedidoIdx];
+    const falta = Math.max(0, p.pedido - p.recibido);
+    title.textContent = 'Registrar llegada · ' + p.nombre;
+    body.innerHTML = `
+      <div class="form-group"><label class="form-label">Ya recibido</label><input class="form-control" type="text" value="${p.recibido} de ${p.pedido} ${p.unidad} (falta ${falta})" disabled></div>
+      <div class="form-group"><label class="form-label">Cantidad que llegó ahora</label><input class="form-control" type="number" id="m-llegada-cantidad" min="0.01" step="any" value="${falta}"></div>
+      <div class="form-group"><label class="form-label">Fecha de esta entrega</label><input class="form-control" type="date" id="m-llegada-fecha" value="${today}"></div>`;
+  }
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); editIndex = null; }
+
+function saveModal() {
+  const today = new Date().toISOString().split('T')[0];
+  if (modalType === 'reservaEspacio') {
+    const apt = document.getElementById('m-espacio-apt').value;
+    const s = espacios[currentEspacioTipo][currentEspacioIdx];
+    s.estado = 'ocupado'; s.apt = apt;
+    renderPiscinaGrande();
+    closeModal();
+  } else if (modalType === 'reservaParrillero') {
+    const parrillero = document.getElementById('m-parrillero-cual').value;
+    const fecha = document.getElementById('m-parrillero-fecha').value || today;
+    const hora = document.getElementById('m-parrillero-hora').value;
+    const apt = document.getElementById('m-parrillero-apt').value;
+    const choque = espacios.parrillero.find(r => r.parrillero === parrillero && r.fecha === fecha && r.hora === hora);
+    if (choque) { alert('Ya hay una reserva para el Parrillero ' + parrillero + ' ese día y horario (Apt ' + choque.apt + ').'); return; }
+    espacios.parrillero.push({parrillero, fecha, hora, apt});
+    renderParrilleroAgenda();
+    closeModal();
+  } else if (modalType === 'aptEstado') {
+    const nuevoNum = document.getElementById('m-apt-num').value.trim();
+    const nuevoTipo = document.getElementById('m-apt-tipo').value;
+    const estado = document.getElementById('m-apt-estado').value;
+    if (!nuevoNum) { alert('El número de apartamento no puede quedar vacío.'); return; }
+    const apt = APTS.find(a => a.num === currentAptNum);
+    if (nuevoNum !== currentAptNum) {
+      if (APTS.find(a => a.num === nuevoNum)) { alert('Ya existe un apartamento con ese número.'); return; }
+      // Migrar referencias del número viejo al nuevo
+      if (aptEstadoManual[currentAptNum] !== undefined) { aptEstadoManual[nuevoNum] = aptEstadoManual[currentAptNum]; delete aptEstadoManual[currentAptNum]; }
+      tickets.forEach(t => { if (t.apt === currentAptNum) t.apt = nuevoNum; });
+      reservas.forEach(r => { if (r.apt === currentAptNum) r.apt = nuevoNum; });
+      historial.forEach(h => { if (h.apt === currentAptNum) h.apt = nuevoNum; });
+      if (MANT_APTS.includes(currentAptNum)) { MANT_APTS.splice(MANT_APTS.indexOf(currentAptNum), 1, nuevoNum); }
+      apt.num = nuevoNum;
+    }
+    apt.tipo = nuevoTipo;
+    aptEstadoManual[apt.num] = estado;
+    const propNombre = document.getElementById('m-apt-prop-nombre').value.trim();
+    const propCelular = document.getElementById('m-apt-prop-celular').value.trim();
+    apt.propietario = {nombre: propNombre, celular: propCelular};
+    currentAptNum = apt.num;
+    closeModal(); renderAptBlocks(); renderTickets(); renderResSidebar(); renderHistorial(); updateStats();
+  } else if (modalType === 'reserva') {
+    const apt = document.getElementById('m-apt').value;
+    const huesped = document.getElementById('m-huesped').value.trim();
+    const celular = document.getElementById('m-celular').value.trim();
+    const periodo = document.getElementById('m-periodo').value;
+    const desde = document.getElementById('m-desde').value;
+    const hasta = document.getElementById('m-hasta').value;
+    const agente = document.getElementById('m-agente').value;
+    const agenteNombre = document.getElementById('m-agente-nombre').value.trim();
+    const agenteTel = document.getElementById('m-agente-tel').value.trim();
+    if (!huesped || !desde) { alert('Completá todos los campos.'); return; }
+    if (periodo !== 'permanente' && !hasta) { alert('Completá la fecha de salida.'); return; }
+    if (getAptState(apt) === 'mantenimiento' && !confirm('Este apartamento está marcado como Mantenimiento. ¿Igual querés reservarlo?')) { return; }
+    if (agente === 'Propietario' && (agenteNombre || agenteTel)) {
+      const aptObj = APTS.find(a => a.num === apt);
+      if (aptObj) aptObj.propietario = {nombre: agenteNombre, celular: agenteTel};
+    }
+    if (editIndex !== null) {
+      const r = reservas[editIndex];
+      Object.assign(r, {apt, huesped, celular, desde, hasta: periodo === 'permanente' ? '2099-12-31' : hasta, periodo, agente, agenteNombre, agenteTel});
+      const periodoDesc = periodo === 'permanente' ? 'todo el año' : periodo;
+      const agenteDesc = agenteNombre ? `${agente} (${agenteNombre})` : agente;
+      historial.unshift({apt, tipo:'reserva', desc:`Reserva editada — ${huesped}`, fecha: new Date().toISOString().split('T')[0], agente: agenteDesc});
+    } else {
+      reservas.push({apt, huesped, celular, desde, hasta: periodo === 'permanente' ? '2099-12-31' : hasta, periodo, agente, agenteNombre, agenteTel});
+      const periodoDesc = periodo === 'permanente' ? 'todo el año' : periodo;
+      const agenteDesc = agenteNombre ? `${agente} (${agenteNombre})` : agente;
+      historial.unshift({apt, tipo:'reserva', desc:`Reserva ${periodoDesc} — ${huesped}`, fecha:desde, agente: agenteDesc});
+    }
+    selectedApt = apt;
+    closeModal(); renderResSidebar(); renderCalendar(); renderResDetail(); renderHuespedesHoy();
+  } else if (modalType === 'ticket') {
+    const apt = document.getElementById('m-apt').value;
+    const servicio = 'Mantenimiento';
+    const tarea = document.getElementById('m-tarea').value.trim();
+    const responsable = document.getElementById('m-resp').value.trim();
+    const ingreso = document.getElementById('m-ingreso').value || today;
+    const egreso = document.getElementById('m-egreso').value || '';
+    if (!tarea) { alert('Describí la tarea.'); return; }
+    if (editIndex !== null) {
+      const t = tickets[editIndex];
+      Object.assign(t, {apt, servicio, tarea, responsable, ingreso, egreso});
+    } else {
+      tickets.push({apt, servicio, tarea, estado:'pendiente', responsable, fecha:today, ingreso, egreso});
+      historial.unshift({apt, tipo:'servicio', desc:`${servicio} — ${tarea}`, fecha:today, agente:responsable});
+    }
+    closeModal(); renderTickets();
+  } else if (modalType === 'tareaInterna') {
+    let zona = document.getElementById('m-zona').value;
+    if (zona === 'Otro') { const zOtro = document.getElementById('m-zona-otro-txt').value.trim(); if (zOtro) zona = zOtro; }
+    const tarea = document.getElementById('m-tarea-int').value.trim();
+    const responsable = document.getElementById('m-resp-int').value.trim();
+    const fecha = document.getElementById('m-fecha-int').value || today;
+    if (!tarea) { alert('Describí la tarea.'); return; }
+    if (editIndex !== null) {
+      const t = tareasInternas[editIndex];
+      Object.assign(t, {zona, tarea, responsable, fecha});
+    } else {
+      const tid = 't' + Date.now() + Math.random().toString(36).slice(2,6);
+      tareasInternas.push({zona, tarea, estado:'pendiente', responsable, fecha, id: tid});
+      historial.unshift({apt:'Interno', tipo:'servicio', desc:`Mantenimiento interno — ${zona}: ${tarea}`, fecha, agente:responsable, tareaId: tid});
+    }
+    closeModal(); renderTareasInternas();
+  } else if (modalType === 'planTarea') {
+    let zona = document.getElementById('m-plan-zona').value;
+    if (zona === 'Otro') { const zo = document.getElementById('m-plan-zona-otro').value.trim(); if (zo) zona = zo; }
+    const tarea = document.getElementById('m-plan-tarea').value.trim();
+    const responsable = document.getElementById('m-plan-resp').value.trim();
+    const fecha = document.getElementById('m-plan-fecha').value;
+    const frecuencia = document.getElementById('m-plan-frec').value;
+    const notas = document.getElementById('m-plan-notas').value.trim();
+    if (!tarea) { alert('Describí la tarea.'); return; }
+    if (!fecha) { alert('Elegí la fecha prevista.'); return; }
+    if (editIndex !== null) { Object.assign(planificacion[editIndex], {zona, tarea, responsable, fecha, frecuencia, notas}); }
+    else { planificacion.push({zona, tarea, responsable, fecha, frecuencia, notas, hecha:false}); }
+    closeModal(); renderPlanificacion();
+  } else if (modalType === 'controlSeg') {
+    let control = document.getElementById('m-seg-control').value;
+    if (control === 'Otro') { const co = document.getElementById('m-seg-control-otro').value.trim(); if (!co) { alert('Especificá qué control es.'); return; } control = co; }
+    const fecha = document.getElementById('m-seg-fecha').value;
+    const trabajo = document.getElementById('m-seg-trabajo').value.trim();
+    const responsable = document.getElementById('m-seg-resp').value.trim();
+    const resultado = document.getElementById('m-seg-resultado').value;
+    const obs = document.getElementById('m-seg-obs').value.trim();
+    const proximo = document.getElementById('m-seg-proximo').value;
+    if (!fecha) { alert('Elegí la fecha del control.'); return; }
+    if (!trabajo) { alert('Describí el trabajo realizado.'); return; }
+    if (editIndex !== null) { Object.assign(controlesSeg[editIndex], {control, fecha, trabajo, responsable, resultado, obs, proximo}); }
+    else { controlesSeg.push({control, fecha, trabajo, responsable, resultado, obs, proximo}); }
+    closeModal(); renderControlesSeg();
+  } else if (modalType === 'listaControles') {
+    const nuevos = [], renombres = {};
+    let invalido = false;
+    document.querySelectorAll('#m-lista-controles input').forEach(inp => {
+      const nombre = inp.value.trim(), orig = inp.dataset.orig;
+      if (!nombre) return;
+      if (nombre.toLowerCase() === 'otro') { invalido = true; return; }
+      if (orig && orig !== nombre) renombres[orig] = nombre;
+      if (!nuevos.some(n => n.toLowerCase() === nombre.toLowerCase())) nuevos.push(nombre);
+    });
+    if (invalido) { alert('El nombre "Otro" está reservado. Elegí otro nombre.'); return; }
+    controlesSeg.forEach(r => { if (renombres[r.control]) r.control = renombres[r.control]; });
+    CONTROLES_SEG.length = 0; CONTROLES_SEG.push(...nuevos);
+    closeModal(); renderControlesSeg();
+  } else if (modalType === 'nuevoRubroStock') {
+    const nombre = document.getElementById('m-rubro-nombre').value.trim();
+    if (!nombre) { alert('Ingresá el nombre del rubro.'); return; }
+    if (stock[nombre]) { alert('Ese rubro ya existe.'); return; }
+    stock[nombre] = [];
+    closeModal(); renderStock();
+  } else if (modalType === 'proveedor') {
+    const nombre = document.getElementById('m-prov-nombre').value.trim();
+    if (!nombre) { alert('Ingresá el nombre del proveedor.'); return; }
+    const rubroSel = document.getElementById('m-prov-rubro').value;
+    const rubro = rubroSel === 'Otro' ? (document.getElementById('m-prov-rubro-otro').value.trim() || 'Otro') : rubroSel;
+    const contacto = document.getElementById('m-prov-contacto').value.trim();
+    const telefono = document.getElementById('m-prov-telefono').value.trim();
+    const condiciones = document.getElementById('m-prov-condiciones').value;
+    const notas = document.getElementById('m-prov-notas').value.trim();
+    proveedores.push({nombre, rubro, contacto, telefono, condiciones, notas});
+    closeModal(); renderProveedores();
+  } else if (modalType === 'stockItem') {
+    const catSel = document.getElementById('m-stock-cat').value;
+    const cat = catSel === 'Otro' ? (document.getElementById('m-stock-cat-otro').value.trim() || 'Otro') : catSel;
+    const nombre = document.getElementById('m-stock-nombre').value.trim();
+    const cantidad = parseFloat(document.getElementById('m-stock-cantidad').value) || 0;
+    const unidad = document.getElementById('m-stock-unidad').value.trim() || 'un';
+    if (!nombre) { alert('Ingresá el nombre del insumo.'); return; }
+    if (!stock[cat]) stock[cat] = [];
+    stock[cat].push({nombre, cantidad, unidad});
+    closeModal(); renderStock();
+  } else if (modalType === 'nuevoPedido') {
+    const catSel = document.getElementById('m-pedido-cat').value;
+    const categoria = catSel === 'Otro' ? (document.getElementById('m-pedido-cat-otro').value.trim() || 'Otro') : catSel;
+    const nombre = document.getElementById('m-pedido-nombre').value.trim();
+    const proveedor = document.getElementById('m-pedido-proveedor').value;
+    const pedido = parseFloat(document.getElementById('m-pedido-cantidad').value) || 0;
+    const unidad = document.getElementById('m-pedido-unidad').value.trim() || 'un';
+    const fecha = document.getElementById('m-pedido-fecha').value || today;
+    if (!nombre) { alert('Ingresá el nombre del insumo.'); return; }
+    if (pedido <= 0) { alert('Ingresá una cantidad pedida mayor a 0.'); return; }
+    pedidos.push({categoria, nombre, pedido, recibido:0, unidad, fecha, proveedor, entregas:[]});
+    closeModal(); renderPedidos();
+  } else if (modalType === 'llegadaPedido') {
+    const cantidad = parseFloat(document.getElementById('m-llegada-cantidad').value) || 0;
+    const fechaLlegada = document.getElementById('m-llegada-fecha').value || today;
+    if (cantidad <= 0) { alert('Ingresá una cantidad mayor a 0.'); return; }
+    const p = pedidos[currentPedidoIdx];
+    p.recibido += cantidad;
+    if (!p.entregas) p.entregas = [];
+    p.entregas.push({fecha: fechaLlegada, cantidad});
+    // Sumamos lo recibido directo al Stock (crea el ítem si todavía no existía)
+    if (!stock[p.categoria]) stock[p.categoria] = [];
+    let itemStock = stock[p.categoria].find(s => s.nombre.trim().toLowerCase() === p.nombre.trim().toLowerCase());
+    if (itemStock) { itemStock.cantidad += cantidad; }
+    else { stock[p.categoria].push({nombre: p.nombre, cantidad, unidad: p.unidad}); }
+    closeModal(); renderPedidos(); renderStock();
+  }
+  updateStats();
+  renderActividadReciente();
+  syncDB();
+}
+
+document.getElementById('modal-overlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+// INIT
+updateStats();
+initHistorialSelector();
+renderTickets();
+renderTareasInternas();
+renderStock();
+renderHistorial();
+renderActividadReciente();
+renderBlockNames();
+renderEspacios();
+renderHuespedesHoy();
+renderPropietarios();
+renderPedidos();
+renderProveedores();
+renderPlanificacion();
+renderControlesSeg();
+</script>
+</body>
+</html>
